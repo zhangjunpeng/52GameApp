@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
+    >
+    <include
+        android:id="@+id/titlebar_playerreport"
+        layout="@layout/titlebar_save"/>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_player_report"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/titlebar_playerreport"
+        ></android.support.v4.view.ViewPager>
+    <ImageView
+        android:id="@+id/button_right_report"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:src="@drawable/button_right"
+        />
+</RelativeLayout>

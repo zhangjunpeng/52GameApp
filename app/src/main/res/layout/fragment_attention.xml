@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <in.srain.cube.views.ptr.PtrClassicFrameLayout
+        android:id="@+id/ptrframe_attention"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <ListView
+        android:id="@+id/listview_attention_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        ></ListView>
+    </in.srain.cube.views.ptr.PtrClassicFrameLayout>
+    <ImageView
+        android:layout_width="72dp"
+        android:layout_height="67dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="100dp"
+        android:src="@drawable/nocared"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="您还没有关注哦"
+        android:textColor="#B4B4B4"
+        android:textSize="15dp"
+        android:gravity="center"
+        android:layout_marginTop="35dp"
+        />
+    <Button
+        android:id="@+id/want_care"
+        android:layout_width="140dp"
+        android:layout_height="37dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/orangeborder_button"
+        android:text="我要关注"
+        android:textSize="15dp"
+        android:textColor="#FF9D00"
+        />
+</LinearLayout>

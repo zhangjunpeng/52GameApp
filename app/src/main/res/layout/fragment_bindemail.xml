@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <include
+        android:id="@+id/title_bindemail"
+        layout="@layout/titlebar_save"/>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="166.66dp">
+
+        <TextView
+            android:id="@+id/tips_bindemail"
+            android:layout_width="match_parent"
+            android:layout_height="66.66dp"
+            android:textColor="#4C4C4C"
+            android:textSize="14.66dp"
+            android:gravity="center"
+            android:text="绑定后，您可以使用邮箱登陆"
+            />
+        <LinearLayout
+            android:layout_width="332dp"
+            android:layout_height="100dp"
+            android:layout_below="@+id/tips_bindemail"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/borderedit"
+            android:orientation="vertical"
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
+                <ImageView
+                    android:layout_width="21.66dp"
+                    android:layout_height="21.66dp"
+                    android:src="@drawable/phoneicon"
+                    android:layout_marginLeft="18dp"
+                    />
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/email_bindemail"
+                    android:hint="请输入您要绑定的邮箱"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="34dp"
+                    android:textColorHint="@color/edithint"
+                    android:background="@null" />
+                <TextView
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/border_getcode_orange"
+                    android:gravity="center"
+                    android:textColor="#fff"
+                    android:text="验证码"
+                    android:layout_marginTop="1px"
+                    android:layout_marginRight="1px"
+                    android:id="@+id/getcode_bindemail" />
+            </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="2px"
+                android:background="#B4B4B4"
+                />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                >
+                <ImageView
+                    android:layout_width="21.66dp"
+                    android:layout_height="21.66dp"
+                    android:src="@drawable/codeicon"
+                    android:layout_marginLeft="18dp"
+                    />
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/code_bindemail"
+                    android:hint="请输入验证码"
+                    android:textSize="12dp"
+                    android:layout_marginLeft="34dp"
+                    android:textColorHint="@color/edithint"
+                    android:background="@null" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/re_warning_bindemail"
+        android:layout_width="match_parent"
+        android:visibility="invisible"
+        android:layout_height="50dp">
+
+
+        <ImageView
+            android:layout_width="13.33dp"
+            android:layout_height="13.33dp"
+            android:src="@drawable/warning"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/warning_bindemail"
+            android:layout_marginRight="10dp"
+            />
+        <TextView
+            android:id="@+id/warning_bindemail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="#E60C0B"
+            android:text="请输入您的邮箱"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="332dp"
+        android:layout_height="50dp"
+        android:text="绑定"
+        android:clickable="false"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/bind_bindemail"
+        android:textColor="#fff"
+        android:background="@drawable/border_button_gray"/>
+
+</LinearLayout>
+
+

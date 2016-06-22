@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="22dp"
+        android:layout_marginTop="24dp"
+        android:text="您的建议"
+        android:textSize="16dp"
+        android:textColor="#4C4C4C"
+        />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="193dp"
+        android:background="#F5F5F5"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="16dp"
+        >
+        <EditText
+            android:id="@+id/edit_report_advice"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="您的建议，不超过500字"
+            android:background="@null"
+            android:inputType="textMultiLine"
+            android:gravity="left|top"
+            android:minLines="8"
+            android:textSize="12dp"
+            android:textColorHint="@color/edithint"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="13dp"
+            />
+    </RelativeLayout>
+</LinearLayout>

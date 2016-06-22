@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1F5F8"
+    >
+
+    <include
+        android:id="@+id/title_changepwd"
+        layout="@layout/titlebar_save"/>
+
+    <LinearLayout
+        android:layout_width="332dp"
+        android:layout_height="150dp"
+        android:background="@drawable/borderedit"
+        android:orientation="vertical"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="18dp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:layout_width="21.66dp"
+                android:layout_height="21.66dp"
+                android:src="@drawable/pwdicon"
+                android:layout_marginLeft="18dp"
+                />
+            <EditText
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/oldpwd_changepwd"
+                android:hint="请输入当前密码"
+                android:textSize="12dp"
+                android:inputType="textPassword"
+                android:layout_marginLeft="34dp"
+                android:textColorHint="@color/edithint"
+                android:background="@null" />
+
+
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#BEBEBE"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:layout_width="21.66dp"
+                android:layout_height="21.66dp"
+                android:src="@drawable/pwdicon"
+                android:layout_marginLeft="18dp"
+                />
+            <EditText
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/newpwd_changepwd"
+                android:hint="请输入新密码，至少6位"
+                android:textSize="12dp"
+                android:inputType="textPassword"
+                android:layout_marginLeft="34dp"
+                android:textColorHint="@color/edithint"
+                android:background="@null" />
+
+
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:background="#BEBEBE"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:layout_width="21.66dp"
+                android:layout_height="21.66dp"
+                android:src="@drawable/pwdicon"
+                android:layout_marginLeft="18dp"
+                />
+            <EditText
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:id="@+id/comfirpwd_changepwd"
+                android:hint="请再次输入新密码"
+                android:textSize="12dp"
+                android:layout_marginLeft="34dp"
+                android:inputType="textPassword"
+                android:textColorHint="@color/edithint"
+                android:background="@null" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:id="@+id/re_warning_changepwd"
+        android:layout_width="match_parent"
+        android:visibility="invisible"
+        android:layout_height="50dp">
+
+        <ImageView
+            android:layout_width="13.33dp"
+            android:layout_height="13.33dp"
+            android:src="@drawable/warning"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/warning_changepwd"
+            android:layout_marginRight="10dp"
+            />
+        <TextView
+            android:id="@+id/warning_changepwd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="#E60C0B"
+            android:text="两次密码输入不一致"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+
+    <Button
+        android:layout_width="332dp"
+        android:layout_height="50dp"
+        android:text="提交"
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/change_changepwd"
+        android:clickable="false"
+        android:textColor="#fff"
+        android:background="@drawable/border_button_gray"/>
+</LinearLayout>

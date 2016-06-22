@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="borderRadius" format="dimension" />
+    <attr name="type">
+        <enum name="circle" value="0" />
+        <enum name="round" value="1" />
+        <enum name="topleft" value="2" />
+        <enum name="topRight" value="3" />
+        <enum name="bottomleft" value="4" />
+        <enum name="bottomright" value="5" />
+
+    </attr>
+
+
+    <declare-styleable name="RoundImageView">
+        <attr name="borderRadius" />
+        <attr name="type" />
+    </declare-styleable>
+
+</resources>

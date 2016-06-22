@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="wrap_content"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/tjrm_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#838483"
+            android:textSize="14.33dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="14dp"
+            android:text="推荐热门"
+            />
+        <TextView
+            android:id="@+id/more_rm_game"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#838483"
+            android:textSize="12dp"
+            android:layout_alignBaseline="@+id/tjrm_game"
+            android:layout_marginRight="14dp"
+            android:text="更多"
+            android:layout_alignParentRight="true"
+            />
+        <HorizontalScrollView
+            android:id="@+id/list_rm_game"
+            android:layout_width="match_parent"
+            android:layout_height="98dp"
+            android:layout_below="@+id/tjrm_game"
+            android:layout_marginTop="6.67dp"
+            android:scrollbars="none"
+            >
+
+        </HorizontalScrollView>
+    </RelativeLayout>
+    <ImageView
+        android:id="@+id/line_gameindex"
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#B4B4B4"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="14dp"
+        />
+</LinearLayout>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="#F1F5F8"
+    >
+
+    <include
+        android:id="@+id/title_bindphone"
+        layout="@layout/titlebar_save"/>
+
+
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="116.66dp"
+        >
+
+        <RelativeLayout
+            android:id="@+id/re_phonenum_bindphone"
+            android:layout_width="match_parent"
+            android:layout_height="66.66dp">
+        <TextView
+            android:id="@+id/phonenum_bindphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14.66dp"
+            android:layout_centerInParent="true"
+            android:text="您已绑定手机号："
+            android:textColor="#4C4C4C"
+            />
+        </RelativeLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/re_edit_phone_bindphone"
+            android:layout_width="332dp"
+            android:layout_height="50dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/borderedit"
+            android:layout_below="@+id/re_phonenum_bindphone"
+            >
+            
+            <ImageView
+                android:id="@+id/phoneicon_bindphone"
+                android:layout_width="21.66dp"
+                android:layout_height="21.66dp"
+                android:src="@drawable/phoneicon"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="18dp"
+                />
+            <EditText
+                android:id="@+id/edit_phone_bindphone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/phoneicon_bindphone"
+                android:hint="请输入您已绑定的手机号"
+                android:layout_marginLeft="34dp"
+                android:inputType="numberSigned"
+                android:maxLines="1"
+                android:textSize="12dp"
+                android:textColorHint="#999999"
+                />
+            </RelativeLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/corneronedit"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="1dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="48dp"
+        />
+    </RelativeLayout>
+
+    <RelativeLayout
+
+        android:id="@+id/re_tips_bindphone"
+        android:layout_width="match_parent"
+
+        android:visibility="invisible"
+        android:layout_height="50dp">
+
+        
+        <ImageView
+            android:layout_width="13.33dp"
+            android:layout_height="13.33dp"
+            android:src="@drawable/warning"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@+id/warning_bindphone"
+            android:layout_marginRight="10dp"
+            />
+        <TextView
+            android:id="@+id/warning_bindphone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12dp"
+            android:textColor="#E60C0B"
+            android:text="已绑定手机号码输入错误，请重新输入"
+            android:layout_centerInParent="true"
+            />
+    </RelativeLayout>
+        <Button
+            android:layout_width="332dp"
+            android:layout_height="50dp"
+            android:text="验证"
+            android:textColor="#fff"
+            android:textSize="16.66dp"
+            android:clickable="false"
+            android:background="@drawable/border_button_gray"
+            android:id="@+id/check_bindphone" />
+
+
+
+</LinearLayout>

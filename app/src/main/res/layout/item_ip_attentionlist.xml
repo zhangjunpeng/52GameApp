@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    >
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="124dp">
+
+        <RelativeLayout
+            android:id="@+id/re_image_item_iplist"
+            android:layout_width="96.67dp"
+            android:layout_height="96.67dp"
+            android:layout_marginLeft="19.67dp"
+            android:layout_marginTop="14.67dp"
+            >
+            <ImageView
+                android:id="@+id/imageView_item_ipattention"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_centerInParent="true"
+                android:scaleType="fitXY"
+                />
+            <ImageView
+                android:layout_width="96.67dp"
+                android:layout_height="96.67dp"
+                android:src="@drawable/item_bg_2"
+                />
+            <ImageView
+                android:layout_width="96.67dp"
+                android:layout_height="96.67dp"
+
+                android:src="@drawable/bg_item_listview"
+                />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/name_item_ipattention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_marginTop="26.66dp"
+            android:maxWidth="182dp"
+            android:textSize="14.67dp"
+            android:textColor="#4C4C4C"
+            android:layout_toRightOf="@+id/re_image_item_iplist"
+            android:layout_marginLeft="9.33dp"
+            android:text="离开这就成了空想支持肯定是疯了看到"
+            />
+        <TextView
+            android:id="@+id/introuduction_item_ipattention"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:maxWidth="182dp"
+            android:textSize="12dp"
+            android:maxLines="3"
+            android:textColor="#848484"
+            android:lineSpacingExtra="1dp"
+            android:gravity="center_vertical"
+
+            android:layout_toRightOf="@+id/re_image_item_iplist"
+            android:layout_below="@+id/name_item_ipattention"
+            android:layout_marginLeft="9.33dp"
+            android:text="离开这就成\n离开这就成\n离开这就成"
+            android:ellipsize="end"
+            />
+        <Button
+            android:id="@+id/cancel_care_ip"
+            android:layout_width="61dp"
+            android:layout_height="33dp"
+            android:background="@drawable/orangeborder_button"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="14dp"
+            android:text="取消关注"
+            android:textSize="12dp"
+            android:textColor="#FF9D00"
+            />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="332dp"
+        android:layout_height="1px"
+        android:layout_gravity="center_horizontal"
+        android:background="#C4C4C4"
+        />
+</LinearLayout>

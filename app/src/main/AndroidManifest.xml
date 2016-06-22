@@ -1,0 +1,386 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.test4s.myapp"
+    android:versionCode="5"
+    android:versionName="2.0">
+
+    <uses-sdk android:minSdkVersion="18" />
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Required 自定义用来收发消息的相关权限 -->
+    <permission
+        android:name="${applicationId}.permission.JPUSH_MESSAGE"
+        android:protectionLevel="signature" />
+    <!-- jpush需要的权限 -->
+    <uses-permission android:name="${applicationId}.permission.JPUSH_MESSAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_USER_PRESENT" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+
+    <!-- Optional for location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+
+    <!-- 微信登录需要的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- 微博需要的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- 优酷云视频的权限 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- 如果是第三方lib项目，请在手册中提示app开发者授予以下权限！ -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+
+    <!-- 请在application处配置appkey和渠道或在代码处调用StatConfig类接口 < -->
+    <application
+        android:name=".MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".MainActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name="com.view.game.GameListActivity"
+            android:label="@string/title_activity_second"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.activity.ViewpagerActivity"
+            android:label="@string/title_activity_viewpager"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.activity.ListActivity"
+            android:label="@string/title_activity_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.test4s.account.AccountActivity"
+            android:label="@string/title_activity_login"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.s4server.CPDetailActivity"
+            android:label="@string/title_activity_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.accountsetting.MyAcountSettingActivity"
+            android:label="@string/title_activity_my_acount_setting"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.game.GameDetailActivity"
+            android:label="@string/title_activity_game_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.s4server.IssueDetailActivity"
+            android:label="@string/title_activity_fx_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.s4server.InvesmentDetialActivity"
+            android:label="@string/title_activity_tz_detial"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.activity.SelectPicActivity"
+            android:label="@string/title_activity_select_pic"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name="com.view.myreport.ReprotListActivity"
+            android:label="@string/title_activity_reprot_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.myreport.GameReportActivity"
+            android:label="@string/title_activity_game_report"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.messagecenter.MessageList"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <!-- Required SDK核心功能 -->
+        <activity
+            android:name="cn.jpush.android.ui.PushActivity"
+            android:configChanges="orientation|keyboardHidden"
+            android:exported="false"
+            android:theme="@android:style/Theme.NoTitleBar">
+            <intent-filter>
+                <action android:name="cn.jpush.android.ui.PushActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </activity>
+
+        <!-- Required SDK核心功能 -->
+        <service
+            android:name="cn.jpush.android.service.DownloadService"
+            android:enabled="true"
+            android:exported="false" />
+
+        <!-- Required SDK 核心功能 -->
+        <!-- option since 2.0.5 可配置PushService，DaemonService,PushReceiver,AlarmReceiver的android:process参数 将JPush相关组件设置为一个独立进程 -->
+        <!-- 如：android:process=":remote" -->
+        <service
+            android:name="cn.jpush.android.service.PushService"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTER" />
+                <action android:name="cn.jpush.android.intent.REPORT" />
+                <action android:name="cn.jpush.android.intent.PushService" />
+                <action android:name="cn.jpush.android.intent.PUSH_TIME" />
+            </intent-filter>
+        </service>
+
+        <!-- Required SDK 核心功能 since 1.8.0 -->
+        <service
+            android:name="cn.jpush.android.service.DaemonService"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.DaemonService" />
+
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </service>
+
+        <!-- Required SDK核心功能 -->
+        <receiver
+            android:name="cn.jpush.android.service.PushReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter android:priority="1000">
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED_PROXY" />
+                <!-- Required 显示通知栏 -->
+                <category android:name="${applicationId}" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.USER_PRESENT" />
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+            <!-- Optional -->
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required SDK核心功能 -->
+        <receiver android:name="cn.jpush.android.service.AlarmReceiver" />
+        <!-- User defined. 用户自定义的广播接收器 -->
+        <receiver
+            android:name="com.test4s.jpush.MyPushReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="cn.jpush.android.intent.REGISTRATION" />
+                <!-- Required 用户注册SDK的intent -->
+                <action android:name="cn.jpush.android.intent.UNREGISTRATION" />
+                <action android:name="cn.jpush.android.intent.MESSAGE_RECEIVED" />
+                <!-- Required 用户接收SDK消息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_RECEIVED" />
+                <!-- Required 用户接收SDK通知栏信息的intent -->
+                <action android:name="cn.jpush.android.intent.NOTIFICATION_OPENED" />
+                <!-- Required 用户打开自定义通知栏的intent -->
+                <action android:name="cn.jpush.android.intent.ACTION_RICHPUSH_CALLBACK" />
+                <!-- Optional 用户接受Rich Push Javascript 回调函数的intent -->
+                <action android:name="cn.jpush.android.intent.CONNECTION" />
+                <!-- 接收网络变化 连接/断开 since 1.6.3 -->
+                <category android:name="${applicationId}" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Required . Enable it you can get statistics data with channel -->
+        <meta-data
+            android:name="JPUSH_CHANNEL"
+            android:value="developer-default" />
+        <meta-data
+            android:name="JPUSH_APPKEY"
+            android:value="b2814b20e58fab07740f91dd" />
+        <!-- </>值来自开发者平台取得的AppKey -->
+        <activity
+            android:name="com.view.accountsetting.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.s4server.IPDetailActivity"
+            android:hardwareAccelerated="true"
+            android:label="@string/title_activity_ipdetail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.s4server.OutSourceActivity"
+            android:label="@string/title_activity_out_source"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.Information.InfomaionDetailActivity"
+            android:label="@string/title_activity_infomaion_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.messagecenter.MessageActivity"
+            android:label="@string/title_activity_message"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.Evaluation.EvaluationActivity"
+            android:label="@string/title_activity_evaluation"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.setting.SettingActivity"
+            android:label="@string/title_activity_setting"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.myattention.AttentionActivity"
+            android:label="@string/title_activity_attention"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.search.SearchActivity"
+            android:label="@string/title_activity_search"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name="com.view.search.SearchEndActivity"
+            android:label="@string/title_activity_search_end"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
+        <activity
+            android:name="com.view.Evaluation.StartPCActivity"
+            android:label="@string/title_activity_start_pc"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.Evaluation.SetPcInfoActivity"
+            android:label="@string/title_activity_set_pc_info"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.Evaluation.PCActivity"
+            android:label="@string/title_activity_pc"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.Evaluation.PcDetailActivity"
+            android:label="@string/title_activity_pc_detail"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.myreport.PlayerReportActivity"
+            android:label="@string/title_activity_player_report"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.myreport.ExpertReportActivity"
+            android:label="@string/title_activity_expert_report"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <!-- 微信回调页面 -->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/title_activity_wxentry" />
+        <!-- 微博页面 -->
+        <activity
+            android:name="com.sina.weibo.sdk.component.WeiboSdkBrowser"
+            android:configChanges="keyboardHidden|orientation"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+        <!-- qq页面 -->
+        <activity
+            android:name="com.tencent.tauth.AuthActivity"
+            android:launchMode="singleTask"
+            android:noHistory="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="tencent1105244367" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.tencent.connect.common.AssistActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name="com.test4s.account.ThirdLoginActivity"
+            android:label="@string/title_activity_third_login"
+            android:theme="@style/CustomDialog" />
+        <activity
+            android:name="com.view.Introduce.IntroduceActivity"
+            android:label="@string/title_activity_introduce"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".FirsActivity"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.view.game.RmGameListActivity"
+            android:label="@string/title_activity_rm_game_list"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="client_id"
+            android:value="22f67ce1674f8f6e" />
+        <meta-data
+            android:name="client_secret"
+            android:value="21dabb6e7193d4ca9cca01462e5ec0a0" />
+        <!-- 请将value改为MTA分配的appkey < -->
+        <meta-data
+            android:name="TA_APPKEY"
+            android:value="AYRC24L47EVE" />
+        <!-- 请将value改为app发布对应的渠道，不同的发布渠道使用不同的名字 < -->
+        <meta-data
+            android:name="InstallChannel"
+            android:value="QQ" />
+
+        <activity
+            android:name="com.test4s.account.LoginQQActivity"
+            android:label="@string/title_activity_qqlogin"
+            android:theme="@style/CustomDialog"></activity>
+        <activity
+            android:name="com.test4s.account.LoginSINAActivity"
+            android:label="@string/title_activity_qqlogin"
+            android:theme="@style/CustomDialog"></activity>
+        <activity
+            android:name="com.test4s.account.LoginWXActivity"
+            android:label="@string/title_activity_qqlogin"
+            android:theme="@style/CustomDialog"></activity>
+        <activity
+            android:name="com.view.s4server.FiltrateListActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+    </application>
+
+</manifest>

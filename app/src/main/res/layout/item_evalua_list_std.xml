@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout
+    android:id="@+id/item_evalist_swipe"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="124dp">
+
+    <!-- Bottom View Start-->
+    <LinearLayout
+        android:id="@+id/bottom_wrapper"
+        android:weightSum="1"
+        android:layout_width="124dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#F1F5F8"
+        >
+        <!--What you want to show-->
+        <ImageView
+            android:id="@+id/delete_item_evalu_std"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/deleicon_messlist"
+            />
+    </LinearLayout>
+    <!-- Bottom View End-->
+
+    <!-- Surface View Start -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        >
+    <RelativeLayout
+
+        android:background="#fff"
+        android:layout_width="match_parent"
+        android:layout_height="124dp">
+
+        <RelativeLayout
+            android:id="@+id/re_image_item_gameevalu_std"
+            android:layout_width="96.67dp"
+            android:layout_height="96.67dp"
+            android:layout_marginLeft="19.67dp"
+            android:layout_marginTop="14.67dp"
+            >
+            <RelativeLayout
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_centerInParent="true"
+                >
+                <ImageView
+                    android:id="@+id/imageView_gameevalu_std"
+                    android:layout_width="84dp"
+                    android:layout_height="84dp"
+                    android:scaleType="fitXY"
+                    />
+                <ImageView
+                    android:id="@+id/gamerating_gameevalu_std"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp"
+                    />
+            </RelativeLayout>
+
+            <ImageView
+                android:layout_width="96.67dp"
+                android:layout_height="96.67dp"
+                android:src="@drawable/item_bg_2"
+                />
+            <ImageView
+                android:layout_width="96.67dp"
+                android:layout_height="96.67dp"
+
+                android:src="@drawable/bg_item_listview"
+                />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/name_item_gameevalu_std"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_marginTop="30.67dp"
+            android:maxWidth="110dp"
+            android:textSize="14.67dp"
+            android:textColor="#4C4C4C"
+            android:layout_toRightOf="@+id/re_image_item_gameevalu_std"
+            android:layout_marginLeft="9.33dp"
+            android:text="莽荒纪"
+            />
+        <TextView
+            android:id="@+id/introuduction_item_gameevalu_std"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:maxWidth="182dp"
+            android:textSize="12dp"
+            android:textColor="#848484"
+            android:layout_toRightOf="@+id/re_image_item_gameevalu_std"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="21dp"
+            android:layout_marginLeft="9.33dp"
+            android:text="Android\n游戏类型：RPG\n游戏阶段：内测阶段"
+            android:lineSpacingExtra="5px"
+            />
+
+        <TextView
+            android:id="@+id/cancel_care_evalu_std"
+            android:layout_width="84dp"
+            android:layout_height="36dp"
+            android:background="@drawable/orangeborder_button"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="19dp"
+            android:gravity="center"
+            android:text="游戏评测"
+            android:textSize="12dp"
+            android:textColor="#FF9D00"
+            />
+
+    </RelativeLayout>
+        <ImageView
+            android:id="@+id/line_reportlist_std"
+            android:layout_width="332dp"
+            android:layout_height="1px"
+            android:layout_gravity="center_horizontal"
+            android:background="#C4C4C4"
+            />
+    </LinearLayout>
+
+</com.daimajia.swipe.SwipeLayout>

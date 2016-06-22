@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/name_item_expertreport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="15dp"
+        android:textColor="#FF9D00"
+        android:text="玩法概述"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="24dp"
+        />
+    <TextView
+        android:id="@+id/content_item_expertreport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:textColor="#7C7C7C"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="26dp"
+        android:layout_marginTop="13dp"
+        android:lineSpacingExtra="5dp"
+        android:text="战斗菜单的内容包括：等级、经验/升级经验，金币，宝石ID，部落名，奖杯，设置，免费箱子，皇冠箱子，排行榜，对战日志和收件箱，竞技场，训练场，任务，联机对战、箱子。点击任何一个图标都可以看到弹窗或者解释文字，其中点击自己的头像，可以看到自己的个人简介，包括"
+        />
+    <HorizontalScrollView
+        android:id="@+id/imageContinar_expertreport"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:visibility="gone"
+        ></HorizontalScrollView>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="19dp"
+        android:background="#838483"
+        />
+
+</LinearLayout>

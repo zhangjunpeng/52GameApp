@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#252525"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+        <RelativeLayout
+            android:layout_width="37.33dp"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/back_savebar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16.66dp"
+                android:src="@drawable/back"
+                />
+        </RelativeLayout>
+
+    <TextView
+        android:id="@+id/textView_titlebar_save"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:textColor="#fff"
+        android:textSize="19dp"
+        android:text="学历"
+        />
+    <TextView
+
+        android:id="@+id/save_savebar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="保存"
+        android:textColor="#fff"
+        android:textSize="16dp"
+
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="16.66dp"
+        />
+    </RelativeLayout>
+</FrameLayout>

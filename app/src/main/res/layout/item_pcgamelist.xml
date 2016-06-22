@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="124dp"
+    android:background="#fff"
+    >
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="124dp"
+        >
+        <com.app.view.RoundImageView
+            android:id="@+id/image_item_pclist"
+            android:layout_width="84dp"
+            android:layout_height="84dp"
+            android:src="@drawable/default_icon"
+            android:layout_marginTop="21dp"
+            android:layout_marginLeft="26dp"
+            />
+        <TextView
+            android:id="@+id/name_item_pclist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#4C4C4C"
+            android:textSize="15dp"
+            android:layout_toRightOf="@+id/image_item_pclist"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="27dp"
+            android:text="纪念碑谷"
+            />
+        <TextView
+            android:id="@+id/info_item_pclist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/image_item_pclist"
+            android:layout_below="@+id/name_item_pclist"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="25dp"
+            android:textSize="12dp"
+            android:lineSpacingExtra="2dp"
+            android:textColor="#838483"
+            android:text="手游 / 休闲益智 \n2016-03-02 16:29"
+            />
+        <Button
+            android:layout_width="84dp"
+            android:layout_height="36dp"
+            android:background="@drawable/orangeborder_button"
+            android:text="评测游戏"
+            android:textColor="#FF9D00"
+            android:textSize="12dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="22dp"
+            android:layout_marginTop="45dp"
+            />
+
+    </RelativeLayout>
+</LinearLayout>

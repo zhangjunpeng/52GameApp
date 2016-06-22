@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    >
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="124dp">
+
+        <RelativeLayout
+            android:id="@+id/re_image_item_gamelist"
+            android:layout_width="96.67dp"
+            android:layout_height="96.67dp"
+            android:layout_marginLeft="19.67dp"
+            android:layout_marginTop="14.67dp"
+            >
+            <RelativeLayout
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_centerInParent="true">
+            <ImageView
+                android:id="@+id/imageView_gamelist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                />
+                <ImageView
+                    android:id="@+id/gamerating"
+                    android:layout_width="23dp"
+                    android:layout_height="23dp" />
+            </RelativeLayout>
+            <ImageView
+                android:layout_width="96.67dp"
+                android:layout_height="96.67dp"
+                android:src="@drawable/item_bg_2"
+                />
+            <ImageView
+                android:layout_width="96.67dp"
+                android:layout_height="96.67dp"
+
+                android:src="@drawable/bg_item_listview"
+                 />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/name_item_gamelist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_marginTop="30.67dp"
+            android:maxWidth="110dp"
+            android:textSize="14.67dp"
+            android:textColor="#4C4C4C"
+            android:layout_toRightOf="@+id/re_image_item_gamelist"
+            android:layout_marginLeft="9.33dp"
+            android:text="莽荒纪"
+            />
+        <TextView
+            android:id="@+id/norms_item_gamelist"
+            android:layout_width="34dp"
+            android:layout_height="15dp"
+            android:layout_toRightOf="@+id/re_image_item_gamelist"
+            android:layout_below="@+id/name_item_gamelist"
+            android:layout_marginLeft="9.33dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/border_blue"
+            android:text="正版IP"
+            android:textSize="8dp"
+            android:textColor="#fff"
+            android:gravity="center"
+            android:visibility="invisible"
+            />
+        <TextView
+            android:id="@+id/introuduction_item_gamelist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="22dp"
+            android:maxWidth="182dp"
+            android:textSize="12dp"
+            android:maxLines="2"
+            android:textColor="#848484"
+            android:layout_toRightOf="@+id/re_image_item_gamelist"
+            android:layout_below="@+id/name_item_gamelist"
+            android:layout_marginLeft="9.33dp"
+            android:text="2600万下载/50m\n找投资、找发行、找外包、找IP"
+            android:ellipsize="end"
+            />
+
+        <ImageView
+            android:id="@+id/download_item_gamelist"
+            android:layout_width="60dp"
+            android:layout_height="32dp"
+            android:src="@drawable/download"
+            android:layout_alignParentRight="true"
+            android:layout_marginTop="31dp"
+            android:layout_marginRight="14dp"
+            android:visibility="invisible"
+            />
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="332dp"
+        android:layout_height="1px"
+        android:layout_gravity="center_horizontal"
+        android:background="#C4C4C4"
+        />
+
+</LinearLayout>

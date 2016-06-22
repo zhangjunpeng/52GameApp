@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.daimajia.swipe.SwipeLayout
+    android:id="@+id/swipe_message_item"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="138dp"
+    android:background="#F1F5F8"
+    >
+    <!-- Bottom View Start-->
+    <LinearLayout
+        android:weightSum="1"
+        android:layout_width="138dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:background="#F1F5F8"
+        >
+        <!--What you want to show-->
+        <ImageView
+            android:id="@+id/dele_item_messlist"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:src="@drawable/deleicon_messlist"
+            />
+    </LinearLayout>
+    <!-- Bottom View End-->
+    <LinearLayout
+        android:id="@+id/linear_messlist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="#fff"
+
+        >
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="20dp"
+            android:background="#f1f5f8"
+            />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#CACACA"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="13dp"
+            android:gravity="center_vertical"
+            android:background="#fff"
+
+            >
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/timeicon_mes_orange"
+                android:layout_marginLeft="28dp"
+                android:id="@+id/timeicon_item_meslist" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2015-10-22 17:35"
+                android:textSize="12dp"
+                android:textColor="#B4B4B4"
+                android:layout_marginLeft="18dp"
+                android:id="@+id/time_item_meslist" />
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginTop="11dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="29dp"
+            android:background="@drawable/dashline"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_marginRight="37dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="22dp"
+            android:layout_marginBottom="22dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="尊敬的7703798442@qq.com，感谢您注册4st est游戏创客服务平台，我们将与您一起…"
+            android:textColor="#4C4C4C"
+            android:id="@+id/message_item_meslist" />
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#CACACA"
+            />
+    </LinearLayout>
+
+
+</com.daimajia.swipe.SwipeLayout>

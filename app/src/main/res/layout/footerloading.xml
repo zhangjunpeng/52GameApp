@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center"
+    >
+    <TextView
+        android:id="@+id/text_footerloading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12dp"
+        android:text="正在加载"
+        android:textColor="#B4B4B4"
+        />
+    <ImageView
+        android:id="@+id/image_footerloading"
+        android:layout_width="66.66dp"
+        android:layout_height="33.33dp"
+        android:background="@drawable/footerloading"
+        />
+
+</LinearLayout>

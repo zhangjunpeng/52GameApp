@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+
+    >
+
+    <RelativeLayout
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_marginLeft="7.33dp"
+        android:layout_marginRight="8.67dp"
+
+        >
+
+        <RelativeLayout
+            android:layout_width="66.67dp"
+            android:layout_height="66.67dp"
+            android:layout_centerInParent="true"
+            >
+            <ImageView
+                android:layout_width="66.67dp"
+                android:layout_height="66.67dp"
+                android:id="@+id/imageView_item_hor_index"
+                android:src="@drawable/ip"
+                android:scaleType="fitXY"
+                />
+            <com.app.view.TopLeftCornerImage
+                android:id="@+id/gamerating_index"
+                android:layout_width="23dp"
+                android:layout_height="23dp"
+                android:scaleType="fitXY"
+                android:background="@drawable/boder_topleft_image"
+                />
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/item_bg_2"
+            />
+
+        <ImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/item_bg_1"
+            />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/text_item_hor_index"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:textSize="12.67dp"
+        android:layout_marginTop="3dp"
+        android:gravity="center_horizontal"
+        android:text="网易游戏"
+        android:textColor="#343434"
+        android:layout_marginLeft="7.33dp"
+        android:layout_marginRight="8.67dp"
+        />
+
+</LinearLayout>

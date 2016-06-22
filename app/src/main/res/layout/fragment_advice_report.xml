@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="190dp"
+    android:layout_marginLeft="14dp"
+    android:layout_marginRight="14dp"
+    android:layout_marginTop="20dp"
+    android:background="@drawable/border_edit_comment"
+    >
+    <EditText
+        android:id="@+id/edit_advice_report"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="textMultiLine"
+        android:gravity="left|top"
+        android:minLines="8"
+        android:hint="内容不能超过200字，非常感谢您的宝贵建议！"
+        android:textSize="12dp"
+        android:textColorHint="@color/edithint"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:layout_marginTop="17dp"
+        android:background="@null"
+        />
+</RelativeLayout>
+
+    <Button
+        android:id="@+id/submit_advice_report"
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:background="@drawable/border_button_orange"
+        android:text="提交反馈"
+        android:textColor="#fff"
+        android:textSize="17dp"
+        />
+</LinearLayout>

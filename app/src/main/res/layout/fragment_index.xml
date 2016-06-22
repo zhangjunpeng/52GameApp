@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.app.view.MyScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="none"
+    android:background="#FFF"
+    >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="167dp">
+             <android.support.v4.view.ViewPager
+                 android:id="@+id/viewpager_index"
+                android:layout_width="match_parent"
+                android:layout_height="167dp">
+            </android.support.v4.view.ViewPager>
+            <LinearLayout
+                android:id="@+id/whitedot_linear"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="7dp"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                >
+
+            </LinearLayout>
+        </RelativeLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="18dp"
+            android:layout_marginBottom="23.66dp"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:src="@drawable/tz_select"
+
+                    android:id="@+id/tz_fg_index" />
+                <TextView
+                    android:layout_width="62dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:gravity="center"
+
+                    android:textColor="#212121"
+                    android:text="找投资"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                >
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:src="@drawable/ip_select"
+                    android:id="@+id/ip_fg_index" />
+                <TextView
+                android:layout_width="62dp"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:gravity="center"
+                android:textColor="#212121"
+                android:text="找IP"
+                />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:src="@drawable/fx_select"
+
+                    android:id="@+id/fx_fg_index" />
+                <TextView
+                    android:layout_width="62dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:gravity="center"
+
+                    android:textColor="#212121"
+                    android:text="找发行"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_horizontal"
+                android:layout_height="wrap_content">
+                <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
+                    android:src="@drawable/wb_select"
+
+                    android:id="@+id/wb_fg_index" />
+                <TextView
+                    android:layout_width="62dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="12dp"
+                    android:gravity="center"
+                    android:textColor="#212121"
+                    android:text="找外包"
+                    />
+            </LinearLayout>
+
+
+            
+    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="13.66dp"
+            android:background="#F1F5F7"
+            ></LinearLayout>
+   <LinearLayout
+       android:id="@+id/contianer_index"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:orientation="vertical"
+       ></LinearLayout>
+    </LinearLayout>
+</com.app.view.MyScrollView>

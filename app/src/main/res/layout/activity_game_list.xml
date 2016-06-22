@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    >
+    <include
+        android:id="@+id/title_gamelist"
+        layout="@layout/titlebar"/>
+<in.srain.cube.views.ptr.PtrClassicFrameLayout
+    android:id="@+id/ptr_gamelist"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    cube_ptr:ptr_resistance="1.7"
+    cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
+    cube_ptr:ptr_duration_to_close="300"
+    cube_ptr:ptr_duration_to_close_header="2000"
+    cube_ptr:ptr_keep_header_when_refresh="true"
+    cube_ptr:ptr_pull_to_fresh="false"
+    >
+    <ListView
+        android:id="@+id/ptflistView_gamelist"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@null"
+        android:fadingEdge="none"
+        android:listSelector="@android:color/transparent"
+        android:scrollbarStyle="outsideOverlay"
+        android:choiceMode="singleChoice"
+        ></ListView>
+
+</in.srain.cube.views.ptr.PtrClassicFrameLayout>
+    <LinearLayout
+
+        android:id="@+id/nodata_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <ImageView
+            android:layout_width="67dp"
+            android:layout_height="67dp"
+            android:src="@drawable/nomessgae"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="180dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#969696"
+            android:text="网络不给力，请检查您的网络"
+            android:layout_gravity="center_horizontal"
+            android:textSize="15dp"
+            android:layout_marginTop="15dp"
+            />
+        <Button
+            android:id="@+id/refeash_gamelist"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textColor="#FF9C00"
+            android:text="点击刷新"
+            android:layout_gravity="center_horizontal"
+            android:textSize="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/orangeborder_button"
+            />
+    </LinearLayout>
+</LinearLayout>

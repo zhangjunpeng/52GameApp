@@ -1,0 +1,77 @@
+apply plugin: 'com.android.application'
+//apply plugin: 'com.google.gms.google-services'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion '23.0.2'
+    defaultConfig {
+        applicationId "com.test4s.myapp"
+        minSdkVersion 16
+        targetSdkVersion 23
+
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    productFlavors {
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+    }
+    sourceSets{
+        main{
+            jniLibs.srcDir("jniLibs")
+        }
+    }
+}
+sourceSets {
+    main {
+        java.srcDirs = ['src/main/java', 'src/main/java-gen']
+    }
+}
+repositories {
+    mavenCentral()
+    maven { url "https://jitpack.io" }
+//    maven {
+//        url 'https://oss.sonatype.org/content/repositories/snapshots'
+//    }
+}
+
+
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile 'com.android.support:appcompat-v7:23.2.0'
+    compile 'com.android.support:support-v4:23.2.0'
+    compile 'com.android.support:design:23.2.0'
+    compile 'org.xutils:xutils:3.3.36'
+    compile 'de.greenrobot:greendao:2.0.0'
+    compile 'com.makeramen:roundedimageview:2.2.1'
+    compile 'com.github.PhilJay:MPAndroidChart:v2.2.0'
+    compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
+    compile 'com.android.support:support-v4:23.1.1'
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
+    compile 'me.everything:overscroll-decor-android:1.0.1'
+    compile 'in.srain.cube:ultra-ptr:1.0.11'
+    compile 'com.daimajia.swipelayout:library:1.2.0@aar'
+    compile 'com.android.support:recyclerview-v7:23.4.0'
+    compile 'org.greenrobot:eventbus:3.0.0'
+
+}

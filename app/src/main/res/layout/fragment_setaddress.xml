@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#f1f5f7"
+    >
+
+    <include
+        android:id="@+id/title_setaddress"
+        layout="@layout/titlebar_save"/>
+
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="96dp"
+        android:layout_marginTop="21dp"
+        android:orientation="vertical"
+        android:background="#fff"
+        >
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        >
+        
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_gravity="center_vertical"
+            android:text="地区"
+            android:layout_marginLeft="24dp"
+            />
+        <TextView
+            android:id="@+id/city_setaddress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#7C7C7C"
+            android:layout_marginLeft="32dp"
+            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
+            android:textSize="12dp"
+            android:textColorHint="#999999"
+            android:hint="点击选择 省份 - 城市 - 地区"
+            />
+
+    </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="#B4B4B4"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+
+        android:gravity="center_vertical"
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:text="地址"
+            android:layout_marginLeft="24dp"
+            />
+        <EditText
+            android:id="@+id/address_setaddress"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textColor="#7C7C7C"
+            android:layout_marginLeft="32dp"
+            android:textSize="12dp"
+            android:textColorHint="#999999"
+            android:gravity="center_vertical"
+            android:hint="输入详细地址"
+            android:background="@null"
+            />
+    </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

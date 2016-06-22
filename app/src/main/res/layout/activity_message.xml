@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:background="#F1F5F8"
+    >
+    <include
+        android:id="@+id/titlebar_mess"
+        layout="@layout/titlebar_save"
+        />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#CACACA"
+        android:layout_marginTop="20dp"
+
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#fff"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="13dp"
+            android:gravity="center_vertical"
+            >
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="12dp"
+                android:src="@drawable/timeicon_mes_gray"
+                android:layout_marginLeft="28dp"
+                android:id="@+id/timeicon_mes" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:textColor="#B4B4B4"
+                android:layout_marginLeft="18dp"
+                android:id="@+id/time_mes" />
+
+        </LinearLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:layout_marginTop="11dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="29dp"
+            android:background="@drawable/dashline"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="15dp"
+            android:layout_marginRight="37dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="22dp"
+            android:textColor="#4C4C4C"
+            android:id="@+id/message_mes" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#CACACA"
+        android:layout_marginBottom="20dp"
+
+        />
+
+</LinearLayout>

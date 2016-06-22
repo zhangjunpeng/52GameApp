@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    >
+
+    <RelativeLayout
+
+        android:layout_width="match_parent"
+        android:layout_height="124dp">
+
+        <RelativeLayout
+            android:id="@+id/re_image_item_ipdes"
+            android:layout_width="96.67dp"
+            android:layout_height="96.67dp"
+            android:layout_marginLeft="19.67dp"
+            android:layout_marginTop="14.67dp"
+            >
+            <ImageView
+                android:id="@+id/imageView_ipdes"
+                android:layout_width="84dp"
+                android:layout_height="84dp"
+                android:layout_centerInParent="true"
+                android:scaleType="fitXY"
+                />
+            <ImageView
+                android:layout_width="96.67dp"
+                android:layout_height="96.67dp"
+                android:src="@drawable/item_bg_2"
+                />
+            <ImageView
+                android:layout_width="96.67dp"
+                android:layout_height="96.67dp"
+
+                android:src="@drawable/bg_item_listview"
+                />
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/name_item_ipdes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:layout_marginTop="23dp"
+            android:maxWidth="182dp"
+            android:textSize="14.67dp"
+            android:textColor="#4C4C4C"
+            android:layout_toRightOf="@+id/re_image_item_ipdes"
+            android:layout_marginLeft="9.33dp"
+            android:text="离开这就成了空想支持肯定是疯了看到"
+            />
+        <TextView
+            android:id="@+id/introuduction_item_ipdes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="7dp"
+            android:maxWidth="182dp"
+            android:textSize="12dp"
+            android:maxLines="2"
+            android:textColor="#848484"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@+id/re_image_item_ipdes"
+            android:layout_below="@+id/name_item_ipdes"
+            android:layout_marginLeft="9.33dp"
+            android:text="离开这就成离开这就成离开这就成离开这就成离开这就成离开这就成离开这就成离开这就成离开这就成"
+            android:ellipsize="end"
+            />
+        <TextView
+            android:id="@+id/overtime_ipdes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="上线时间：2015-08"
+            android:layout_below="@+id/introuduction_item_ipdes"
+            android:layout_alignLeft="@+id/introuduction_item_ipdes"
+            android:textColor="#848484"
+            android:layout_marginTop="10dp"
+            />
+
+
+    </RelativeLayout>
+    <TextView
+        android:layout_width="332dp"
+        android:layout_height="1px"
+        android:layout_gravity="center_horizontal"
+        android:background="#C4C4C4"
+        />
+
+</LinearLayout>

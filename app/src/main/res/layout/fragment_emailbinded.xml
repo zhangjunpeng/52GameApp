@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F1F5F8"
+    >
+
+    <include
+        android:id="@+id/title_emailbinded"
+        layout="@layout/titlebar_save"/>
+    
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="66.66dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:orientation="horizontal"
+            >
+            <ImageView
+                android:layout_width="31.66dp"
+                android:layout_height="31.66dp"
+                android:src="@drawable/emailicon"
+                />
+            <TextView
+                android:id="@+id/email_emailbind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14.66dp"
+                android:textColor="#505153"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="33.33dp"
+                android:text="zhangjunpeng92@163.com"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="329dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_height="1px"
+        android:background="#B2B6B9"
+        />
+</LinearLayout>

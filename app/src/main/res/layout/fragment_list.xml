@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+<in.srain.cube.views.ptr.PtrClassicFrameLayout
+    android:id="@+id/prt_cplist"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+     >
+    <ListView
+            android:id="@+id/pullToRefresh_fglist"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent"
+            android:fadingEdge="none"
+            android:listSelector="@android:color/transparent"
+            android:choiceMode="singleChoice"
+            android:divider="@null"
+            >
+        </ListView>
+</in.srain.cube.views.ptr.PtrClassicFrameLayout>
+    <LinearLayout
+
+        android:id="@+id/nodata_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        >
+        <ImageView
+            android:layout_width="67dp"
+            android:layout_height="67dp"
+            android:src="@drawable/nomessgae"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="180dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#969696"
+            android:text="网络不给力，请检查您的网络"
+            android:layout_gravity="center_horizontal"
+            android:textSize="15dp"
+            android:layout_marginTop="15dp"
+            />
+        <Button
+            android:id="@+id/refeash_list"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:textColor="#FF9C00"
+            android:text="点击刷新"
+            android:layout_gravity="center_horizontal"
+            android:textSize="15dp"
+            android:layout_marginTop="15dp"
+            android:background="@drawable/orangeborder_button"
+            />
+    </LinearLayout>
+</LinearLayout>

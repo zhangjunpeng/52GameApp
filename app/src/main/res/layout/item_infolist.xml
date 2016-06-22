@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="#fff"
+    android:layout_height="124dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <com.app.view.RoundImageView
+            android:id="@+id/image_item_infoList"
+            android:layout_width="134dp"
+            android:layout_height="84dp"
+            android:src="@drawable/a2"
+            android:scaleType="fitXY"
+            app:type="round"
+            android:layout_marginTop="20dp"
+            app:borderRadius="3dp"
+            android:layout_marginLeft="14dp"
+            />
+        <TextView
+            android:id="@+id/title_item_infoList"
+            android:layout_width="179dp"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:textSize="12dp"
+            android:textColor="#4E4E4E"
+            android:layout_toRightOf="@+id/image_item_infoList"
+            android:layout_marginLeft="16.33dp"
+            android:layout_marginTop="30dp"
+            android:ellipsize="end"
+            />
+
+            <ImageView
+                android:id="@+id/mesicon_info"
+                android:layout_width="13.33dp"
+                android:layout_height="13.33dp"
+                android:layout_toRightOf="@+id/image_item_infoList"
+                android:src="@drawable/mesicon_info"
+                android:layout_marginTop="84dp"
+                android:layout_marginLeft="16.33dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="7dp"
+                android:textSize="10dp"
+                android:textColor="#B4B4B4"
+                android:layout_toRightOf="@+id/mesicon_info"
+                android:id="@+id/conmentnum_item_infolist"
+                android:layout_marginTop="84dp"
+                />
+            <ImageView
+                android:id="@+id/time_infomation"
+                android:layout_width="13.33dp"
+                android:layout_height="13.33dp"
+                android:src="@drawable/time_infomation"
+                android:layout_toLeftOf="@+id/time_item_infolist"
+                android:layout_marginRight="7dp"
+                android:layout_marginTop="84dp"
+
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="10dp"
+                android:textColor="#B4B4B4"
+                android:layout_alignRight="@+id/title_item_infoList"
+                android:layout_marginTop="84dp"
+                android:layout_marginRight="10dp"
+                android:id="@+id/time_item_infolist" />
+
+
+    </RelativeLayout>
+</LinearLayout>

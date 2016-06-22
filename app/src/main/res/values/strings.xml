@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">游戏创客平台</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_second">SecondActivity</string>
+    <string name="title_activity_viewpager">ViewpagerActivity</string>
+    <string name="title_activity_list">ListActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_account">AccountActivity</string>
+    <string name="title_activity_detail">DetailActivity</string>
+    <string name="title_activity_my_acount_setting">MyAcountSettingActivity</string>
+    <string name="title_activity_game_detail">GameDetailActivity</string>
+    <string name="title_activity_fx_detail">FxDetailActivity</string>
+    <string name="title_activity_tz_detial">TzDetialActivity</string>
+    <string name="title_activity_select_pic">SelectPicActivity</string>
+    <string name="title_activity_reprot_list">ReprotListActivity</string>
+    <string name="title_activity_game_report">GameReportActivity</string>
+    <string name="title_activity_setting">SettingActivity</string>
+    <string name="title_activity_ipdetail">IPDetailActivity</string>
+
+    <string name="url_index">http://app.52game.com/</string>
+    <string name="url_index_test">http://app.4stest.com/</string>
+    <string name="title_activity_out_source">OutSourceActivity</string>
+    <string name="title_activity_information_list">InformationListActivity</string>
+    <string name="title_activity_infomaion_detail">InfomaionDetailActivity</string>
+    <string name="title_activity_message">MessageActivity</string>
+    <string name="title_activity_evaluation">EvaluationActivity</string>
+    <string name="phone_kefu">0755-36632342</string>
+    <string name="title_activity_attention">AttentionActivity</string>
+    <string name="title_activity_search">SearchActivity</string>
+    <string name="title_activity_search_end">SearchEndActivity</string>
+    <string name="title_activity_start_pc">StartPCActivity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_set_pc_info">SetPcInfoActivity</string>
+    <string name="title_activity_pc">PCActivity</string>
+    <string name="title_activity_pc_detail">PcDetailActivity</string>
+    <string name="title_activity_player_report">PlayerReportActivity</string>
+    <string name="title_activity_expert_report">ExpertReportActivity</string>
+    <string name="title_activity_wxentry">WXEntryActivity</string>
+    <string name="title_activity_third_login">ThirdLoginActivity</string>
+    <string name="title_activity_introduce">IntroduceActivity</string>
+    <string name="title_activity_firs">FirsActivity</string>
+    <string name="title_activity_rm_game_list">RmGameListActivity</string>
+    <string name="title_activity_qqlogin">QQLoginActivity</string>
+</resources>
