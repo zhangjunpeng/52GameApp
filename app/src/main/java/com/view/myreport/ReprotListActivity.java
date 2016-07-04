@@ -110,6 +110,7 @@ public class ReprotListActivity extends BaseActivity {
                             gamereportInfo.setGame_platform(info.getString("game_platform"));
                             gamereportInfo.setGame_type(info.getString("game_type"));
                             gamereportInfo.setStatus(info.getString("status"));
+                            gamereportInfo.setChecked(info.getString("checked"));
                             gameReportInfos.add(gamereportInfo);
                         }
                     }
@@ -240,8 +241,14 @@ public class ReprotListActivity extends BaseActivity {
             viewHolder.name.setText(gameInfo.getGame_name());
 
             viewHolder.info.setText(gameInfo.getGame_platform()+"\n"+gameInfo.getGame_stage()+" / "+gameInfo.getGame_type()+"\n"+timeToDate(gameInfo.getCreate_time()));
-            switch (gameInfo.getStatus()){
-                case "查看报告":
+            switch (gameInfo.getChecked()){
+                case "0":
+                    viewHolder.bg.setText(gameInfo.getStatus());
+                    viewHolder.bg.setTextColor(Color.rgb(76,76,76));
+                    viewHolder.bg.setBackgroundResource(R.drawable.grayborder_button);
+                    viewHolder.bg.setClickable(false);
+                    break;
+                case "1":
                     viewHolder.bg.setText(gameInfo.getStatus());
                     viewHolder.bg.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -253,19 +260,21 @@ public class ReprotListActivity extends BaseActivity {
                         }
                     });
                     break;
-                case "测评中":
-                    viewHolder.bg.setText(gameInfo.getStatus());
-                    viewHolder.bg.setTextColor(Color.rgb(76,76,76));
-                    viewHolder.bg.setBackgroundResource(R.drawable.grayborder_button);
-                    viewHolder.bg.setClickable(false);
-                    break;
-                case "审核失败":
-                    viewHolder.bg.setText(gameInfo.getStatus());
-                    viewHolder.bg.setTextColor(Color.rgb(76,76,76));
-                    viewHolder.bg.setBackgroundResource(R.drawable.grayborder_button);
-                    viewHolder.bg.setClickable(false);
-                    break;
             }
+//            switch (gameInfo.getStatus()){
+//                case "查看报告":
+//
+//                    break;
+//                case "评测中":
+//
+//                    break;
+//                case "审核失败":
+//                    viewHolder.bg.setText(gameInfo.getStatus());
+//                    viewHolder.bg.setTextColor(Color.rgb(76,76,76));
+//                    viewHolder.bg.setBackgroundResource(R.drawable.grayborder_button);
+//                    viewHolder.bg.setClickable(false);
+//                    break;
+//            }
             return convertView;
         }
 

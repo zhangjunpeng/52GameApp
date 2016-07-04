@@ -10,7 +10,6 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
-
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <!-- Required 自定义用来收发消息的相关权限 -->
@@ -369,18 +368,26 @@
         <activity
             android:name="com.test4s.account.LoginQQActivity"
             android:label="@string/title_activity_qqlogin"
-            android:theme="@style/CustomDialog"></activity>
+            android:theme="@style/CustomDialog" />
         <activity
             android:name="com.test4s.account.LoginSINAActivity"
             android:label="@string/title_activity_qqlogin"
-            android:theme="@style/CustomDialog"></activity>
+            android:theme="@style/CustomDialog" />
         <activity
             android:name="com.test4s.account.LoginWXActivity"
             android:label="@string/title_activity_qqlogin"
-            android:theme="@style/CustomDialog"></activity>
+            android:theme="@style/CustomDialog" />
         <activity
             android:name="com.view.s4server.FiltrateListActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="com.view.Identification.IdentificationActivity"
+            android:label="@string/title_activity_identification"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.Identification.IdentificaSubActivity"
+            android:label="@string/title_activity_identifica_sub"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

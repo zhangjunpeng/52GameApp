@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/bg"
     >
     <LinearLayout
@@ -11,109 +11,40 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#BEBEBE"
-    android:layout_margin="0.5px"
-
     >
     <TableRow
         >
 
         <TextView
-            android:layout_width="90dp"
+            android:id="@+id/name_tablename_table_item_expert"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
             android:gravity="center"
             android:text="题材背景"
-            android:layout_margin="0.5px"
             android:textSize="12dp"
             android:textColor="#4c4c4c"
             android:background="#fff"
+            android:layout_marginTop="1px"
+
             />
             <TableLayout
-                android:layout_width="270dp"
-                android:layout_height="match_parent"
+                android:id="@+id/table_eva_fragment"
+                android:layout_width="0dp"
+                android:layout_weight="3"
+                android:layout_height="wrap_content"
                 android:stretchColumns="*"
 
                 >
-               <TableRow
-                   android:background="#BEBEBE"
-                   >
-                   <TextView
-                       android:layout_width="wrap_content"
-                       android:layout_height="33.33dp"
-                       android:text="IP"
-                       android:gravity="center"
-                       android:layout_margin="0.5px"
-                       android:background="#fff"
-                       android:textSize="12dp"
-                       android:textColor="#4c4c4c"
-
-                       />
-                   <TextView
-                       android:layout_width="wrap_content"
-                       android:layout_height="33.33dp"
-                       android:text="15%"
-                       android:gravity="center"
-                       android:layout_margin="0.5px"
-                       android:background="#fff"
-                       android:textColor="#4c4c4c"
-
-                       android:textSize="12dp"
-                       />
-                   <TextView
-                       android:layout_width="wrap_content"
-                       android:layout_height="33.33dp"
-                       android:text="5"
-                       android:gravity="center"
-                       android:layout_margin="0.5px"
-                       android:background="#fff"
-                       android:textSize="12dp"
-                       android:textColor="#4c4c4c"
-
-                       />
-               </TableRow>
-               <TableRow
-                   android:background="#BEBEBE"
-                   >
-                   <TextView
-                       android:layout_width="wrap_content"
-                       android:layout_height="33.33dp"
-                       android:text="世界观"
-                       android:gravity="center"
-                       android:layout_margin="0.5px"
-                       android:textColor="#4c4c4c"
-
-                       android:background="#fff"
-                       android:textSize="12dp"
-
-                       />
-                   <TextView
-                       android:layout_width="wrap_content"
-                       android:layout_height="33.33dp"
-                       android:text="6%"
-                       android:gravity="center"
-                       android:layout_margin="0.5px"
-                       android:textColor="#4c4c4c"
-
-                       android:background="#fff"
-                       android:textSize="12dp"
-
-                       />
-                   <TextView
-                       android:layout_width="wrap_content"
-                       android:layout_height="33.33dp"
-                       android:text="6"
-                       android:gravity="center"
-                       android:layout_margin="0.5px"
-                       android:textColor="#4c4c4c"
-
-                       android:background="#fff"
-                       android:textSize="12dp"
-
-                       />
-               </TableRow>
             </TableLayout>
     </TableRow>
 
 </TableLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="#bebebe"
+        />
     <LinearLayout
         android:id="@+id/linear_dppc_item_expert"
         android:layout_width="match_parent"
@@ -132,6 +63,7 @@
             />
 
         <TextView
+            android:id="@+id/content__item_expert"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="13dp"

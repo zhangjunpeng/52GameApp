@@ -246,6 +246,48 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_marginRight="15dp"
+        android:layout_marginLeft="15dp"
+        android:background="#B9B9B9"
+        />
+    <RelativeLayout
+        android:id="@+id/idtifition_mysetting"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="#fff"
+        >
+        <ImageView
+            android:id="@+id/image_rz_my"
+            android:layout_width="21.66dp"
+            android:layout_height="21.66dp"
+            android:src="@drawable/rz_setting"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="27.33dp"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#4B4B4B"
+            android:textSize="15.33dp"
+            android:text="身份认证"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/image_rz_my"
+            android:layout_marginLeft="18.67dp"
+            />
+        <ImageView
+            android:id="@+id/arrow_rz_my"
+            android:layout_width="7.33dp"
+            android:layout_height="15dp"
+            android:src="@drawable/grayarrow"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="24dp"
+            />
+
+    </RelativeLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
         android:background="#CACACA"
         />
     <ImageView

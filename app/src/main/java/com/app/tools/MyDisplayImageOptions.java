@@ -106,4 +106,19 @@ public class MyDisplayImageOptions {
                 .build();//构建完成
         return options;
     }
+    public static DisplayImageOptions getshotOptions(){
+        DisplayImageOptions options;
+        options = new DisplayImageOptions.Builder()
+
+                .cacheInMemory(true)//设置下载的图片是否缓存在内存中
+                .cacheOnDisk(true)//设置下载的图片是否缓存在SD卡中
+                //.delayBeforeLoading(int delayInMillis)//int delayInMillis为你设置的下载前的延迟时间
+                //设置图片加入缓存前，对bitmap进行设置
+                //.preProcessor(BitmapProcessor preProcessor)
+                .imageScaleType(ImageScaleType.IN_SAMPLE_INT)
+                .bitmapConfig(Bitmap.Config.RGB_565)//设置图片的解码类型//
+//                .displayer(new FadeInBitmapDisplayer(100))//是否图片加载好后渐入的动画时间
+                .build();//构建完成
+        return options;
+    }
 }

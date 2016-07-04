@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android" >
+    <include
+        android:id="@+id/titlebar_idtf"
+        layout="@layout/titlebar_save"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:background="#bebebe"
+        >
+       <LinearLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent"
+           android:layout_marginBottom="1px"
+           android:orientation="horizontal"
+           android:background="#f1f5f7"
+           >
+           <TextView
+               android:id="@+id/cp_title"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:gravity="center"
+               android:textSize="16.66dp"
+               android:textColor="#4c4c4c"
+               android:layout_height="match_parent" />
+           <TextView
+               android:id="@+id/tz_title"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:gravity="center"
+               android:textSize="16.66dp"
+               android:textColor="#4c4c4c"
+               android:layout_height="match_parent" />
+           <TextView
+               android:id="@+id/ip_title"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:gravity="center"
+               android:textSize="16.66dp"
+               android:textColor="#4c4c4c"
+               android:layout_height="match_parent" />
+           <TextView
+               android:id="@+id/fx_title"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:gravity="center"
+               android:textSize="16.66dp"
+               android:textColor="#4c4c4c"
+               android:layout_height="match_parent" />
+           <TextView
+               android:id="@+id/wb_title"
+               android:layout_width="0dp"
+               android:layout_weight="1"
+               android:gravity="center"
+               android:textSize="16.66dp"
+               android:textColor="#4c4c4c"
+               android:layout_height="match_parent" />
+       </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_alignParentBottom="true"
+            >
+            <ImageView
+                android:id="@+id/line1_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@color/orange"
+                android:visibility="invisible"
+                />
+            <ImageView
+                android:id="@+id/line2_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@color/orange"
+                android:visibility="invisible"
+
+                />
+            <ImageView
+                android:id="@+id/line3_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@color/orange"
+                android:visibility="invisible"
+
+                />
+            <ImageView
+                android:id="@+id/line4_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@color/orange"
+                android:visibility="invisible"
+
+                />
+            <ImageView
+                android:id="@+id/line5_title"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:background="@color/orange"
+                android:visibility="invisible"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager_identi"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+
+</LinearLayout>

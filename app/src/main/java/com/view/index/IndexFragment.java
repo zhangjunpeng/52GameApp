@@ -515,8 +515,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         Intent intent;
         switch (v.getId()){
             case R.id.ip_fg_index:
-//                intent=new Intent(getActivity(), ListActivity.class);
-                intent=new Intent(getActivity(), ExpertReportActivity.class);
+                intent=new Intent(getActivity(), ListActivity.class);
+//                intent=new Intent(getActivity(), ExpertReportActivity.class);
 
                 intent.putExtra("tag",ListActivity.IP_TAG);
                 startActivity(intent);

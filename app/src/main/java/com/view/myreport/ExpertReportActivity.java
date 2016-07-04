@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -21,15 +22,21 @@ import android.view.WindowManager;
 import android.widget.BaseAdapter;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.app.tools.MyLog;
+import com.app.tools.ScreenUtil;
+import com.app.view.ViewPagerNoScroll;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.view.activity.BaseActivity;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,26 +67,64 @@ public class ExpertReportActivity extends BaseActivity {
     private FragmentEvaCon fragmentEvaCon;
     private FragmentEva fragmentEva;
 
-    private ViewPager viewPager;
+    private ViewPagerNoScroll viewPager;
 
     private List<Fragment> fragmentList;
 //    private RecyclerView recyclerView;
+
+
+    public static String score="";
+    public static String game_grade="";
+
+    private LinearLayout linear_appbar;
+
+    private TextView pjyqText;
+    private TextView scoreText;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+//        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            //透明状态栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//            //透明导航栏
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
+//        }
         setContentView(R.layout.activity_expert_report);
-//        setImmerseLayout(findViewById(R.id.titlebar_expertreport));
+//        setImmerseLayout(findViewById(R.id.titlebar_expert));
+//        int statusBarHeight = ScreenUtil.getStatusBarHeight(getBaseContext());
+//        findViewById(R.id.titlebar_expert).setPadding(0, statusBarHeight, 0, 0);
+//        setImmerseLayout(findViewById(R.id.titlebar_expert));
 //        Toolbar toolbar= (Toolbar) findViewById(R.id.toolbar_expert);
-//        setSupportActionBar(toolbar);
+//        setSupportActionBar((Toolbar) findViewById(R.id.titlebar_expert));
 
+
+        SystemBarTintManager tintManager = new SystemBarTintManager(this);
+        // enable status bar tint
+        tintManager.setStatusBarTintEnabled(true);
+        // enable navigation bar tint
+        tintManager.setNavigationBarTintEnabled(true);
+        // set a custom tint color for all system bars
+
+        tintManager.setTintColor(Color.parseColor("#252525"));
+
+        try {
+            gameid=getIntent().getStringExtra("game_id");
+
+        }catch (Exception e){
+            MyLog.i("gameid 获取失败");
+        }
         MyLog.i("oncreate");
+        Bundle bundle=new Bundle();
+        bundle.putString("gameid",gameid);
 
         fm=getSupportFragmentManager();
         fragmentEvaCon=new FragmentEvaCon();
+        fragmentEvaCon.setArguments(bundle);
         fragmentEva=new FragmentEva();
+        fragmentEva.setArguments(bundle);
         fragmentList=new ArrayList<>();
 
         fragmentList.add(fragmentEvaCon);
@@ -91,29 +136,26 @@ public class ExpertReportActivity extends BaseActivity {
 
         pczs= (TextView) findViewById(R.id.pczs);
         pcpj= (TextView) findViewById(R.id.pcpj);
+        linear_appbar= (LinearLayout) findViewById(R.id.linear_appbar);
+
+        pjyqText= (TextView) findViewById(R.id.pjyq);
+        scoreText= (TextView) findViewById(R.id.gamescore);
+
 
 //        recyclerView= (RecyclerView) findViewById(R.id.recyler_exp);
 //        recyclerView.setLayoutManager(new LinearLayoutManager(this));
 //        recyclerView.setAdapter(new HomeAdapter());
 
-        viewPager= (ViewPager) findViewById(R.id.viewpager_expert_report);
+        viewPager= (ViewPagerNoScroll) findViewById(R.id.viewpager_expert_report);
 
         viewPager.setAdapter(new MyFragmentAdapter(fm,fragmentList));
         viewPager.setCurrentItem(0);
+
 //        mContent=fragmentEvaCon;
 //        fm.beginTransaction().add(R.id.contianer_expert_report,fragmentEvaCon).commit();
 
 
         MyLog.i("oncreate2");
-
-        try {
-            gameid=getIntent().getStringExtra("game_id");
-
-        }catch (Exception e){
-            MyLog.i("gameid 获取失败");
-        }
-
-
         initView();
         initListener();
 
@@ -125,6 +167,21 @@ public class ExpertReportActivity extends BaseActivity {
             }
         });
 
+        EventBus.getDefault().register(this);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void changeScore(GameScoreEvent gameScoreEvent){
+        MyLog.i("接受到EventBus");
+        pjyqText.setText(gameScoreEvent.grade);
+        scoreText.setText(gameScoreEvent.score);
     }
 
     private void initListener() {
@@ -139,6 +196,8 @@ public class ExpertReportActivity extends BaseActivity {
                 pcpj.setTextColor(Color.rgb(76,76,76));
 
                 viewPager.setCurrentItem(0);
+                linear_appbar.setVisibility(View.GONE);
+
 
 //                switchContent(mContent,fragmentEvaCon);
             }
@@ -154,6 +213,7 @@ public class ExpertReportActivity extends BaseActivity {
                 pcpj.setTextColor(Color.rgb(255,255,255));
 //                switchContent(mContent,fragmentEva);
                 viewPager.setCurrentItem(1);
+                linear_appbar.setVisibility(View.VISIBLE);
 
 
             }
@@ -185,39 +245,6 @@ public class ExpertReportActivity extends BaseActivity {
         @Override
         public int getCount() {
             return fragments.size();
-        }
-    }
-
-
-    class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder>{
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
-                    ExpertReportActivity.this).inflate(R.layout.item_expertreport,null));
-            return holder;
-        }
-
-        @Override
-        public void onBindViewHolder(MyViewHolder holder, int position) {
-            holder.content.setText("6666666666");
-        }
-
-        @Override
-        public int getItemCount() {
-            return 50;
-        }
-
-        class MyViewHolder extends RecyclerView.ViewHolder {
-
-            TextView name;
-            TextView content;
-            HorizontalScrollView horizontalScrollView;
-            public MyViewHolder(View itemView) {
-                super(itemView);
-                name= (TextView) itemView.findViewById(R.id.name_item_expertreport);
-                content= (TextView) itemView.findViewById(R.id.content_item_expertreport);
-                horizontalScrollView= (HorizontalScrollView) itemView.findViewById(R.id.imageContinar_expertreport);
-            }
         }
     }
 

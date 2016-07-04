@@ -14,7 +14,17 @@ public class GameReportInfo {
     private String game_stage;
     private String game_platform;
     private String game_type;
+    private String checked;
     private String status;
+
+
+    public String getChecked() {
+        return checked;
+    }
+
+    public void setChecked(String checked) {
+        this.checked = checked;
+    }
 
     public String getGame_id() {
         return game_id;

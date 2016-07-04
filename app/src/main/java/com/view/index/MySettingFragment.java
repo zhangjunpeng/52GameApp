@@ -30,6 +30,7 @@ import com.test4s.account.UserInfo;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
 import com.view.Evaluation.EvaluationActivity;
+import com.view.Identification.IdentificationActivity;
 import com.view.messagecenter.MessageList;
 import com.view.accountsetting.MyAcountSettingActivity;
 import com.view.activity.SelectPicActivity;
@@ -92,6 +93,7 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.pc_my).setOnClickListener(this);
         view.findViewById(R.id.myattention_mysetting).setOnClickListener(this);
         view.findViewById(R.id.myreport_my).setOnClickListener(this);
+        view.findViewById(R.id.idtifition_mysetting).setOnClickListener(this);
 
         myAccount=MyAccount.getInstance();
 
@@ -231,6 +233,16 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
             case R.id.myreport_my:
                 if (MyAccount.isLogin) {
                     Intent intent1 = new Intent(getActivity(), ReprotListActivity.class);
+                    startActivity(intent1);
+                    getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                }else {
+                    //未登录
+                    gologin("report");
+                }
+                break;
+            case R.id.idtifition_mysetting:
+                if (MyAccount.isLogin) {
+                    Intent intent1 = new Intent(getActivity(), IdentificationActivity.class);
                     startActivity(intent1);
                     getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 }else {

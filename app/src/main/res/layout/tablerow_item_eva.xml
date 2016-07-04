@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/tablerow_item_expert"
+    android:background="#BEBEBE"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <TextView
+        android:id="@+id/title_row_item_expert"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="33.33dp"
+        android:text="IP"
+        android:gravity="center"
+        android:background="#fff"
+        android:textSize="12dp"
+        android:textColor="#4c4c4c"
+        android:layout_marginTop="1px"
+        android:layout_marginLeft="1px"
+
+        />
+    <TextView
+        android:id="@+id/rate_row_item_expert"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="33.33dp"
+        android:text="15%"
+        android:gravity="center"
+        android:background="#fff"
+        android:textColor="#4c4c4c"
+        android:layout_marginTop="1px"
+        android:layout_marginLeft="1px"
+
+        android:textSize="12dp"
+        />
+    <TextView
+        android:id="@+id/score_row_item_expert"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="33.33dp"
+        android:text="5"
+        android:gravity="center"
+        android:background="#fff"
+        android:textSize="12dp"
+        android:textColor="#4c4c4c"
+        android:layout_marginTop="1px"
+        android:layout_marginLeft="1px"
+        />
+</TableRow>

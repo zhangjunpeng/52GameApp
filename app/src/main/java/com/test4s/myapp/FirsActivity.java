@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.widget.Button;
 
@@ -76,6 +77,11 @@ public class FirsActivity extends AppCompatActivity {
         sharedPreferences= MyApplication.mcontext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         isFirstin=sharedPreferences.getBoolean("isFirstin",true);
         getKey();
+
+        //获取屏幕密度
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        Config.density = metric.density;  // 屏幕密度（0.75 / 1.0 / 1.5）
 
         if (isFirstin){
             Intent intent=new Intent(this, IntroduceActivity.class);

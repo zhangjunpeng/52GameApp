@@ -43,4 +43,6 @@
     <string name="title_activity_firs">FirsActivity</string>
     <string name="title_activity_rm_game_list">RmGameListActivity</string>
     <string name="title_activity_qqlogin">QQLoginActivity</string>
+    <string name="title_activity_identification">IdentificationActivity</string>
+    <string name="title_activity_identifica_sub">IdentificaSubActivity</string>
 </resources>
