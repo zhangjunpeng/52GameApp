@@ -152,7 +152,6 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
         for (int i=0;i<textViewList.size();i++){
             IdentiMess mess=datainfo.get(i);
             Bundle bundle=new Bundle();
-            bundle.putSerializable("data",mess);
 //            Iterator<String> itear=map.keySet().iterator();
 //
 //            while (itear.hasNext()){
@@ -163,9 +162,13 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
             if (mess.getChecked().equals("1")||mess.getChecked().equals("3")){
 //                MyLog.i("IdentiSuccFragment");
                 fragment=new IdentiSuccFragment();
+                bundle.putSerializable("data",mess);
+
+
             }else {
 //                MyLog.i("IdentifitionFragment");
-
+                MyLog.i("type==="+mess.getId());
+                bundle.putString("type",mess.getId());
                 fragment=new IdentifitionFragment();
             }
             fragment.setArguments(bundle);
@@ -227,26 +230,19 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                         int posi=j+1;
                         serverString=serverString+posi+")"+server.getString("identity_info");
                     }
-                    if (info.getString("checked").equals("1")||info.getString("checked").equals("3")) {
-                        JSONArray certifserviceArr = info.getJSONArray("certificationservice");
-                        String certifserviceString = "";
-                        for (int j = 0; j < certifserviceArr.length(); j++) {
-                            JSONObject server = certifserviceArr.getJSONObject(j);
-                            if (j != 0) {
-                                certifserviceString = certifserviceString + "\n";
-                            }
-                            int posi = j + 1;
-                            certifserviceString = certifserviceString + posi + ")" + server.getString("identity_info");
-                        }
-                        mess.setCertificationservice(certifserviceString);
-                        mess.setCertification(info.getString("certification"));
-                    }
                     mess.setService(serverString);
                     mess.setTip(info.getString("tip"));
-
+                    mess.setTip(info.getString("note"));
                     datainfo.add(mess);
                 }
 
+                JSONObject companyInfo=data.getJSONObject("companyInfo");
+                IdentificationConfig config=IdentificationConfig.getInstance();
+                config.setCompanyName(companyInfo.getString("company_name"));
+
+                JSONObject commonData=jsonObject.getJSONObject("commonData");
+                config.setUploadUrl(commonData.getString("uploadUrl"));
+                config.setUploadType(commonData.getString("uploadType"));
 
                 titleString=new ArrayList<>();
                 for (int i=0;i<identityArr.length();i++){
@@ -256,8 +252,6 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                     mess.setId(identity.getString("id"));
                     mess.setVal(identity.getString("val"));
                 }
-
-
 
             }
         } catch (JSONException e) {

@@ -387,7 +387,9 @@
         <activity
             android:name="com.view.Identification.IdentificaSubActivity"
             android:label="@string/title_activity_identifica_sub"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateVisible|adjustPan"
+            ></activity>
     </application>
 
 </manifest>

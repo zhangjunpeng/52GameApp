@@ -20,18 +20,16 @@ import java.util.Map;
  */
 public class IdentifitionFragment extends Fragment implements View.OnClickListener {
 
-    private ImageView stageImage;
-    private TextView stageText;
-    private TextView reson;
-    private TextView servers;
-    private TextView check;
+    private String type="cp";
 
-    private IdentiMess mess;
+    private TextView ident_person;
+    private TextView ident_company;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mess= (IdentiMess) getArguments().getSerializable("data");
+        type=getArguments().getString("type","2");
     }
 
     @Nullable
@@ -39,52 +37,37 @@ public class IdentifitionFragment extends Fragment implements View.OnClickListen
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_identification,null);
 
-        stageImage= (ImageView) view.findViewById(R.id.stageimage_idtf);
-        stageText= (TextView) view.findViewById(R.id.stage_idtf);
-        reson= (TextView) view.findViewById(R.id.reson_idtf);
-        servers= (TextView) view.findViewById(R.id.servers_idtf);
-        check= (TextView) view.findViewById(R.id.check_idtf);
+        ident_person= (TextView) view.findViewById(R.id.ident_toc);
+        ident_company= (TextView) view.findViewById(R.id.ident_tob);
+        ident_person.setOnClickListener(this);
+        ident_company.setOnClickListener(this);
 
+        if (type.equals("6")){
+            ident_person.setVisibility(View.GONE);
+        }
 
-        check.setOnClickListener(this);
-
-        setView();
         return view;
     }
 
-    
-    private void setView(){
-//        MyLog.i("map==="+map.toString());
-        int stage=Integer.parseInt(mess.getChecked());
-        switch (stage){
-            case 0:
-                stageImage.setImageResource(R.drawable.rz_ing);
-                stageText.setText("等待审核");
-                break;
-            case 2:
-                stageImage.setImageResource(R.drawable.rz_fail);
-                stageText.setText("认证失败");
-                reson.setVisibility(View.VISIBLE);
-                reson.setText(mess.getNote());
-                break;
 
-            case 4:
-                stageImage.setImageResource(R.drawable.rz_fail);
-                stageText.setText("未认证");
-
-                break;
-        }
-        servers.setText(mess.getService());
-        check.setText(mess.getTip());
-    }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.check_idtf:
+            case R.id.ident_toc:
                 Intent intent=new Intent(getActivity(),IdentificaSubActivity.class);
-                intent.putExtra("type",mess.getId());
+                intent.putExtra("cattype",type);
+                intent.putExtra("type","company");
                 startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                break;
+            case R.id.ident_tob:
+                Intent intent1=new Intent(getActivity(),IdentificaSubActivity.class);
+                intent1.putExtra("cattype",type);
+                intent1.putExtra("type","person");
+                startActivity(intent1);
+                getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+
                 break;
         }
     }

@@ -11,8 +11,6 @@ public class IdentiMess implements Serializable {
     private String val;
     private String checked;
     private String service;
-    private String certification;
-    private String certificationservice;
     private String tip;
     private String note;
 
@@ -40,13 +38,6 @@ public class IdentiMess implements Serializable {
         this.service = service;
     }
 
-    public String getCertificationservice() {
-        return certificationservice;
-    }
-
-    public void setCertificationservice(String certificationservice) {
-        this.certificationservice = certificationservice;
-    }
 
     public String getChecked() {
         return checked;
@@ -56,14 +47,6 @@ public class IdentiMess implements Serializable {
         this.checked = checked;
     }
 
-
-    public String getCertification() {
-        return certification;
-    }
-
-    public void setCertification(String certification) {
-        this.certification = certification;
-    }
 
 
     public String getTip() {

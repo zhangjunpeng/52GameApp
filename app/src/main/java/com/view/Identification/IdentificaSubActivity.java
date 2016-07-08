@@ -28,6 +28,7 @@ import com.app.tools.MyLog;
 import com.test4s.myapp.Config;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
+import com.view.activity.BaseActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,15 +44,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class IdentificaSubActivity extends AppCompatActivity implements View.OnClickListener {
+public class IdentificaSubActivity extends BaseActivity implements View.OnClickListener {
 
 
-    private List<NameVal> areaList;
-    private List<NameVal> companysizeList;
-    private List<NameVal> coompstageList;
-    private List<NameVal> coopcatList;
-    private List<NameVal> businecatList;
-    private List<NameVal> investcatList;
 
 
     private EditText companyName_edit;
@@ -73,66 +68,89 @@ public class IdentificaSubActivity extends AppCompatActivity implements View.OnC
     private LinearLayout companyInfoLayout;
 
 
-    //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
     private String type="2";
     private Dialog dialog;
+
+
+    private ImageView back;
+    private TextView title;
+    private TextView save;
+
+    //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
+    private String cattype="2";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_identifica_sub);
+        setImmerseLayout(findViewById(R.id.titlebar_iden_sub));
+
+        back= (ImageView) findViewById(R.id.back_savebar);
+        title= (TextView) findViewById(R.id.textView_titlebar_save);
+        save= (TextView) findViewById(R.id.save_savebar);
+
         initData();
+        cattype=getIntent().getStringExtra("cattype");
+        MyLog.i("cattype=="+cattype);
+        IdentSubFirstFragment fragment=new IdentSubFirstFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString("cattype",cattype);
+        bundle.putString("type",type);
+        fragment.setArguments(bundle);
 
-        companyName_edit= (EditText) findViewById(R.id.edit_companyname);
-        icon= (ImageView) findViewById(R.id.icon_iden_sub);
-        upphoto= (ImageView) findViewById(R.id.upimage_icon);
-        chickToUp= (TextView) findViewById(R.id.chicktoup_iden_sub);
-        companySize_text= (TextView) findViewById(R.id.scale_ident_sub);
-        area_text= (TextView) findViewById(R.id.area_text_iden_sub);
-        companyInfo_edit= (EditText) findViewById(R.id.edit_companyinfo);
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.contianer_ident_sub,fragment).commit();
 
-        personName_edit= (EditText) findViewById(R.id.edit_username);
-        phoneNum_edit= (EditText) findViewById(R.id.edit_phone);
-        getCode_text= (TextView) findViewById(R.id.getcode_iden_sub);
-        phoneCode_edit= (EditText) findViewById(R.id.edit_code);
-        pcc_text= (TextView) findViewById(R.id.address_text);
-        address_edit= (EditText) findViewById(R.id.address_edit);
-        submit= (TextView) findViewById(R.id.submit_iden_sub);
 
-        areaLayout= (LinearLayout) findViewById(R.id.layout_area);
-        companyInfoLayout= (LinearLayout) findViewById(R.id.layout_companyinfo);
-
-        type=getIntent().getStringExtra("type");
-
-        if (type.equals("5")){
-            areaLayout.setVisibility(View.GONE);
-            companyInfoLayout.setVisibility(View.GONE);
-            findViewById(R.id.line_needgone1).setVisibility(View.GONE);
-            findViewById(R.id.line_needgone2).setVisibility(View.GONE);
-
-        }else if (!type.equals("2")){
-            FragmentManager fm=getSupportFragmentManager();
-            Fragment fragment = null;
-            Bundle bundle=new Bundle();
-            switch (type){
-                case "3":
-                    fragment=new OSIdenFragment();
-                    break;
-                case "4":
-                    fragment=new InvIdenFragment();
-                    break;
-                case "6":
-                    fragment=new IssIdenFragment();
-
-                    break;
-            }
-            fm.beginTransaction().replace(R.id.contianer_identisub,fragment).commit();
-        }
-
-        companySize_text.setOnClickListener(this);
-        area_text.setOnClickListener(this);
-//        EventBus.getDefault().register(this);
+//        companyName_edit= (EditText) findViewById(R.id.edit_companyname);
+//        icon= (ImageView) findViewById(R.id.icon_iden_sub);
+//        upphoto= (ImageView) findViewById(R.id.upimage_icon);
+//        chickToUp= (TextView) findViewById(R.id.chicktoup_iden_sub);
+//        companySize_text= (TextView) findViewById(R.id.scale_ident_sub);
+//        area_text= (TextView) findViewById(R.id.area_text_iden_sub);
+//        companyInfo_edit= (EditText) findViewById(R.id.edit_companyinfo);
+//
+//        personName_edit= (EditText) findViewById(R.id.edit_username);
+//        phoneNum_edit= (EditText) findViewById(R.id.edit_phone);
+//        getCode_text= (TextView) findViewById(R.id.getcode_iden_sub);
+//        phoneCode_edit= (EditText) findViewById(R.id.edit_code);
+//        pcc_text= (TextView) findViewById(R.id.address_text);
+//        address_edit= (EditText) findViewById(R.id.address_edit);
+//        submit= (TextView) findViewById(R.id.submit_iden_sub);
+//
+//        areaLayout= (LinearLayout) findViewById(R.id.layout_area);
+//        companyInfoLayout= (LinearLayout) findViewById(R.id.layout_companyinfo);
+//
+//        type=getIntent().getStringExtra("type");
+//
+//        if (type.equals("5")){
+//            areaLayout.setVisibility(View.GONE);
+//            companyInfoLayout.setVisibility(View.GONE);
+//            findViewById(R.id.line_needgone1).setVisibility(View.GONE);
+//            findViewById(R.id.line_needgone2).setVisibility(View.GONE);
+//
+//        }else if (!type.equals("2")){
+//            FragmentManager fm=getSupportFragmentManager();
+//            Fragment fragment = null;
+//            Bundle bundle=new Bundle();
+//            switch (type){
+//                case "3":
+//                    fragment=new OSIdenFragment();
+//                    break;
+//                case "4":
+//                    fragment=new InvIdenFragment();
+//                    break;
+//                case "6":
+//                    fragment=new IssIdenFragment();
+//
+//                    break;
+//            }
+//            fm.beginTransaction().replace(R.id.contianer_identisub,fragment).commit();
+//        }
+//
+//        companySize_text.setOnClickListener(this);
+//        area_text.setOnClickListener(this);
     }
     private void initData() {
         BaseParams params=new BaseParams("identity/identityselect");
@@ -163,15 +181,18 @@ public class IdentificaSubActivity extends AppCompatActivity implements View.OnC
     }
 
     private void listdataParser(String result) {
+        IdentificationConfig config=IdentificationConfig.getInstance();
+
         try {
             JSONObject jsonObject=new JSONObject(result);
             boolean su=jsonObject.getBoolean("success");
             int code=jsonObject.getInt("code");
             if (su&&code==200){
+
                 JSONObject data=jsonObject.getJSONObject("data");
                 JSONObject selectList=data.getJSONObject("selectList");
-                areaList=new ArrayList<>();
                 JSONArray areaArr=selectList.getJSONArray("area");
+                List<NameVal> areaList=new ArrayList<>();
                 for (int i=0;i<areaArr.length();i++){
 //                    Map<String,String> map=new HashMap<>();
                     NameVal nameVal=new NameVal();
@@ -180,60 +201,90 @@ public class IdentificaSubActivity extends AppCompatActivity implements View.OnC
                     nameVal.setVal(object.getString("name"));
 //                    map.put("id",object.getString("id"));
 //                    map.put("name",object.getString("name"));
+                    if (config==null){
+                        MyLog.i("config null");
+                    }
                     areaList.add(nameVal);
                 }
 
-                companysizeList=new ArrayList<>();
+
                 JSONArray sizeArr=selectList.getJSONArray("companysize");
+                List<NameVal> sizeList=new ArrayList<>();
+
                 for (int i=0;i<sizeArr.length();i++){
                     NameVal nameVal=new NameVal();
-                    JSONObject object=areaArr.getJSONObject(i);
+                    JSONObject object=sizeArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
                     nameVal.setVal(object.getString("val"));
-                    companysizeList.add(nameVal);
+                    sizeList.add(nameVal);
                 }
 
+                JSONArray osresArr=selectList.getJSONArray("outsorcestyle");
+                List<NameVal> osresList=new ArrayList<>();
 
+                for (int i=0;i<osresArr.length();i++){
+                    NameVal nameVal=new NameVal();
+                    JSONObject object=osresArr.getJSONObject(i);
+                    nameVal.setId(object.getString("id"));
+                    nameVal.setVal(object.getString("val"));
+                    osresList.add(nameVal);
+                }
 
-                coompstageList=new ArrayList<>();
                 JSONArray copstageArr=selectList.getJSONArray("coompstage");
+                List<NameVal> stageList=new ArrayList<>();
+
                 for (int i=0;i<copstageArr.length();i++){
                     NameVal nameVal=new NameVal();
-                    JSONObject object=areaArr.getJSONObject(i);
+                    JSONObject object=copstageArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
                     nameVal.setVal(object.getString("val"));
-                    coompstageList.add(nameVal);
+                    stageList.add(nameVal);
                 }
 
-                coopcatList=new ArrayList<>();
                 JSONArray coopcatArr=selectList.getJSONArray("coopcat");
+                List<NameVal> isscatList=new ArrayList<>();
+
                 for (int i=0;i<coopcatArr.length();i++){
                     NameVal nameVal=new NameVal();
-                    JSONObject object=areaArr.getJSONObject(i);
+                    JSONObject object=coopcatArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
                     nameVal.setVal(object.getString("val"));
-                    coopcatList.add(nameVal);
+                    isscatList.add(nameVal);
                 }
 
-                businecatList=new ArrayList<>();
                 JSONArray businecatArr=selectList.getJSONArray("businecat");
+                List<NameVal> busiscatList=new ArrayList<>();
+
+
                 for (int i=0;i<businecatArr.length();i++){
                     NameVal nameVal=new NameVal();
-                    JSONObject object=areaArr.getJSONObject(i);
+                    JSONObject object=businecatArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
                     nameVal.setVal(object.getString("val"));
-                    businecatList.add(nameVal);
+                    busiscatList.add(nameVal);
                 }
 
-                investcatList=new ArrayList<>();
                 JSONArray investcatArr=selectList.getJSONArray("investcat");
+                List<NameVal> invescatList=new ArrayList<>();
+
+
                 for (int i=0;i<investcatArr.length();i++){
+                    if (i==0){
+                        continue;
+                    }
                     NameVal nameVal=new NameVal();
-                    JSONObject object=areaArr.getJSONObject(i);
+                    JSONObject object=investcatArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
                     nameVal.setVal(object.getString("val"));
-                    investcatList.add(nameVal);
+                    invescatList.add(nameVal);
                 }
+                config.setAreaList(areaList);
+                config.setStageList(stageList);
+                config.setSizeList(sizeList);
+                config.setOsresList(osresList);
+                config.setIsscatList(isscatList);
+                config.setInvescatList(invescatList);
+                config.setBuscatList(busiscatList);
 
             }
 
@@ -298,7 +349,7 @@ public class IdentificaSubActivity extends AppCompatActivity implements View.OnC
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 MyLog.i("listView dianji ");
-                initTextview(textView,dataList.get(position));
+//                initTextview(textView,dataList.get(position));
             }
         });
         dialog.show();
@@ -311,27 +362,10 @@ public class IdentificaSubActivity extends AppCompatActivity implements View.OnC
 //        EventBus.getDefault().unregister(this);
     }
 
-    public void initTextview(TextView textView,NameVal val){
-        textView.setTextColor(Color.rgb(124,124,124));
-        textView.setText(val.getVal());
-        dialog.dismiss();
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    public void upDateSeclect(TextView textView, Map<String, String> map){
-
-    }
-
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.scale_ident_sub:
-                showSelectDiaolog(companySize_text,companysizeList);
-                break;
-            case R.id.area_text_iden_sub:
-                showSelectDiaolog(area_text,areaList);
-                break;
         }
     }
 }
