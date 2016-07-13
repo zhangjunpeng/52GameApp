@@ -74,6 +74,7 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
         save.setVisibility(View.INVISIBLE);
 
         initData();
+        initData2();
         textViewList=new ArrayList<>();
         textViewList.add((TextView) findViewById(R.id.cp_title));
         textViewList.add((TextView) findViewById(R.id.tz_title));
@@ -159,7 +160,7 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
 //                bundle.putString(key,map.get(key));
 //            }
             Fragment fragment;
-            if (mess.getChecked().equals("1")||mess.getChecked().equals("3")){
+            if (!mess.getChecked().equals("4")){
 //                MyLog.i("IdentiSuccFragment");
                 fragment=new IdentiSuccFragment();
                 bundle.putSerializable("data",mess);
@@ -232,9 +233,10 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                     }
                     mess.setService(serverString);
                     mess.setTip(info.getString("tip"));
-                    mess.setTip(info.getString("note"));
+                    mess.setNote(info.getString("note"));
                     datainfo.add(mess);
                 }
+
 
                 JSONObject companyInfo=data.getJSONObject("companyInfo");
                 IdentificationConfig config=IdentificationConfig.getInstance();
@@ -259,6 +261,147 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
         }
 
 
+    }
+    private void initData2() {
+        BaseParams params=new BaseParams("identity/identityselect");
+        params.addParams("type","all");
+        params.addParams("token", MyAccount.getInstance().getToken());
+        params.addSign();
+        x.http().post(params.getRequestParams(), new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                MyLog.i("列表 result==="+result);
+                listdataParser(result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
+    private void listdataParser(String result) {
+        IdentificationConfig config=IdentificationConfig.getInstance();
+
+        try {
+            JSONObject jsonObject=new JSONObject(result);
+            boolean su=jsonObject.getBoolean("success");
+            int code=jsonObject.getInt("code");
+            if (su&&code==200){
+
+                JSONObject data=jsonObject.getJSONObject("data");
+                JSONObject selectList=data.getJSONObject("selectList");
+                JSONArray areaArr=selectList.getJSONArray("area");
+                List<NameVal> areaList=new ArrayList<>();
+                for (int i=0;i<areaArr.length();i++){
+//                    Map<String,String> map=new HashMap<>();
+                    NameVal nameVal=new NameVal();
+                    JSONObject object=areaArr.getJSONObject(i);
+                    nameVal.setId(object.getString("id"));
+                    nameVal.setVal(object.getString("name"));
+//                    map.put("id",object.getString("id"));
+//                    map.put("name",object.getString("name"));
+                    if (config==null){
+                        MyLog.i("config null");
+                    }
+                    areaList.add(nameVal);
+                }
+
+
+                JSONArray sizeArr=selectList.getJSONArray("companysize");
+                List<NameVal> sizeList=new ArrayList<>();
+
+                for (int i=0;i<sizeArr.length();i++){
+                    NameVal nameVal=new NameVal();
+                    JSONObject object=sizeArr.getJSONObject(i);
+                    nameVal.setId(object.getString("id"));
+                    nameVal.setVal(object.getString("val"));
+                    sizeList.add(nameVal);
+                }
+
+                JSONArray osresArr=selectList.getJSONArray("outsorcestyle");
+                List<NameVal> osresList=new ArrayList<>();
+
+                for (int i=0;i<osresArr.length();i++){
+                    NameVal nameVal=new NameVal();
+                    JSONObject object=osresArr.getJSONObject(i);
+                    nameVal.setId(object.getString("id"));
+                    nameVal.setVal(object.getString("val"));
+                    osresList.add(nameVal);
+                }
+
+                JSONArray copstageArr=selectList.getJSONArray("coompstage");
+                List<NameVal> stageList=new ArrayList<>();
+
+                for (int i=0;i<copstageArr.length();i++){
+                    NameVal nameVal=new NameVal();
+                    JSONObject object=copstageArr.getJSONObject(i);
+                    nameVal.setId(object.getString("id"));
+                    nameVal.setVal(object.getString("val"));
+                    stageList.add(nameVal);
+                }
+
+                JSONArray coopcatArr=selectList.getJSONArray("coopcat");
+                List<NameVal> isscatList=new ArrayList<>();
+
+                for (int i=0;i<coopcatArr.length();i++){
+                    NameVal nameVal=new NameVal();
+                    JSONObject object=coopcatArr.getJSONObject(i);
+                    nameVal.setId(object.getString("id"));
+                    nameVal.setVal(object.getString("val"));
+                    isscatList.add(nameVal);
+                }
+
+                JSONArray businecatArr=selectList.getJSONArray("businecat");
+                List<NameVal> busiscatList=new ArrayList<>();
+
+
+                for (int i=0;i<businecatArr.length();i++){
+                    NameVal nameVal=new NameVal();
+                    JSONObject object=businecatArr.getJSONObject(i);
+                    nameVal.setId(object.getString("id"));
+                    nameVal.setVal(object.getString("val"));
+                    busiscatList.add(nameVal);
+                }
+
+                JSONArray investcatArr=selectList.getJSONArray("investcat");
+                List<NameVal> invescatList=new ArrayList<>();
+
+
+                for (int i=0;i<investcatArr.length();i++){
+                    if (i==0){
+                        continue;
+                    }
+                    NameVal nameVal=new NameVal();
+                    JSONObject object=investcatArr.getJSONObject(i);
+                    nameVal.setId(object.getString("id"));
+                    nameVal.setVal(object.getString("val"));
+                    invescatList.add(nameVal);
+                }
+                config.setAreaList(areaList);
+                config.setStageList(stageList);
+                config.setSizeList(sizeList);
+                config.setOsresList(osresList);
+                config.setIsscatList(isscatList);
+                config.setInvescatList(invescatList);
+                config.setBuscatList(busiscatList);
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void setTitlebar(int m) {

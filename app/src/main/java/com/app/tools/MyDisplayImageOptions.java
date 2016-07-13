@@ -121,4 +121,21 @@ public class MyDisplayImageOptions {
                 .build();//构建完成
         return options;
     }
+    public static DisplayImageOptions getBigImageOption(){
+        DisplayImageOptions options;
+        options = new DisplayImageOptions.Builder()
+                .showImageOnLoading(R.drawable.default_banner) //设置图片在下载期间显示的图片
+                .showImageForEmptyUri(R.drawable.default_banner)//设置图片Uri为空或是错误的时候显示的图片
+                .showImageOnFail(R.drawable.default_banner)  //设置图片加载/解码过程中错误时候显示的图片
+                .cacheInMemory(true)//设置下载的图片是否缓存在内存中
+                .cacheOnDisk(true)//设置下载的图片是否缓存在SD卡中
+                //.delayBeforeLoading(int delayInMillis)//int delayInMillis为你设置的下载前的延迟时间
+                //设置图片加入缓存前，对bitmap进行设置
+                //.preProcessor(BitmapProcessor preProcessor)
+                .imageScaleType(ImageScaleType.EXACTLY)
+                .bitmapConfig(Bitmap.Config.RGB_565)//设置图片的解码类型//
+//                .displayer(new FadeInBitmapDisplayer(100))//是否图片加载好后渐入的动画时间
+                .build();//构建完成
+        return options;
+    }
 }

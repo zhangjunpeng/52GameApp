@@ -402,11 +402,7 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
         handler.sendMessage(msg );
     }
 
-    private void toUploadFile()
-    {
-
-
-
+    private void toUploadFile() {
 
 //        UploadUtil uploadUtil = UploadUtil.getInstance();;
 //        uploadUtil.setOnUploadProcessListener(this);  //设置监听器监听上传状态
@@ -465,8 +461,6 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
 
             }
         });
-
-
     }
 
     private void uploadurl(final String url) {

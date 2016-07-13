@@ -388,7 +388,13 @@
             android:name="com.view.Identification.IdentificaSubActivity"
             android:label="@string/title_activity_identifica_sub"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateVisible|adjustPan"
+            android:windowSoftInputMode="stateVisible|adjustPan" />
+        <activity
+            android:name="com.view.Identification.SelectPicNormalActivity"
+            android:theme="@style/Theme.AppCompat.Light.Dialog" />
+        <activity
+            android:name="com.view.Identification.IdentCheckActivity"
+            android:theme="@style/AppTheme.NoActionBar"
             ></activity>
     </application>
 

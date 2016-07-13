@@ -4,12 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 import android.util.Base64;
+import android.util.Xml;
 
 import com.app.tools.MD5Test;
 import com.app.tools.MyLog;
+import com.app.tools.StringTools;
 import com.test4s.myapp.MyApplication;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -63,8 +66,56 @@ public class Url {
         params.append(key);
         MyLog.i("unsign===" + params);
 
-        return MD5Test.getMD5(params.toString());
+//        if (StringTools.isHaveChinese(params.toString())){
+//            String md5string="";
+//            try {
+//                 md5string= URLEncoder.encode(params.toString(), "UTF-8");
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+//            return MD5Test.getMD5(md5string);
+//        }else {
+            return MD5Test.getMD5(params.toString());
 
+//        }
+    }
+
+    public static String getContent(Set<Map.Entry<String, String>> set){
+        if (TextUtils.isEmpty(key)) {
+            return null;
+        }
+
+        StringBuffer params = new StringBuffer();
+
+        for ( Map.Entry<String, String> entry:set) {
+            if (entry.getKey().equals("otherinfo")){
+
+            }else {
+                params.append(entry.getKey());
+                params.append("=");
+                params.append(entry.getValue());
+                params.append("&");
+            }
+        }
+        if (params.length() > 0) {
+            params.deleteCharAt(params.length() - 1);
+        }
+        String unsign=params.toString();
+        unsign=unsign+"&"+key;
+        MyLog.i("unsign===" + unsign);
+
+//        if (StringTools.isHaveChinese(params.toString())){
+//            String md5string="";
+//            try {
+//                 md5string= URLEncoder.encode(params.toString(), "UTF-8");
+//            } catch (UnsupportedEncodingException e) {
+//                e.printStackTrace();
+//            }
+//            return MD5Test.getMD5(md5string);
+//        }else {
+        return params+"&"+"sign="+MD5Test.getMD5(unsign.toString());
+
+//        }
     }
     public static void saveUrl(String url){
         sharedPreferences= MyApplication.mcontext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);

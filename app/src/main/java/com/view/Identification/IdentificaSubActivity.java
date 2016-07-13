@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.app.tools.MyLog;
+import com.test4s.account.MyAccount;
 import com.test4s.myapp.Config;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
@@ -68,7 +69,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
     private LinearLayout companyInfoLayout;
 
 
-    private String type="2";
+    private String type="company";
     private Dialog dialog;
 
 
@@ -78,7 +79,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
 
     //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
     private String cattype="2";
-
+    private int stage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,17 +91,43 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
         title= (TextView) findViewById(R.id.textView_titlebar_save);
         save= (TextView) findViewById(R.id.save_savebar);
 
+        save.setVisibility(View.INVISIBLE);
+
         initData();
         cattype=getIntent().getStringExtra("cattype");
-        MyLog.i("cattype=="+cattype);
-        IdentSubFirstFragment fragment=new IdentSubFirstFragment();
-        Bundle bundle=new Bundle();
-        bundle.putString("cattype",cattype);
-        bundle.putString("type",type);
-        fragment.setArguments(bundle);
+        type=getIntent().getStringExtra("type");
 
-        getSupportFragmentManager().beginTransaction()
-                .replace(R.id.contianer_ident_sub,fragment).commit();
+        switch (cattype){
+            //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
+            case "2":
+                title.setText("认证开发者");
+                break;
+            case "3":
+                title.setText("认证外包");
+
+                break;
+            case "4":
+                title.setText("认证投资人");
+
+                break;
+            case "5":
+                title.setText("认证IP方");
+
+                break;
+            case "6":
+                title.setText("认证发行方");
+
+                break;
+        }
+
+        try {
+            stage=getIntent().getIntExtra("stage",0);
+        }catch (Exception e){
+
+        }
+        if (stage==2){
+            initData2();
+        }
 
 
 //        companyName_edit= (EditText) findViewById(R.id.edit_companyname);
@@ -155,6 +182,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
     private void initData() {
         BaseParams params=new BaseParams("identity/identityselect");
         params.addParams("type","all");
+        params.addParams("token", MyAccount.getInstance().getToken());
         params.addSign();
         x.http().post(params.getRequestParams(), new Callback.CommonCallback<String>() {
             @Override
@@ -175,7 +203,16 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void onFinished() {
+                MyLog.i("cattype=="+cattype);
+                IdentSubFirstFragment fragment=new IdentSubFirstFragment();
+                Bundle bundle=new Bundle();
+                bundle.putString("cattype",cattype);
+                bundle.putString("type",type);
+                bundle.putInt("stage",stage);
+                fragment.setArguments(bundle);
 
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.contianer_ident_sub,fragment).commit();
             }
         });
     }
@@ -293,6 +330,78 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
         }
     }
 
+    private void initData2() {
+        BaseParams baseParams=new BaseParams("identity/viewidentity");
+        baseParams.addParams("token", MyAccount.getInstance().getToken());
+        baseParams.addParams("identity_cat",cattype);
+        baseParams.addSign();
+        x.http().post(baseParams.getRequestParams(), new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                MyLog.i("checkinfo back=="+result);
+                parser(result);
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+            }
+        });
+    }
+
+
+    public static IdentSubInfo subinfo;
+    private void parser(String result) {
+        try {
+
+            JSONObject jsonObject=new JSONObject(result);
+            boolean su=jsonObject.getBoolean("success");
+            int code=jsonObject.getInt("code");
+            if (su&&code==200){
+
+                subinfo=new IdentSubInfo();
+
+
+                JSONObject data=jsonObject.getJSONObject("data");
+                subinfo.setPersonal(data.getString("personal"));
+                subinfo.setChecked(data.getString("checked"));
+                NameVal roleName=new NameVal();
+                JSONObject roleVal=data.getJSONObject("roleName");
+                roleName.setId(roleVal.getString("id"));
+                roleName.setVal(roleVal.getString("val"));
+                subinfo.setRoleName(roleName);
+                JSONObject info=data.getJSONObject("info");
+                subinfo.setCompany_name(info.getString("company_name"));
+                subinfo.setApply(info.getString("apply"));
+                subinfo.setLogo(info.getString("logo"));
+//                company_scale=info.getString("company_scale");
+                subinfo.setCompany_scale(info.getJSONObject("size").getString("company_scale_name"));
+
+                subinfo.setCompany_phone(info.getString("company_phone"));
+                subinfo.setAddress(info.getString("area"));
+                subinfo.setCompany_info(info.getString("company_intro"));
+                subinfo.setIdnum(info.getString("business_id"));
+                subinfo.setCompany_photo(info.getString("business_pic"));
+                subinfo.setCoop_cat(info.getString("coop_cat"));
+                subinfo.setInvest_cat(info.getString("invest_cat"));
+                subinfo.setInvest_stage(info.getString("invest_stage"));
+                subinfo.setBusiness_cat(info.getString("business_cat"));
+                subinfo.setOutsource_cat(info.getString("outsource_cat"));
+                subinfo.setArea(info.getJSONObject("region").getString("area_name"));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
 
     private void showSelectDiaolog(final TextView textView, final List<NameVal> dataList){

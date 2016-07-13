@@ -20,7 +20,7 @@ import java.util.Map;
  */
 public class IdentifitionFragment extends Fragment implements View.OnClickListener {
 
-    private String type="cp";
+    private String type="2";
 
     private TextView ident_person;
     private TextView ident_company;
@@ -57,14 +57,14 @@ public class IdentifitionFragment extends Fragment implements View.OnClickListen
             case R.id.ident_toc:
                 Intent intent=new Intent(getActivity(),IdentificaSubActivity.class);
                 intent.putExtra("cattype",type);
-                intent.putExtra("type","company");
+                intent.putExtra("type","person");
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                 break;
             case R.id.ident_tob:
                 Intent intent1=new Intent(getActivity(),IdentificaSubActivity.class);
                 intent1.putExtra("cattype",type);
-                intent1.putExtra("type","person");
+                intent1.putExtra("type","company");
                 startActivity(intent1);
                 getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
 

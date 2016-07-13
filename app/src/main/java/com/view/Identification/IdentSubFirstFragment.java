@@ -1,9 +1,14 @@
 package com.view.Identification;
 
+import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -25,13 +30,30 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.app.tools.CusToast;
+import com.app.tools.MyDisplayImageOptions;
 import com.app.tools.MyLog;
+import com.app.tools.UploadUtil;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.test4s.account.MyAccount;
 import com.test4s.myapp.Config;
+import com.test4s.myapp.MyApplication;
 import com.test4s.myapp.R;
+import com.test4s.net.Url;
+import com.view.activity.SelectPicActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.http.RequestParams;
+import org.xutils.x;
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.TreeMap;
 
 /**
  * Created by Administrator on 2016/7/5.
@@ -39,6 +61,9 @@ import java.util.List;
 public class IdentSubFirstFragment extends Fragment implements View.OnClickListener {
 
     private String cattype="2";
+    private String type="company";
+    private int stage;
+
 
     private LinearLayout areaLayout;
     private LinearLayout resLayout;
@@ -54,14 +79,18 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
     private IdentParams params;
 
 
+    private ImageLoader imageloder;
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //初始化参数
+        imageloder=ImageLoader.getInstance();
         config=IdentificationConfig.getInstance();
         cattype=getArguments().getString("cattype","2");
-
+        type=getArguments().getString("type","company");
+        stage=getArguments().getInt("stage",0);
         params=IdentParams.getInstance();
         params.setOsresSelected(new ArrayList<NameVal>());
         params.setIsscatSelected(new ArrayList<NameVal>());
@@ -105,10 +134,41 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
     private EditText companyInfo_edit;
     private TextView nextstep;
 
+    private RelativeLayout relativeLayout;
+
     private TextView error;
 
     private ScrollView view;
 
+    /**
+     * 去上传文件
+     */
+    protected static final int TO_UPLOAD_FILE = 1;
+    /**
+     * 上传文件响应
+     */
+    protected static final int UPLOAD_FILE_DONE = 2;  //
+    /**
+     * 选择文件
+     */
+    public static final int TO_SELECT_PHOTO = 3;
+    /**
+     * 上传初始化
+     */
+    private static final int UPLOAD_INIT_PROCESS = 4;
+    /**
+     * 上传中
+     */
+    private static final int UPLOAD_IN_PROCESS = 5;
+
+    private String picPath = null;
+
+    private IdentificationConfig identificationConfig=IdentificationConfig.getInstance();
+
+    private String requestURL=identificationConfig.getUploadUrl();
+
+
+    public IdentSubInfo subinfo;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -127,6 +187,7 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
         issCatLayout= (LinearLayout) view.findViewById(R.id.layout_issscat);
         invesCatLayout= (LinearLayout) view.findViewById(R.id.layout_invescat);
         companyLayout= (LinearLayout) view.findViewById(R.id.layout_companyinfo);
+        relativeLayout= (RelativeLayout) view.findViewById(R.id.stage_relat);
 
         companyName_edit= (EditText) view.findViewById(R.id.edit_companyname);
         icon_sub= (ImageView) view.findViewById(R.id.icon_iden_sub);
@@ -190,11 +251,87 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 intIssSelect();
                 break;
         }
+
+        if (!TextUtils.isEmpty(identificationConfig.getCompanyName())){
+            companyName_edit.setText(identificationConfig.getCompanyName());
+            companyName_edit.setEnabled(false);
+        }
+        if (stage==2){
+            relativeLayout.setVisibility(View.VISIBLE);
+            subinfo=IdentificaSubActivity.subinfo;
+            initView();
+            switch (subinfo.getPersonal()){
+                case "1":
+                    type="person";
+                    break;
+                case "2":
+                    type="company";
+                    break;
+            }
+
+        }
+
+
         size_text.setOnClickListener(this);
         area_text.setOnClickListener(this);
         invescat_text.setOnClickListener(this);
         nextstep.setOnClickListener(this);
+
+
+
+
+        icon_sub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1=new Intent(getActivity(), SelectPicNormalActivity.class);
+                startActivityForResult(intent1, TO_SELECT_PHOTO);
+            }
+        });
+
         super.onViewCreated(view,savedInstanceState);
+    }
+
+    private void initView() {
+        ImageLoader imageLoader=ImageLoader.getInstance();
+        companyName_edit.setText(subinfo.getCompany_name());
+        imageLoader.displayImage(Url.prePic+subinfo.getLogo(),icon_sub, MyDisplayImageOptions.getBigImageOption());
+        size_text.setText(subinfo.getCompany_scale());
+        area_text.setText(subinfo.getArea());
+        companyInfo_edit.setText(subinfo.getCompany_info());
+
+        switch (cattype){
+            //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
+            case "2":
+
+                break;
+            case "3":
+                initTextViews(config.getOsresList(),subinfo.getOutsource_cat());
+                break;
+            case "4":
+                initTextViews(config.getStageList(),subinfo.getInvest_stage());
+                invescat_text.setText(subinfo.getInvest_cat());
+                break;
+            case "5":
+
+                break;
+            case "6":
+                initBusSelect();
+                intIssSelect();
+                break;
+        }
+
+
+    }
+
+    private void initTextViews(List<NameVal> osresList, String outsource_cat) {
+        for (int i=0;i<osresList.size();i++){
+            NameVal nameVal=osresList.get(i);
+            TextView textview=resText.get(i);
+            if (outsource_cat.contains(nameVal.getId())){
+                textview.setSelected(true);
+                textview.setTextColor(Color.WHITE);
+            }
+        }
     }
 
     private void initBusSelect() {
@@ -210,6 +347,14 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 final TextView textView= (TextView) linear_buscat.getChildAt(i);
                 final NameVal nameVal=buisCatList.get(i);
                 textView.setText(nameVal.getVal());
+
+                if (stage==2){
+                    if (subinfo.getBusiness_cat().contains(nameVal.getId())){
+                        textView.setSelected(true);
+                        textView.setTextColor(Color.WHITE);
+                    }
+                }
+
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -239,6 +384,13 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 final TextView textView= (TextView) linear_isscat.getChildAt(i);
                 final NameVal nameVal=issCatList.get(i);
                 textView.setText(nameVal.getVal());
+                if (stage==2){
+                    if (subinfo.getBusiness_cat().contains(nameVal.getId())){
+                        textView.setSelected(true);
+                        textView.setTextColor(Color.WHITE);
+                    }
+                }
+
                 textView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -274,6 +426,13 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 if ( checkParams()){
                     IdentSubSecondFragment fragment=new IdentSubSecondFragment();
 
+                    Bundle bundle=new Bundle();
+                    bundle.putString("cattype", cattype);
+
+                    bundle.putString("type",type);
+                    bundle.putInt("stage",stage);
+                    fragment.setArguments(bundle);
+
                     FragmentManager fm=getFragmentManager();
                     FragmentTransaction transition=fm.beginTransaction();
                     transition.replace(R.id.contianer_ident_sub,fragment).commit();
@@ -286,6 +445,68 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 break;
         }
 
+    }
+
+
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+                case TO_UPLOAD_FILE:
+                    toUploadFile();
+                    break;
+
+                case UPLOAD_INIT_PROCESS:
+
+                    break;
+                case UPLOAD_IN_PROCESS:
+
+                    break;
+                case UPLOAD_FILE_DONE:
+                    String result = "响应码："+msg.arg1+"\n响应信息："+msg.obj+"\n耗时："+ UploadUtil.getRequestTime()+"秒";
+//                    Toast.makeText(getActivity(),result,Toast.LENGTH_SHORT).show();
+                    break;
+                default:
+                    break;
+            }
+            super.handleMessage(msg);
+        }
+
+    };
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        MyLog.i("MyAccountSeting");
+        if(resultCode== Activity.RESULT_OK && requestCode == TO_SELECT_PHOTO)
+        {
+
+
+//            Bundle extras = data.getExtras();
+//            if (extras != null) {
+//                Bitmap photo = extras.getParcelable("data");
+//                icon.setImageBitmap(photo);
+//            }
+
+            picPath = data.getStringExtra(SelectPicActivity.KEY_PHOTO_PATH);
+            MyLog.i( "最终选择的图片="+picPath);
+            if(picPath!=null)
+            {
+                imageloder.displayImage("file://"+picPath,icon_sub, MyDisplayImageOptions.getBigImageOption());
+                handler.sendEmptyMessage(TO_UPLOAD_FILE);
+                upimage.setVisibility(View.GONE);
+                clicktoselect.setVisibility(View.GONE);
+
+            }else{
+                CusToast.showToast(getActivity(),"上传的文件路径出错",Toast.LENGTH_SHORT);
+
+            }
+        }
+//        else if (requestCode==888&&resultCode==Activity.RESULT_OK){
+//            Bitmap bmap = data.getParcelableExtra("data");
+//            icon.setImageBitmap(bmap);
+//        }
+       super.onActivityResult(requestCode, resultCode, data);
     }
 
     private boolean checkParams() {
@@ -362,6 +583,7 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
 
             }
             final NameVal finalNameVal = nameVal;
+
             textView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -487,4 +709,69 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
             nextstep.setClickable(false);
         }
     }
+
+    private void toUploadFile() {
+//        UploadUtil uploadUtil = UploadUtil.getInstance();;
+//        uploadUtil.setOnUploadProcessListener(this);  //设置监听器监听上传状态
+//        uploadUtil.uploadFile( picPath,fileKey, requestURL,params);
+
+        RequestParams baseParams=new RequestParams(requestURL);
+
+        baseParams.setMultipart(true);
+        baseParams.addBodyParameter("imei", MyApplication.imei);
+        baseParams.addBodyParameter("version",MyApplication.versionName);
+        baseParams.addBodyParameter("package_name",MyApplication.packageName);
+        baseParams.addBodyParameter("channel_id","1");
+        baseParams.addBodyParameter("form","app");
+        baseParams.addBodyParameter("token", MyAccount.getInstance().getToken());
+
+        TreeMap<String,String> map=new TreeMap<>();
+        map.put("imei",MyApplication.imei);
+        map.put("version",MyApplication.versionName);
+        map.put("package_name",MyApplication.packageName);
+        map.put("channel_id","1");
+        map.put("form","app");
+        map.put("token",MyAccount.getInstance().getToken());
+        baseParams.addBodyParameter("sign", Url.getSign(map.entrySet()));
+        baseParams.addBodyParameter("filedata",new File(picPath),null);
+        x.http().post(baseParams, new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                MyLog.i("updataImage==="+result);
+                try {
+                    JSONObject jsonObject=new JSONObject(result);
+                    boolean su=jsonObject.getBoolean("success");
+                    if (su){
+                        JSONObject jsonObject1=jsonObject.getJSONObject("data");
+                        String url=jsonObject1.getString("url");
+                        String iconurl=jsonObject1.getString("picpath");
+                        params.setIconUrl(iconurl);
+                        CusToast.showToast(getActivity(),"图片上传成功", Toast.LENGTH_SHORT);
+
+                    }else {
+                        CusToast.showToast(getActivity(),"图片上传失败，请重新选择", Toast.LENGTH_SHORT);
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
+    }
+
 }

@@ -71,12 +71,13 @@ public class StringTools {
 	}
 
 	public static boolean isHaveChinese(String mes) {
-		Pattern p = Pattern.compile("[\u4e00-\u9fa5]");
-		Matcher m = p.matcher(mes);
-		if (m.find()) {
-			return true;
+		boolean temp = false;
+		Pattern p=Pattern.compile("[\u4e00-\u9fa5]");
+		Matcher m=p.matcher(mes);
+		if(m.find()){
+			temp =  true;
 		}
-		return false;
+		return temp;
 
 	}
 
