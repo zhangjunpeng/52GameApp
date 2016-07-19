@@ -204,17 +204,28 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
             @Override
             public void onFinished() {
                 MyLog.i("cattype=="+cattype);
-                IdentSubFirstFragment fragment=new IdentSubFirstFragment();
-                Bundle bundle=new Bundle();
-                bundle.putString("cattype",cattype);
-                bundle.putString("type",type);
-                bundle.putInt("stage",stage);
-                fragment.setArguments(bundle);
-
-                getSupportFragmentManager().beginTransaction()
-                        .replace(R.id.contianer_ident_sub,fragment).commit();
+                addfragment();
             }
         });
+    }
+
+    private void addfragment() {
+        if (stage==2){
+            if (subinfo==null){
+                MyLog.i("sub info null");
+                return;
+            }
+        }
+
+        IdentSubFirstFragment fragment=new IdentSubFirstFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString("cattype",cattype);
+        bundle.putString("type",type);
+        bundle.putInt("stage",stage);
+        fragment.setArguments(bundle);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.contianer_ident_sub,fragment).commit();
     }
 
     private void listdataParser(String result) {
@@ -354,6 +365,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
 
             @Override
             public void onFinished() {
+                addfragment();
             }
         });
     }

@@ -485,7 +485,7 @@ public class GameFragment extends Fragment implements View.OnClickListener{
             }
         });
         layout.findViewById(R.id.line_gameindex).setVisibility(View.INVISIBLE);
-
+        continar.notify();
     }
 
 

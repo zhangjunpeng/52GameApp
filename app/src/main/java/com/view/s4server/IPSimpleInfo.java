@@ -15,6 +15,16 @@ public class IPSimpleInfo {
     private String ip_info;
     private String over_time;
 
+    private boolean iscare;
+
+    public boolean iscare() {
+        return iscare;
+    }
+
+    public void setIscare(boolean iscare) {
+        this.iscare = iscare;
+    }
+
     public String getOver_time() {
         return over_time;
     }

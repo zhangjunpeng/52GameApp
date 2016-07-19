@@ -1,6 +1,8 @@
 package com.view.s4server;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,17 +10,23 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.app.tools.MyDisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
+import com.test4s.account.AccountActivity;
+import com.test4s.account.MyAccount;
 import com.test4s.myapp.R;
 import com.test4s.net.Url;
+import com.view.myattention.AttentionChange;
 
 import java.util.List;
 
 public class MyIpListAdapter extends BaseAdapter {
+        ImageLoader imageLoader=ImageLoader.getInstance();
         List<IPSimpleInfo> list;
-        Context context;
+        Activity context;
 
-        public MyIpListAdapter(Context context, List<IPSimpleInfo> list){
+        public MyIpListAdapter(Activity context, List<IPSimpleInfo> list){
             this.context=context;
             this.list=list;
         }
@@ -40,29 +48,70 @@ public class MyIpListAdapter extends BaseAdapter {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
+            final ViewHolder viewHolder;
             if (convertView==null){
                 convertView= LayoutInflater.from(context).inflate(R.layout.item_iplistfragment,null);
                 viewHolder=new ViewHolder();
                 viewHolder.icon= (ImageView) convertView.findViewById(R.id.imageView_iplist);
                 viewHolder.name= (TextView) convertView.findViewById(R.id.name_item_iplist);
                 viewHolder.intro= (TextView) convertView.findViewById(R.id.introuduction_item_iplist);
+                viewHolder.care= (ImageView) convertView.findViewById(R.id.care_item_list);
                 convertView.setTag(viewHolder);
             }else {
                 viewHolder= (ViewHolder) convertView.getTag();
             }
 
-            IPSimpleInfo ipSimpleInfo=list.get(position);
+            final IPSimpleInfo ipSimpleInfo=list.get(position);
+//
+//            Picasso.with(context).load(Url.prePic+ipSimpleInfo.getLogo())
+//                    .into(viewHolder.icon);
 
-            Picasso.with(context).load(Url.prePic+ipSimpleInfo.getLogo())
-                    .into(viewHolder.icon);
+            imageLoader.displayImage(Url.prePic+ipSimpleInfo.getLogo(),viewHolder.icon, MyDisplayImageOptions.getroundImageOptions());
+
             viewHolder.name.setText(ipSimpleInfo.getIp_name());
             viewHolder.intro.setText("类        型 ："+ipSimpleInfo.getIp_cat()+"\n风        格 ："+ipSimpleInfo.getIp_style()+"\n授权范围 ："+ipSimpleInfo.getUthority());
+            if (MyAccount.isLogin){
+                if (ipSimpleInfo.iscare()){
+                    viewHolder.care.setImageResource(R.drawable.cared);
+                }else {
+                    viewHolder.care.setImageResource(R.drawable.care_gray);
+                }
+                viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (ipSimpleInfo.iscare()){
+                            ipSimpleInfo.setIscare(false);
+                            AttentionChange.removeAttention("5",ipSimpleInfo.getId(), context);
+                        }else {
+                            ipSimpleInfo.setIscare(true);
+                            AttentionChange.addAttention("5",ipSimpleInfo.getId(), context);
+                        } if (ipSimpleInfo.iscare()){
+                            viewHolder.care.setImageResource(R.drawable.cared);
+                        }else {
+                            viewHolder.care.setImageResource(R.drawable.care_gray);
+                        }
+
+
+                    }
+                });
+            }else {
+                viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(context, AccountActivity.class);
+                        context.startActivity(intent);
+                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+
+                    }
+                });
+
+            }
             return convertView;
         }
         class ViewHolder{
             ImageView icon;
             TextView name;
             TextView intro;
+            ImageView care;
         }
     }

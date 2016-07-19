@@ -382,6 +382,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name="com.view.Identification.IdentificationActivity"
+            android:launchMode="singleTop"
             android:label="@string/title_activity_identification"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity

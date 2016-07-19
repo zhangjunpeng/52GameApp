@@ -14,6 +14,15 @@ public class InvesmentSimpleInfo {
     private String area_name;
     private String invest_cat_name;
     private String invest_stage_name;
+    private boolean iscare;
+
+    public boolean iscare() {
+        return iscare;
+    }
+
+    public void setIscare(boolean iscare) {
+        this.iscare = iscare;
+    }
 
     public String getArea_name() {
         return area_name;

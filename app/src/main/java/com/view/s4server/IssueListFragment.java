@@ -1,11 +1,13 @@
 package com.view.s4server;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +16,27 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.tools.CusToast;
+import com.app.tools.MyDisplayImageOptions;
 import com.app.tools.MyLog;
+import com.app.view.FiltPopWindow;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
+import com.test4s.account.AccountActivity;
+import com.test4s.account.MyAccount;
 import com.test4s.myapp.BaseFragment;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
+import com.view.Identification.NameVal;
 import com.view.activity.ListActivity;
+import com.view.game.FiltParamsData;
+import com.view.myattention.AttentionChange;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +46,7 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -58,10 +70,12 @@ public class IssueListFragment extends BaseFragment{
     private boolean recommend;
     private PtrClassicFrameLayout prt_cp;
     private View headview;
-    private View footview;
+//    private View footview;
     private MyScrollViewListener listener;
     private int Foot_flag;
     private View nomore;
+
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,15 +96,21 @@ public class IssueListFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view=inflater.inflate(R.layout.fragment_list,null);
+        if (recommend){
+            view.findViewById(R.id.filttitle_list).setVisibility(View.GONE);
+        }else {
+            view.findViewById(R.id.filttitle_list).setVisibility(View.VISIBLE);
+        }
+
         listView= (ListView) view.findViewById(R.id.pullToRefresh_fglist);
         myAdapter=new MyIssueAdapter(getActivity(),issueSimpleInfos);
         listView.setAdapter(myAdapter);
 
         prt_cp= (PtrClassicFrameLayout) view.findViewById(R.id.prt_cplist);
-        footview=LayoutInflater.from(getActivity()).inflate(R.layout.footerloading,null);
-        ImageView image= (ImageView) footview.findViewById(R.id.image_footerloading);
-        AnimationDrawable drable= (AnimationDrawable) image.getBackground();
-        drable.start();
+//        footview=LayoutInflater.from(getActivity()).inflate(R.layout.footerloading,null);
+//        ImageView image= (ImageView) footview.findViewById(R.id.image_footerloading);
+//        AnimationDrawable drable= (AnimationDrawable) image.getBackground();
+//        drable.start();
 
         headview=LayoutInflater.from(getActivity()).inflate(R.layout.handerloading,null);
         ImageView imageView= (ImageView) headview.findViewById(R.id.image_handerloading);
@@ -107,11 +127,111 @@ public class IssueListFragment extends BaseFragment{
                 initData("1");
             }
         });
+
+        initFiltView();
+
         initPtrLayout();
         initLisener();
         return view;
     }
+    private int[] linearId={R.id.linear1,R.id.linear2,R.id.linear3};
+    private List<LinearLayout> linearList;
 
+    private String[] filttitles={"area","businecat","inssuecat"};
+    private String[] filtname={"所在区域","业务类型","发行方式"};
+
+    private View filtLinear;
+    private FiltParamsData filtParamsData=FiltParamsData.getInstance();
+    private String area_sel="";
+    private String businecat_sel="";
+    private String inssuecat_sel="";
+
+    FiltPopWindow filtPopWindow;
+    private List<TextView> nameList;
+    private Map<String,List<NameVal>> map;
+
+    private void initFiltView() {
+        filtLinear=view.findViewById(R.id.filttitle_list);
+        ImageView line= (ImageView) view.findViewById(R.id.line_need);
+
+        nameList=new ArrayList<>();
+        linearList=new ArrayList<>();
+        for (int i=0;i<linearId.length;i++){
+            LinearLayout linearLayout= (LinearLayout) view.findViewById(linearId[i]);
+            linearList.add(linearLayout);
+            if (i>=filtname.length){
+                linearLayout.setVisibility(View.GONE);
+                line.setVisibility(View.GONE);
+            }
+            TextView text= (TextView) linearLayout.getChildAt(0);
+            nameList.add(text);
+        }
+        for (int i=0;i<filttitles.length;i++){
+            nameList.get(i).setText(filtname[i]);
+            final int index=i;
+            linearList.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    showPopWindow(index,null);
+                }
+            });
+        }
+
+    }
+    public  void showPopWindow(final int index, NameVal val ){
+//        MyLog.i("datalist size=="+datalist.size());
+        map=filtParamsData.getMap();
+        if (map==null){
+            return;
+        }
+
+        final List<NameVal> nameVals = map.get(filttitles[index]);
+        filtPopWindow=new FiltPopWindow(getActivity(),nameVals,val);
+        filtPopWindow.showPopupWindow(filtLinear);
+
+//        popupWindow.showAtLocation();
+        MyLog.i("showPopWindow3");
+
+        filtPopWindow.setOnclickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView textView=nameList.get(index);
+                textView.setText(nameVals.get(position).getVal());
+                switch (index) {
+                    case 0:
+                        if (position==0){
+                            textView.setText(filtname[index]);
+                            area_sel="";
+                        }else {
+                            area_sel = nameVals.get(position).getId();
+                        }
+                        break;
+                    case 1:
+                        if (position==0){
+                            textView.setText(filtname[index]);
+                            businecat_sel="";
+                        }else {
+                            businecat_sel = nameVals.get(position).getId();
+                        }
+                        break;
+                    case 2:
+                        if (position==0){
+                            textView.setText(filtname[index]);
+                            inssuecat_sel="";
+                        }else {
+                            inssuecat_sel = nameVals.get(position).getId();
+                        }
+
+                        break;
+                }
+                filtPopWindow.dismiss();
+                prt_cp.autoRefresh();
+            }
+
+        });
+
+    }
     private void initPtrLayout() {
 
         prt_cp.setHeaderView(headview);
@@ -206,6 +326,18 @@ public class IssueListFragment extends BaseFragment{
         if (recommend){
             baseParams.addParams("ret","2");
         }
+        if (!TextUtils.isEmpty(area_sel)){
+            baseParams.addParams("area_id",area_sel);
+        }
+        if (!TextUtils.isEmpty(businecat_sel)){
+            baseParams.addParams("business_cat",businecat_sel);
+        }
+        if (!TextUtils.isEmpty(inssuecat_sel)){
+            baseParams.addParams("coop_cat",inssuecat_sel);
+        }
+        if (MyAccount.isLogin){
+            baseParams.addParams("token",MyAccount.getInstance().getToken());
+        }
         baseParams.addParams("p",p);
         baseParams.addSign();
         baseParams.getRequestParams().setCacheMaxAge(30*60*1000);
@@ -234,12 +366,12 @@ public class IssueListFragment extends BaseFragment{
             @Override
             public void onFinished() {
                 if (listView.getFooterViewsCount()==0){
-                    listView.addFooterView(footview);
+//                    listView.addFooterView(footview);
                 }
                 if (Foot_flag!=1){
                     listView.removeFooterView(showall);
                     listView.removeFooterView(nomore);
-                    listView.addFooterView(footview);
+//                    listView.addFooterView(footview);
                     Foot_flag=1;
                 }
                 jsonParser(res);
@@ -268,11 +400,11 @@ public class IssueListFragment extends BaseFragment{
                 if (issues.length()==0){
                     listView.setOnScrollListener(null);
                     if (recommend){
-                        listView.removeFooterView(footview);
+//                        listView.removeFooterView(footview);
                         listView.addFooterView(showall);
                         Foot_flag=2;
                     }else {
-                        listView.removeFooterView(footview);
+//                        listView.removeFooterView(footview);
                         listView.addFooterView(nomore);
                         Foot_flag=3;
 //                        CusToast.showToast(getActivity(), "没有更多开发者信息", Toast.LENGTH_SHORT);
@@ -289,6 +421,9 @@ public class IssueListFragment extends BaseFragment{
                     issueSimpleInfo.setArea_name(jsonObject2.getString("area_name"));
                     issueSimpleInfo.setBusine_cat_name(jsonObject2.getString("busine_cat_name"));
                     issueSimpleInfo.setCoop_cat_name(jsonObject2.getString("coop_cat_name"));
+                    if (MyAccount.isLogin){
+                        issueSimpleInfo.setIscare(jsonObject2.getBoolean("iscare"));
+                    }
                     issueSimpleInfos.add(issueSimpleInfo);
                 }
             }
@@ -301,9 +436,9 @@ public class IssueListFragment extends BaseFragment{
 
     class MyIssueAdapter extends BaseAdapter{
         List<IssueSimpleInfo> list;
-        Context context;
+        Activity context;
 
-        public MyIssueAdapter(Context context, List<IssueSimpleInfo> list){
+        public MyIssueAdapter(Activity context, List<IssueSimpleInfo> list){
             this.context=context;
             this.list=list;
         }
@@ -325,22 +460,25 @@ public class IssueListFragment extends BaseFragment{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
+            final ViewHolder viewHolder;
             if (convertView==null){
                 convertView= LayoutInflater.from(context).inflate(R.layout.item_iplistfragment,null);
                 viewHolder=new ViewHolder();
                 viewHolder.icon= (ImageView) convertView.findViewById(R.id.imageView_iplist);
                 viewHolder.name= (TextView) convertView.findViewById(R.id.name_item_iplist);
                 viewHolder.intro= (TextView) convertView.findViewById(R.id.introuduction_item_iplist);
+                viewHolder.care= (ImageView) convertView.findViewById(R.id.care_item_list);
                 convertView.setTag(viewHolder);
             }else {
                 viewHolder= (ViewHolder) convertView.getTag();
             }
-            IssueSimpleInfo issueSimpleInfo=list.get(position);
-            Picasso.with(getActivity())
-                    .load(Url.prePic+issueSimpleInfo.getLogo())
-                    .placeholder(R.drawable.default_icon)
-                    .into(viewHolder.icon);
+            final IssueSimpleInfo issueSimpleInfo=list.get(position);
+//            Picasso.with(getActivity())
+//                    .load(Url.prePic+issueSimpleInfo.getLogo())
+//                    .placeholder(R.drawable.default_icon)
+//                    .into(viewHolder.icon);
+            ImageLoader.getInstance().displayImage(Url.prePic+issueSimpleInfo.getLogo(),viewHolder.icon, MyDisplayImageOptions.getroundImageOptions());
+
             viewHolder.name.setText(issueSimpleInfo.getCompany_name());
 //            String area="";
 //            for (int i=0;i<areadrr.size();i++){
@@ -351,12 +489,49 @@ public class IssueListFragment extends BaseFragment{
 //            }
             String mess="所在区域: "+issueSimpleInfo.getArea_name()+"\n业务类型: "+issueSimpleInfo.getBusine_cat_name()+"\n发行方式： "+issueSimpleInfo.getCoop_cat_name();
             viewHolder.intro.setText(mess);
+            if (MyAccount.isLogin){
+                if (issueSimpleInfo.iscare()){
+                    viewHolder.care.setImageResource(R.drawable.cared);
+                }else {
+                    viewHolder.care.setImageResource(R.drawable.care_gray);
+                }
+                viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (issueSimpleInfo.iscare()){
+                            issueSimpleInfo.setIscare(false);
+                            AttentionChange.removeAttention("6",issueSimpleInfo.getUser_id(), context);
+                        }else {
+                            issueSimpleInfo.setIscare(true);
+                            AttentionChange.addAttention("6",issueSimpleInfo.getUser_id(), context);
+                        } if (issueSimpleInfo.iscare()){
+                            viewHolder.care.setImageResource(R.drawable.cared);
+                        }else {
+                            viewHolder.care.setImageResource(R.drawable.care_gray);
+                        }
+
+
+                    }
+                });
+            }else {
+                viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(context, AccountActivity.class);
+                        context.startActivity(intent);
+                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+
+                    }
+                });
+
+            }
             return convertView;
         }
         class ViewHolder{
             ImageView icon;
             TextView name;
             TextView intro;
+            ImageView care;
         }
     }
 

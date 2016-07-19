@@ -4,6 +4,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:gravity="center"
+    android:background="#f1f5f8"
     >
     <TextView
         android:id="@+id/text_footerloading"

@@ -65,7 +65,7 @@ public class TopLeftCornerImage extends ImageView{
         int w = getWidth(), h = getHeight();
 
 
-        Bitmap roundBitmap =  getRoundedTopLeftCornerBitmap(bitmap, 23);
+        Bitmap roundBitmap =  getRoundedTopLeftCornerBitmap(bitmap, 30);
         canvas.drawBitmap(roundBitmap, 0,0, null);
 
     }

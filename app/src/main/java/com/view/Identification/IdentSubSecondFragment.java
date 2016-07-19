@@ -93,6 +93,7 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
         identParams=IdentParams.getInstance();
         type=getArguments().getString("type","company");
         stage=getArguments().getInt("stage",0);
+        cattype=getArguments().getString("cattype","2");
 
     }
 
@@ -336,6 +337,9 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
                         boolean su=jsonObject.getBoolean("success");
                         int code=jsonObject.getInt("code");
                         if (su&&code==200){
+                            Intent intent=new Intent(getActivity(),IdentificationActivity.class);
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
                             getActivity().finish();
                         }
                     } catch (JSONException e) {

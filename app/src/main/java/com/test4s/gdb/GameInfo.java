@@ -29,6 +29,15 @@ public class GameInfo {
     private String pack;
     private String checked;
     private String title;
+    private boolean iscare;
+
+    public boolean iscare() {
+        return iscare;
+    }
+
+    public void setIscare(boolean iscare) {
+        this.iscare = iscare;
+    }
 
     public GameInfo() {
     }

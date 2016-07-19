@@ -15,6 +15,15 @@ public class IssueSimpleInfo {
     private String area_name;
     private String busine_cat_name;
     private String coop_cat_name;
+    private boolean iscare;
+
+    public boolean iscare() {
+        return iscare;
+    }
+
+    public void setIscare(boolean iscare) {
+        this.iscare = iscare;
+    }
 
     public String getArea_name() {
         return area_name;

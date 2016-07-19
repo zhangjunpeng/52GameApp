@@ -12,6 +12,15 @@ public class OutSourceSimpleInfo {
     private String outsource_name;
     private String area_name;
     private String outsource_cat;
+    private boolean iscare;
+
+    public boolean iscare() {
+        return iscare;
+    }
+
+    public void setIscare(boolean iscare) {
+        this.iscare = iscare;
+    }
 
     public String getOutsource_cat() {
         return outsource_cat;

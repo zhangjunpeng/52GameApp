@@ -8,31 +8,11 @@
     <include
         android:id="@+id/title_gamelist"
         layout="@layout/titlebar"/>
-<in.srain.cube.views.ptr.PtrClassicFrameLayout
-    android:id="@+id/ptr_gamelist"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:cube_ptr="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    cube_ptr:ptr_resistance="1.7"
-    cube_ptr:ptr_ratio_of_header_height_to_refresh="1.2"
-    cube_ptr:ptr_duration_to_close="300"
-    cube_ptr:ptr_duration_to_close_header="2000"
-    cube_ptr:ptr_keep_header_when_refresh="true"
-    cube_ptr:ptr_pull_to_fresh="false"
-    >
-    <ListView
-        android:id="@+id/ptflistView_gamelist"
+    <FrameLayout
+        android:id="@+id/contianer_gamelist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="@null"
-        android:fadingEdge="none"
-        android:listSelector="@android:color/transparent"
-        android:scrollbarStyle="outsideOverlay"
-        android:choiceMode="singleChoice"
-        ></ListView>
+        android:layout_height="match_parent"></FrameLayout>
 
-</in.srain.cube.views.ptr.PtrClassicFrameLayout>
     <LinearLayout
 
         android:id="@+id/nodata_list"

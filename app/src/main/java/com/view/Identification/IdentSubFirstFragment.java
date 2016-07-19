@@ -211,6 +211,20 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
 
         error= (TextView) view.findViewById(R.id.text_error_ident);
 
+        if (stage==2){
+            relativeLayout.setVisibility(View.VISIBLE);
+            subinfo=IdentificaSubActivity.subinfo;
+            initView();
+            switch (subinfo.getPersonal()){
+                case "1":
+                    type="person";
+                    break;
+                case "2":
+                    type="company";
+                    break;
+            }
+
+        }
 
         switch (cattype){
             //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
@@ -256,20 +270,7 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
             companyName_edit.setText(identificationConfig.getCompanyName());
             companyName_edit.setEnabled(false);
         }
-        if (stage==2){
-            relativeLayout.setVisibility(View.VISIBLE);
-            subinfo=IdentificaSubActivity.subinfo;
-            initView();
-            switch (subinfo.getPersonal()){
-                case "1":
-                    type="person";
-                    break;
-                case "2":
-                    type="company";
-                    break;
-            }
 
-        }
 
 
         size_text.setOnClickListener(this);
@@ -293,6 +294,10 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
 
     private void initView() {
         ImageLoader imageLoader=ImageLoader.getInstance();
+        if(subinfo==null){
+            MyLog.i("subinfo null");
+            return;
+        }
         companyName_edit.setText(subinfo.getCompany_name());
         imageLoader.displayImage(Url.prePic+subinfo.getLogo(),icon_sub, MyDisplayImageOptions.getBigImageOption());
         size_text.setText(subinfo.getCompany_scale());

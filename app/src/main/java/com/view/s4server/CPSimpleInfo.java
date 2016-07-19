@@ -12,6 +12,15 @@ public class CPSimpleInfo {
     private String company_name;
     private String area;
     private String scale;
+    private boolean iscare;
+
+    public boolean iscare() {
+        return iscare;
+    }
+
+    public void setIscare(boolean iscare) {
+        this.iscare = iscare;
+    }
 
     public String getArea() {
         return area;

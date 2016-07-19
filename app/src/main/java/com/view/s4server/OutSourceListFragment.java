@@ -1,11 +1,13 @@
 package com.view.s4server;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,18 +16,27 @@ import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.tools.CusToast;
+import com.app.tools.MyDisplayImageOptions;
 import com.app.tools.MyLog;
+import com.app.view.FiltPopWindow;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.picasso.Picasso;
+import com.test4s.account.AccountActivity;
+import com.test4s.account.MyAccount;
 import com.test4s.myapp.BaseFragment;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
+import com.view.Identification.NameVal;
 import com.view.activity.ListActivity;
+import com.view.game.FiltParamsData;
+import com.view.myattention.AttentionChange;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -35,6 +46,7 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -59,11 +71,19 @@ public class OutSourceListFragment extends BaseFragment{
     private boolean recommend;
     private View showall;
     private PtrClassicFrameLayout prt_cp;
-    private View footview;
+//    private View footview;
     private View headview;
     private MyScrollViewListener listener;
     private int Foot_flag;
     private View nomore;
+
+    private String[] filttitles={"area","companysize","outsorcestyle"};
+
+    private String[] filtname={"所在区域","公司规模","外包类型"};
+
+    private String area_sel="";
+    private String companysize_sel="";
+    private String outsorcescat_sel="";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -85,14 +105,18 @@ public class OutSourceListFragment extends BaseFragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view=inflater.inflate(R.layout.fragment_list,null);
+        if (recommend){
+            view.findViewById(R.id.filttitle_list).setVisibility(View.GONE);
+        }else {
+            view.findViewById(R.id.filttitle_list).setVisibility(View.VISIBLE);
+        }
+
         listView= (ListView) view.findViewById(R.id.pullToRefresh_fglist);
-
-
         prt_cp= (PtrClassicFrameLayout) view.findViewById(R.id.prt_cplist);
-        footview=LayoutInflater.from(getActivity()).inflate(R.layout.footerloading,null);
-        ImageView image= (ImageView) footview.findViewById(R.id.image_footerloading);
-        AnimationDrawable drable= (AnimationDrawable) image.getBackground();
-        drable.start();
+//        footview=LayoutInflater.from(getActivity()).inflate(R.layout.footerloading,null);
+//        ImageView image= (ImageView) footview.findViewById(R.id.image_footerloading);
+//        AnimationDrawable drable= (AnimationDrawable) image.getBackground();
+//        drable.start();
 
         headview=LayoutInflater.from(getActivity()).inflate(R.layout.handerloading,null);
         ImageView imageView= (ImageView) headview.findViewById(R.id.image_handerloading);
@@ -109,11 +133,110 @@ public class OutSourceListFragment extends BaseFragment{
         });
         listView.setAdapter(myAdapter);
 //        initData(1+"");
+
+        initFiltView();
+
         initPtrLayout();
 
         initListView();
         return view;
     }
+    private int[] linearId={R.id.linear1,R.id.linear2,R.id.linear3};
+    private List<LinearLayout> linearList;
+
+    private View filtLinear;
+    private FiltParamsData filtParamsData=FiltParamsData.getInstance();
+
+
+    FiltPopWindow filtPopWindow;
+
+
+    private List<TextView> nameList;
+    private Map<String,List<NameVal>> map;
+
+    private void initFiltView() {
+        filtLinear=view.findViewById(R.id.filttitle_list);
+        ImageView line= (ImageView) view.findViewById(R.id.line_need);
+
+        nameList=new ArrayList<>();
+        linearList=new ArrayList<>();
+        for (int i=0;i<linearId.length;i++){
+            LinearLayout linearLayout= (LinearLayout) view.findViewById(linearId[i]);
+            linearList.add(linearLayout);
+            if (i>=filtname.length){
+                linearLayout.setVisibility(View.GONE);
+                line.setVisibility(View.GONE);
+            }
+            TextView text= (TextView) linearLayout.getChildAt(0);
+            nameList.add(text);
+        }
+        for (int i=0;i<filttitles.length;i++){
+            nameList.get(i).setText(filtname[i]);
+            final int index=i;
+            linearList.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    showPopWindow(index,null);
+                }
+            });
+        }
+
+    }
+    public  void showPopWindow(final int index, NameVal val ){
+//        MyLog.i("datalist size=="+datalist.size());
+        map=filtParamsData.getMap();
+        if (map==null){
+            return;
+        }
+
+        final List<NameVal> nameVals = map.get(filttitles[index]);
+        filtPopWindow=new FiltPopWindow(getActivity(),nameVals,val);
+        filtPopWindow.showPopupWindow(filtLinear);
+
+//        popupWindow.showAtLocation();
+        MyLog.i("showPopWindow3");
+
+        filtPopWindow.setOnclickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView textView=nameList.get(index);
+                textView.setText(nameVals.get(position).getVal());
+                switch (index) {
+                    case 0:
+                        if (position==0){
+                            textView.setText(filtname[index]);
+                            area_sel="";
+                        }else {
+                            area_sel = nameVals.get(position).getId();
+                        }
+                        break;
+                    case 1:
+                        if (position==0){
+                            textView.setText(filtname[index]);
+                            companysize_sel="";
+                        }else {
+                            companysize_sel = nameVals.get(position).getId();
+                        }
+                        break;
+                    case 2:
+                        if (position==0){
+                            textView.setText(filtname[index]);
+                            outsorcescat_sel="";
+                        }else {
+                            outsorcescat_sel = nameVals.get(position).getId();
+                        }
+
+                        break;
+                }
+                filtPopWindow.dismiss();
+                prt_cp.autoRefresh();
+            }
+
+        });
+
+    }
+
     private void initPtrLayout() {
 
         prt_cp.setHeaderView(headview);
@@ -158,6 +281,18 @@ public class OutSourceListFragment extends BaseFragment{
         if (recommend){
             baseParams.addParams("ret","2");
         }
+        if (!TextUtils.isEmpty(area_sel)){
+            baseParams.addParams("area_id",area_sel);
+        }
+        if (!TextUtils.isEmpty(companysize_sel)){
+            baseParams.addParams("company_scale",companysize_sel);
+        }
+        if (!TextUtils.isEmpty(outsorcescat_sel)){
+            baseParams.addParams("outsource_cat",outsorcescat_sel);
+        }
+        if (MyAccount.isLogin){
+            baseParams.addParams("token",MyAccount.getInstance().getToken());
+        }
         baseParams.addParams("p",p);
         baseParams.addSign();
 //        baseParams.getRequestParams().setCacheMaxAge(10*60*1000);
@@ -166,12 +301,12 @@ public class OutSourceListFragment extends BaseFragment{
             public void onSuccess(String result) {
                 MyLog.i("outsourcelist==="+result);
                 if (listView.getFooterViewsCount()==0){
-                    listView.addFooterView(footview);
+//                    listView.addFooterView(footview);
                 }
                 if (Foot_flag!=1){
                     listView.removeFooterView(showall);
                     listView.removeFooterView(nomore);
-                    listView.addFooterView(footview);
+//                    listView.addFooterView(footview);
                     Foot_flag=1;
                 }
                 jsonParser(result);
@@ -216,11 +351,11 @@ public class OutSourceListFragment extends BaseFragment{
                 if (jsonArray.length()==0){
                     listView.setOnScrollListener(null);
                     if (recommend){
-                        listView.removeFooterView(footview);
+//                        listView.removeFooterView(footview);
                         listView.addFooterView(showall);
                         Foot_flag=2;
                     }else {
-                        listView.removeFooterView(footview);
+//                        listView.removeFooterView(footview);
 //                        CusToast.showToast(getActivity(), "没有更多开发者信息", Toast.LENGTH_SHORT);
                         listView.addFooterView(nomore);
                         Foot_flag=3;
@@ -237,6 +372,9 @@ public class OutSourceListFragment extends BaseFragment{
                     outsource.setCompany_name(jsonObject2.getString("company_name"));
                     outsource.setCompany_scale(jsonObject2.getString("company_scale"));
                     outsource.setArea_name(jsonObject2.getString("area_name"));
+                    if (MyAccount.isLogin){
+                        outsource.setIscare(jsonObject2.getBoolean("iscare"));
+                    }
                     osSimpleInfos.add(outsource);
 
                 }
@@ -307,9 +445,9 @@ public class OutSourceListFragment extends BaseFragment{
 
     class MyOutSourceListAdapter extends BaseAdapter {
         List<OutSourceSimpleInfo> list;
-        Context context;
+        Activity context;
 
-        public MyOutSourceListAdapter(Context context, List<OutSourceSimpleInfo> list){
+        public MyOutSourceListAdapter(Activity context, List<OutSourceSimpleInfo> list){
             this.context=context;
             this.list=list;
         }
@@ -331,30 +469,70 @@ public class OutSourceListFragment extends BaseFragment{
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            ViewHolder viewHolder;
+            final ViewHolder viewHolder;
             if (convertView==null){
                 convertView=LayoutInflater.from(context).inflate(R.layout.item_iplistfragment,null);
                 viewHolder=new ViewHolder();
                 viewHolder.icon= (ImageView) convertView.findViewById(R.id.imageView_iplist);
                 viewHolder.name= (TextView) convertView.findViewById(R.id.name_item_iplist);
                 viewHolder.intro= (TextView) convertView.findViewById(R.id.introuduction_item_iplist);
+                viewHolder.care= (ImageView) convertView.findViewById(R.id.care_item_list);
                 convertView.setTag(viewHolder);
             }else {
                 viewHolder= (ViewHolder) convertView.getTag();
             }
 
-            OutSourceSimpleInfo osSimpleInfo=list.get(position);
+            final OutSourceSimpleInfo osSimpleInfo=list.get(position);
 
-            Picasso.with(getContext()).load(Url.prePic+osSimpleInfo.getLogo())
-                    .into(viewHolder.icon);
+//            Picasso.with(getContext()).load(Url.prePic+osSimpleInfo.getLogo())
+//                    .into(viewHolder.icon);
+            ImageLoader.getInstance().displayImage(Url.prePic+osSimpleInfo.getLogo(),viewHolder.icon, MyDisplayImageOptions.getroundImageOptions());
+
             viewHolder.name.setText(osSimpleInfo.getCompany_name());
             viewHolder.intro.setText("所在区域 ："+osSimpleInfo.getArea_name()+"\n公司规模 ："+osSimpleInfo.getCompany_scale()+"\n类    型 ："+osSimpleInfo.getOutsource_name());
+            if (MyAccount.isLogin){
+                if (osSimpleInfo.iscare()){
+                    viewHolder.care.setImageResource(R.drawable.cared);
+                }else {
+                    viewHolder.care.setImageResource(R.drawable.care_gray);
+                }
+                viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (osSimpleInfo.iscare()){
+                            osSimpleInfo.setIscare(false);
+                            AttentionChange.removeAttention("3",osSimpleInfo.getUser_id(), context);
+                        }else {
+                            osSimpleInfo.setIscare(true);
+                            AttentionChange.addAttention("3",osSimpleInfo.getUser_id(), context);
+                        } if (osSimpleInfo.iscare()){
+                            viewHolder.care.setImageResource(R.drawable.cared);
+                        }else {
+                            viewHolder.care.setImageResource(R.drawable.care_gray);
+                        }
+
+
+                    }
+                });
+            }else {
+                viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(context, AccountActivity.class);
+                        context.startActivity(intent);
+                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+
+                    }
+                });
+
+            }
             return convertView;
         }
         class ViewHolder{
             ImageView icon;
             TextView name;
             TextView intro;
+            ImageView care;
         }
     }
 }

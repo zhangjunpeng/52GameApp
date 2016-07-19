@@ -28,7 +28,7 @@ public class MyDisplayImageOptions {
 //设置图片加入缓存前，对bitmap进行设置
 //.preProcessor(BitmapProcessor preProcessor)
                 .resetViewBeforeLoading(true)//设置图片在下载前是否重置，复位
-                .displayer(new RoundedBitmapDisplayer(28))//是否设置为圆角，弧度为多少
+                .displayer(new RoundedBitmapDisplayer(30))//是否设置为圆角，弧度为多少
 //                .displayer(new FadeInBitmapDisplayer(100))//是否图片加载好后渐入的动画时间
                 .build();//构建完成
         return options;

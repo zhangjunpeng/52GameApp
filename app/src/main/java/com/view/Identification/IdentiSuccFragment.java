@@ -109,7 +109,9 @@ public class IdentiSuccFragment extends Fragment implements View.OnClickListener
     }
     public void gotocontinue(){
         Intent intent=new Intent(getActivity(),IdentificaSubActivity.class);
-        intent.putExtra("type",mess.getId());
+        intent.putExtra("type","company");
+        intent.putExtra("cattype",mess.getId());
+
         intent.putExtra("stage",stage);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);

@@ -6,6 +6,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +14,22 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.tools.CusToast;
 import com.app.tools.MyLog;
+import com.app.view.FiltPopWindow;
+import com.test4s.account.MyAccount;
 import com.test4s.myapp.BaseFragment;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
+import com.view.Identification.NameVal;
 import com.view.activity.ListActivity;
+import com.view.game.FiltParamsData;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -33,6 +39,7 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
 import in.srain.cube.views.ptr.PtrDefaultHandler;
@@ -57,11 +64,12 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
     private boolean recommend;
     private View showall;
     private PtrClassicFrameLayout prt_cp;
-    private View footview;
+//    private View footview;
     private View headview;
     private int Foot_flag;
     private MyScrollViewListener listener;
     private View nomore;
+
 
 
     @Override
@@ -83,16 +91,22 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view=inflater.inflate(R.layout.fragment_list,null);
+        if (recommend){
+            view.findViewById(R.id.filttitle_list).setVisibility(View.GONE);
+        }else {
+            view.findViewById(R.id.filttitle_list).setVisibility(View.VISIBLE);
+        }
+
         listView= (ListView) view.findViewById(R.id.pullToRefresh_fglist);
         ipSimpleInfos=new ArrayList<>();
         myAdapter=new MyIpListAdapter(getActivity(),ipSimpleInfos);
 
 
         prt_cp= (PtrClassicFrameLayout) view.findViewById(R.id.prt_cplist);
-        footview=LayoutInflater.from(getActivity()).inflate(R.layout.footerloading,null);
-        ImageView image= (ImageView) footview.findViewById(R.id.image_footerloading);
-        AnimationDrawable drable= (AnimationDrawable) image.getBackground();
-        drable.start();
+//        footview=LayoutInflater.from(getActivity()).inflate(R.layout.footerloading,null);
+//        ImageView image= (ImageView) footview.findViewById(R.id.image_footerloading);
+//        AnimationDrawable drable= (AnimationDrawable) image.getBackground();
+//        drable.start();
 
         headview=LayoutInflater.from(getActivity()).inflate(R.layout.handerloading,null);
         ImageView imageView= (ImageView) headview.findViewById(R.id.image_handerloading);
@@ -110,11 +124,116 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
                 initData("1");
             }
         });
+
+        initFiltView();
+
         initPtrLayout();
         initListView();
 //        initData(1+"");
         return view;
     }
+    private String[] filttitles={"ipcat","ipstyle","uthority"};
+
+    private String[] filtname={"IP类型","IP风格","授权范围"};
+
+    private int[] linearId={R.id.linear1,R.id.linear2,R.id.linear3};
+    private List<LinearLayout> linearList;
+
+    private View filtLinear;
+    private FiltParamsData filtParamsData=FiltParamsData.getInstance();
+    private String ipcat_sel="";
+    private String ipstyle_sel="";
+    private String uthority_sel="";
+
+    FiltPopWindow filtPopWindow;
+
+
+    private List<TextView> nameList;
+    private Map<String,List<NameVal>> map;
+
+    private void initFiltView() {
+        filtLinear=view.findViewById(R.id.filttitle_list);
+        ImageView line= (ImageView) view.findViewById(R.id.line_need);
+
+        nameList=new ArrayList<>();
+        linearList=new ArrayList<>();
+        for (int i=0;i<linearId.length;i++){
+            LinearLayout linearLayout= (LinearLayout) view.findViewById(linearId[i]);
+            linearList.add(linearLayout);
+            if (i>=filtname.length){
+                linearLayout.setVisibility(View.GONE);
+                line.setVisibility(View.GONE);
+            }
+            TextView text= (TextView) linearLayout.getChildAt(0);
+            nameList.add(text);
+        }
+        for (int i=0;i<filttitles.length;i++){
+            nameList.get(i).setText(filtname[i]);
+            final int index=i;
+            linearList.get(i).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    showPopWindow(index,null);
+                }
+            });
+        }
+
+    }
+    public  void showPopWindow(final int index, NameVal val ){
+//        MyLog.i("datalist size=="+datalist.size());
+        map=filtParamsData.getMap();
+        if (map==null){
+            return;
+        }
+
+        final List<NameVal> nameVals = map.get(filttitles[index]);
+        filtPopWindow=new FiltPopWindow(getActivity(),nameVals,val);
+        filtPopWindow.showPopupWindow(filtLinear);
+
+//        popupWindow.showAtLocation();
+        MyLog.i("showPopWindow3");
+
+        filtPopWindow.setOnclickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                TextView textView=nameList.get(index);
+                textView.setText(nameVals.get(position).getVal());
+                switch (index) {
+                    case 0:
+                        if (position==0){
+                            textView.setText(filtname[index]);
+                            ipcat_sel="";
+                        }else {
+                            ipcat_sel = nameVals.get(position).getId();
+                        }
+                        break;
+                    case 1:
+                        if (position==0){
+                            textView.setText(filtname[index]);
+                            ipstyle_sel="";
+                        }else {
+                            ipstyle_sel = nameVals.get(position).getId();
+                        }
+                        break;
+                    case 2:
+                        if (position==0){
+                            textView.setText(filtname[index]);
+                            uthority_sel="";
+                        }else {
+                            uthority_sel = nameVals.get(position).getId();
+                        }
+
+                        break;
+                }
+                filtPopWindow.dismiss();
+                prt_cp.autoRefresh();
+            }
+
+        });
+
+    }
+
     private void initPtrLayout() {
 
         prt_cp.setHeaderView(headview);
@@ -179,6 +298,19 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
         if (recommend){
             baseParams.addParams("ret","2");
         }
+        if (!TextUtils.isEmpty(ipcat_sel)){
+            baseParams.addParams("ip_cat",ipcat_sel);
+        }
+        if (!TextUtils.isEmpty(ipstyle_sel)){
+            baseParams.addParams("ip_style",ipstyle_sel);
+        }
+        if (!TextUtils.isEmpty(uthority_sel)){
+            baseParams.addParams("uthority",uthority_sel);
+        }
+        if (MyAccount.isLogin){
+            baseParams.addParams("token",MyAccount.getInstance().getToken());
+        }
+
         baseParams.addParams("p",p);
         baseParams.addSign();
         baseParams.getRequestParams().setCacheMaxAge(10*60*1000);
@@ -210,12 +342,12 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
             @Override
             public void onFinished() {
                 if (listView.getFooterViewsCount()==0){
-                    listView.addFooterView(footview);
+//                    listView.addFooterView(footview);
                 }
                 if (Foot_flag!=1){
                     listView.removeFooterView(showall);
                     listView.removeFooterView(nomore);
-                    listView.addFooterView(footview);
+//                    listView.addFooterView(footview);
                     Foot_flag=1;
                 }
                 parser(res);
@@ -242,11 +374,11 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
                 if (jsonArray.length()==0){
                     listView.setOnScrollListener(null);
                     if (recommend){
-                        listView.removeFooterView(footview);
+//                        listView.removeFooterView(footview);
                         listView.addFooterView(showall);
                         Foot_flag=2;
                     }else {
-                        listView.removeFooterView(footview);
+//                        listView.removeFooterView(footview);
                         listView.addFooterView(nomore);
                         Foot_flag=3;
 //                        CusToast.showToast(getActivity(), "没有更多开发者信息", Toast.LENGTH_SHORT);
@@ -262,6 +394,9 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
 //                    ipSimpleInfo.setCompany_name(jsonObject2.getString("company_name"));
                     ipSimpleInfo.setIp_style(jsonObject2.getString("ip_style"));
                     ipSimpleInfo.setUthority(jsonObject2.getString("uthority"));
+                    if (MyAccount.isLogin){
+                        ipSimpleInfo.setIscare(jsonObject2.getBoolean("iscare"));
+                    }
                     ipSimpleInfos.add(ipSimpleInfo);
 
                 }
