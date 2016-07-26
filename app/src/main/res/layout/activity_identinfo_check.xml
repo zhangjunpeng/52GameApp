@@ -178,7 +178,7 @@
                 android:layout_marginLeft="17dp"
                 android:textSize="12dp"
                 android:textColor="#7c7c7c"
-                android:text="（324*260，支持jpg,png,jpeg格式照片，大小不超过1m）"
+                android:text="（310*246，支持jpg,png,jpeg格式照片，大小不超过1m）"
                 />
             <RelativeLayout
                 android:layout_width="116dp"
@@ -677,7 +677,8 @@
         <LinearLayout
             android:id="@+id/layout_companyinfo"
             android:layout_width="match_parent"
-            android:layout_height="83.33dp"
+            android:layout_height="wrap_content"
+            android:minHeight="83.33dp"
             android:orientation="vertical"
             >
             <LinearLayout
@@ -703,10 +704,13 @@
                     android:textColor="#4c4c4c"
                     />
             </LinearLayout>
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
             <TextView
                 android:id="@+id/edit_companyinfo"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:gravity="center_vertical"
                 android:hint="请输入公司/团队简介，方便客户更好的发现您"
@@ -714,8 +718,11 @@
                 android:textSize="12dp"
                 android:textColorHint="@color/hintcolor"
                 android:textColor="@color/edittext"
-                />
 
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
         </LinearLayout>
 
         <ImageView

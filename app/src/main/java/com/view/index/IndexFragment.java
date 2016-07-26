@@ -461,16 +461,16 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
 //                    .load()
 //                    .into(imageView);
             final IndexAdvert indexAdvert=indexAdvertses.get(i);
-            imageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String url=indexAdvert.getAdvert_url();
-                    Intent intent=new Intent(context, InfomaionDetailActivity.class);
-                    intent.putExtra("url",url);
-                    startActivity(intent);
-                    context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-                }
-            });
+//            imageView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    String url=indexAdvert.getAdvert_url();
+//                    Intent intent=new Intent(context, InfomaionDetailActivity.class);
+//                    intent.putExtra("url",url);
+//                    startActivity(intent);
+//                    context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+//                }
+//            });
         }
         setDot(0);
         MyLog.i("setAdapter");

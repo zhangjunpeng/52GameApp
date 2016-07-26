@@ -38,6 +38,7 @@
 
                     >
                     <TextView
+                        android:id="@+id/fail_mess"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="您的开发者身份已经通过认证,\n您可以补充资料重新提交认证！"
@@ -45,6 +46,7 @@
                         android:textColor="#fff"
                         />
                     <TextView
+                        android:id="@+id/fail_reson"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/orange"
@@ -183,7 +185,7 @@
             android:layout_marginLeft="17dp"
             android:textSize="12dp"
             android:textColor="#7c7c7c"
-            android:text="（324*260，支持jpg,png,jpeg格式照片，大小不超过1m）"
+            android:text="（310*246，支持jpg,png,jpeg格式照片，大小不超过1m）"
             />
         <RelativeLayout
             android:layout_width="116dp"
@@ -218,6 +220,7 @@
                 android:layout_below="@+id/upimage_icon"
                 android:layout_marginTop="5dp"
                 />
+
         </RelativeLayout>
     </LinearLayout>
     <ImageView
@@ -318,6 +321,7 @@
             />
     </LinearLayout>
         <ImageView
+            android:id="@+id/line_needgone"
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/line"
@@ -700,7 +704,9 @@
         <LinearLayout
             android:id="@+id/layout_companyinfo"
             android:layout_width="match_parent"
-            android:layout_height="83.33dp"
+            android:layout_height="wrap_content"
+            android:minHeight="83.33dp"
+
             android:orientation="vertical"
             >
                 <LinearLayout
@@ -729,7 +735,8 @@
             <EditText
                 android:id="@+id/edit_companyinfo"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:layout_marginLeft="20dp"
                 android:gravity="center_vertical"
                 android:hint="请输入公司/团队简介，方便客户更好的发现您"
@@ -737,6 +744,8 @@
                 android:textSize="12dp"
                 android:textColorHint="@color/hintcolor"
                 android:textColor="@color/edittext"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 />
 
         </LinearLayout>

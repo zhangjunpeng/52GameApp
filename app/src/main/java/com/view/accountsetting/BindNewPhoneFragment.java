@@ -86,7 +86,7 @@ public class BindNewPhoneFragment extends BaseFragment implements View.OnClickLi
         layout= (RelativeLayout) view.findViewById(R.id.re_warning_bindnewphone);
         warning= (TextView) view.findViewById(R.id.warning_bindnewphone);
 
-        if (userInfo.getPhone().equals("null")){
+        if (TextUtils.isEmpty(userInfo.getPhone())){
             title.setText("绑定手机号");
         }else {
             title.setText("更换手机号");

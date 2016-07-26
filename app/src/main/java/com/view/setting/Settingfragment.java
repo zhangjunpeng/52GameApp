@@ -247,9 +247,12 @@ public class Settingfragment extends Fragment implements View.OnClickListener {
                     boolean su=jsonObject.getBoolean("success");
                     if (su&&code==200){
                         JSONObject data=jsonObject.getJSONObject("data");
-                        String version=data.getString("version");
-                        float ver=Float.parseFloat(version);
+                        JSONObject version=data.getJSONObject("version");
+                        String vers=version.getString("version");
+                        String downloadurl=version.getString("download_url");
+                        float ver=Float.parseFloat(vers);
                         float old_ver=Float.parseFloat(MyApplication.versionName);
+                        MyLog.i("old version "+old_ver);
                         if (ver>old_ver){
                             showUpdateDialog();
                         }else {

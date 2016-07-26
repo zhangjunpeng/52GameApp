@@ -12,9 +12,7 @@ import com.app.tools.MyLog;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,6 +23,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 /**
  * Created by Administrator on 2016/6/30.
@@ -112,7 +114,7 @@ public class InvIdenFragment extends Fragment {
         }
 
     }
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void upView(List<NameVal> dataInfo,String type){
         switch (type){
             case "investcat":

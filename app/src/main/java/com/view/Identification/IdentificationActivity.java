@@ -1,5 +1,7 @@
 package com.view.Identification;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -115,6 +117,19 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
 
             }
         });
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
+            }
+        });
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        onCreate(intent.getExtras());
     }
 
     private void initData() {
@@ -149,8 +164,19 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode==IdentifitionFragment.STARTIDNET&&resultCode== Activity.RESULT_OK){
+
+            fragmentList.clear();
+            datainfo.clear();
+            initData();
+        }
+    }
+
     private void initViewPagerfragment() {
         for (int i=0;i<textViewList.size();i++){
+            MyLog.i(i+"个页面");
             IdentiMess mess=datainfo.get(i);
             Bundle bundle=new Bundle();
 //            Iterator<String> itear=map.keySet().iterator();
@@ -159,6 +185,7 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
 //                String key=itear.next();
 //                bundle.putString(key,map.get(key));
 //            }
+            MyLog.i("checked=="+mess.getChecked());
             Fragment fragment;
             if (!mess.getChecked().equals("4")){
 //                MyLog.i("IdentiSuccFragment");
@@ -168,7 +195,7 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
 
             }else {
 //                MyLog.i("IdentifitionFragment");
-                MyLog.i("type==="+mess.getId());
+//                MyLog.i("type==="+mess.getId());
                 bundle.putString("type",mess.getId());
                 fragment=new IdentifitionFragment();
             }
@@ -233,7 +260,13 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                     }
                     mess.setService(serverString);
                     mess.setTip(info.getString("tip"));
-                    mess.setNote(info.getString("note"));
+                    try {
+                        mess.setNote(info.getString("note"));
+
+                    }catch (Exception e){
+                        mess.setNote("");
+
+                    }
                     datainfo.add(mess);
                 }
 
@@ -304,7 +337,7 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                 JSONObject selectList=data.getJSONObject("selectList");
                 JSONArray areaArr=selectList.getJSONArray("area");
                 List<NameVal> areaList=new ArrayList<>();
-                for (int i=0;i<areaArr.length();i++){
+                for (int i=1;i<areaArr.length();i++){
 //                    Map<String,String> map=new HashMap<>();
                     NameVal nameVal=new NameVal();
                     JSONObject object=areaArr.getJSONObject(i);
@@ -322,7 +355,7 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                 JSONArray sizeArr=selectList.getJSONArray("companysize");
                 List<NameVal> sizeList=new ArrayList<>();
 
-                for (int i=0;i<sizeArr.length();i++){
+                for (int i=1;i<sizeArr.length();i++){
                     NameVal nameVal=new NameVal();
                     JSONObject object=sizeArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
@@ -333,7 +366,7 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                 JSONArray osresArr=selectList.getJSONArray("outsorcestyle");
                 List<NameVal> osresList=new ArrayList<>();
 
-                for (int i=0;i<osresArr.length();i++){
+                for (int i=1;i<osresArr.length();i++){
                     NameVal nameVal=new NameVal();
                     JSONObject object=osresArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
@@ -344,7 +377,7 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                 JSONArray copstageArr=selectList.getJSONArray("coompstage");
                 List<NameVal> stageList=new ArrayList<>();
 
-                for (int i=0;i<copstageArr.length();i++){
+                for (int i=1;i<copstageArr.length();i++){
                     NameVal nameVal=new NameVal();
                     JSONObject object=copstageArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
@@ -355,7 +388,7 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                 JSONArray coopcatArr=selectList.getJSONArray("coopcat");
                 List<NameVal> isscatList=new ArrayList<>();
 
-                for (int i=0;i<coopcatArr.length();i++){
+                for (int i=1;i<coopcatArr.length();i++){
                     NameVal nameVal=new NameVal();
                     JSONObject object=coopcatArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
@@ -367,7 +400,7 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                 List<NameVal> busiscatList=new ArrayList<>();
 
 
-                for (int i=0;i<businecatArr.length();i++){
+                for (int i=1;i<businecatArr.length();i++){
                     NameVal nameVal=new NameVal();
                     JSONObject object=businecatArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
@@ -379,10 +412,8 @@ public class IdentificationActivity extends BaseActivity implements View.OnClick
                 List<NameVal> invescatList=new ArrayList<>();
 
 
-                for (int i=0;i<investcatArr.length();i++){
-                    if (i==0){
-                        continue;
-                    }
+                for (int i=1;i<investcatArr.length();i++){
+
                     NameVal nameVal=new NameVal();
                     JSONObject object=investcatArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));

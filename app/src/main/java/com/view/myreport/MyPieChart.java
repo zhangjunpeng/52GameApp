@@ -31,7 +31,11 @@ public class MyPieChart {
 
     private static float density;
 
-    private static int[] color={Color.rgb(250, 105, 0),Color.rgb(244, 134, 49),Color.rgb(224, 228, 204),Color.rgb(105, 210, 231),Color.rgb(166, 219, 215)};
+    private static int[] color={Color.rgb(250, 105, 0),
+                                Color.rgb(244, 134, 49),
+                                Color.rgb(224, 228, 204),
+                                Color.rgb(105, 210, 231),
+                                Color.rgb(166, 219, 215)};
 
     private static ArrayList<Integer> colors=new ArrayList<>();
     public static void showChart(PieChart pieChart, List<Map<String,String>> list, String name, Activity context) {
@@ -158,23 +162,27 @@ public class MyPieChart {
         PieDataSet pieDataSet = new PieDataSet(yValues, ""/*显示在比例图上*/);
 
         pieDataSet.setSliceSpace(0f); //设置个饼状图之间的距离
-        piecolor.add(Color.rgb(167, 219, 215));
-        piecolor.add(Color.rgb(105, 210, 231));
-        piecolor.add(Color.rgb(224, 228, 205));
-        piecolor.add(Color.rgb(244, 134, 49));
         piecolor.add(Color.rgb(250, 105, 0));
+        piecolor.add(Color.rgb(244, 134, 49));
 
+        piecolor.add(Color.rgb(224, 228, 205));
 
-        piecolor.add(Color.rgb(58, 62, 108));
-        piecolor.add(Color.rgb(138, 112, 94));
-        piecolor.add(Color.rgb(209, 167, 134));
-        piecolor.add(Color.rgb(78,36,158));
-        piecolor.add(Color.rgb(34, 135, 200));
-        piecolor.add(Color.rgb(74, 100, 14));
-        piecolor.add(Color.rgb(100, 16, 125));
-        piecolor.add(Color.rgb(148, 168, 14));
-        piecolor.add(Color.rgb(89, 160, 78));
+        piecolor.add(Color.rgb(105, 210, 231));
+
+        piecolor.add(Color.rgb(167, 219, 217));
+        piecolor.add(Color.rgb(255, 204, 190));
+        piecolor.add(Color.rgb(178, 228, 251));
+        piecolor.add(Color.rgb(139, 194, 74));
+
+        piecolor.add(Color.rgb(121,85,73));
+        piecolor.add(Color.rgb(254, 193, 6));
+        piecolor.add(Color.rgb(98, 123, 145));
+        piecolor.add(Color.rgb(0, 151, 136));
+
+        piecolor.add(Color.rgb(158, 158, 158));
+        piecolor.add(Color.rgb(114, 114, 114));
         piecolor.add(Color.rgb(202, 16, 168));
+
         piecolor.add(Color.rgb(20, 47, 189));
         piecolor.add(Color.rgb(62, 89, 14));
         piecolor.add(Color.rgb(147, 189, 128));

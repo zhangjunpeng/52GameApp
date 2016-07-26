@@ -180,12 +180,14 @@ public class FragmentEva extends Fragment {
         Legend legend=chart.getLegend();
         legend.setEnabled(false);
 
-        chart.animateXY(
-                1400, 1400,
-                Easing.EasingOption.EaseInOutQuad,
-                Easing.EasingOption.EaseInOutQuad);
+//        chart.animateXY(
+//                1400, 1400,
+//                Easing.EasingOption.EaseInOutQuad,
+//                Easing.EasingOption.EaseInOutQuad);
 
         XAxis xAxis = chart.getXAxis();
+        xAxis.setYOffset(5);
+
         YAxis yAxis = chart.getYAxis();
          // Y坐标值字体样式
         // yAxis.setTypeface(tf);
@@ -317,11 +319,12 @@ public class FragmentEva extends Fragment {
         int[] colors= pieChart.getData().getColors();
 
         LinearLayout.LayoutParams params= new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.width=0;
         params.weight=1;
         LinearLayout linear_con = null;
         for (int i=0;i<ratio_data.size();i++){
             Map<String,String> map=ratio_data.get(i);
-            MyLog.i("name=="+map.get("name"));
+//            MyLog.i("name=="+map.get("name"));
             if (i%4==0){
                 LinearLayout.LayoutParams linearParams= new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
                 linearParams.topMargin= (int) (5*density);
@@ -331,14 +334,16 @@ public class FragmentEva extends Fragment {
 
                 View view=LayoutInflater.from(getActivity()).inflate(R.layout.lengend,null);
 
+
                 ImageView image= (ImageView) view.findViewById(R.id.image_lengend);
                 TextView text= (TextView) view.findViewById(R.id.name_legend);
 
                 image.setBackgroundColor(colors[i]);
                 text.setText(map.get("name"));
                 text.setTextColor(Color.rgb(180,180,180));
+                view.setLayoutParams(params);
 
-                linear_con.addView(view,params);
+                linear_con.addView(view);
 
                 legend_linear.addView(linear_con,linearParams);
 
@@ -363,7 +368,10 @@ public class FragmentEva extends Fragment {
                 image.setBackgroundColor(colors[i]);
                 text.setText(map.get("name"));
                 text.setTextColor(Color.rgb(180,180,180));
-                linear_con.addView(view,params);
+                view.setLayoutParams(params);
+
+                linear_con.addView(view);
+//                linear_con.addView(view,params);
 
 
             }

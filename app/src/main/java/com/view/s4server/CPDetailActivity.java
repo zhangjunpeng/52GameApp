@@ -76,7 +76,6 @@ public class CPDetailActivity extends BaseActivity {
     private String logostring;
     private String scalestring;
     private String phonestring;
-    private String cityname;
     private String introstring;
 
     List<GameInfo> othergames;
@@ -91,6 +90,11 @@ public class CPDetailActivity extends BaseActivity {
     private ImageLoader imageloder=ImageLoader.getInstance();
 
     private View content;
+    private String areaName;
+    private String privinceName;
+    private String cityName;
+    private String countryName;
+    private String addr;
 
 
 
@@ -290,7 +294,13 @@ public class CPDetailActivity extends BaseActivity {
                 scalestring=detail.getString("company_scale");
                 phonestring=detail.getString("company_phone");
                 introstring=detail.getString("company_intro");
-                cityname=detail.getString("city_name");
+                areaName=detail.getString("area_name");
+
+                privinceName=detail.getString("province_name");
+                cityName=detail.getString("city_name");
+                countryName=detail.getString("county_name");
+                addr=detail.getString("addr");
+
                 String fo=detail.getString("focus");
                 if (fo.equals("false")||fo.equals("0")){
                     focus=false;
@@ -305,6 +315,7 @@ public class CPDetailActivity extends BaseActivity {
                     gameInfo.setGame_id(game.getString("id"));
                     gameInfo.setGame_img(game.getString("game_img"));
                     gameInfo.setGame_name(game.getString("game_name"));
+                    gameInfo.setGame_dev(game.getString("identity_cat"));
                     othergames.add(gameInfo);
                 }
             }
@@ -341,9 +352,7 @@ public class CPDetailActivity extends BaseActivity {
         }
 
 
-
-
-        info.setText("所在地 ："+cityname+"\n公司规模 ："+scalestring+"\n电话 ："+phonestring);
+        info.setText("所在区域 ："+areaName+"\n公司规模 ："+scalestring);
 
         if (focus){
             care_title.setImageResource(R.drawable.cared);
@@ -365,6 +374,7 @@ public class CPDetailActivity extends BaseActivity {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Intent intent=new Intent(CPDetailActivity.this, GameDetailActivity.class);
                     intent.putExtra("game_id",othergames.get(position).getGame_id());
+                    intent.putExtra("ident_cat",othergames.get(position).getGame_dev());
                     startActivity(intent);
                     overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
 //                    finish();

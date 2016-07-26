@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="E:\appgit\FancyCoverFlow\src\main\jniLibs"/></dataSet><dataSet config="release"><source path="E:\appgit\FancyCoverFlow\build-types\release\jniLibs"/></dataSet></merger>

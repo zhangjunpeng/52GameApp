@@ -41,6 +41,10 @@ public class Url {
     final static String SP_NAME="4stest";
     private static SharedPreferences sharedPreferences;
 
+    //图片上传路径
+    public static String IconUploadUrl="";
+    public static String IconUploadUrlPrefix="";
+
 
     public static String getSign(Set<Map.Entry<String, String>> set) {
         if (TextUtils.isEmpty(key)) {

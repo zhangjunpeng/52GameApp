@@ -34,6 +34,7 @@ import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
 import com.view.activity.SelectPicActivity;
+import com.view.index.ChangeEvent;
 import com.view.index.MySettingFragment;
 
 import org.json.JSONException;
@@ -43,8 +44,13 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.TreeMap;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -109,7 +115,7 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
 
     private String picPath = null;
 
-    private String requestURL="http://www.52game.com/upload.php";
+//    private String requestURL="http://www.52game.com/upload.php";
 
     public static final int RequestCode_login=101;
     public static final int RequestCode_setting=102;
@@ -119,6 +125,13 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
     private ImageLoader imageloder=ImageLoader.getInstance();
 
     private String tag;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -150,7 +163,8 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
             @Override
             public void onClick(View v) {
                 Intent intent1=new Intent(getActivity(), SelectPicActivity.class);
-                startActivityForResult(intent1, TO_SELECT_PHOTO);
+//                startActivityForResult(intent1, TO_SELECT_PHOTO);
+                startActivity(intent1);
             }
         });
 
@@ -175,6 +189,9 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
 
         return view;
     }
+
+
+
 
 
 
@@ -224,18 +241,37 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
         if (TextUtils.isEmpty(userInfo.getUser_identity())){
             user_iden.setVisibility(View.GONE);
         }else {
-            if (userInfo.getUser_identity().contains("投资人")){
-                tz.setVisibility(View.VISIBLE);
+            List<TextView> textViewList=new ArrayList<>();
+            String[] requires={"投资","外包","开发者","发行","IP"};
+
+            for (int i=0;i<user_iden.getChildCount();i++){
+                TextView textView= (TextView) user_iden.getChildAt(i);
+                textViewList.add(textView);
+                if (userInfo.getUser_identity().contains(requires[i])){
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText(requires[i]);
+                }else {
+                    textView.setVisibility(View.GONE);
+                }
             }
-            if (userInfo.getUser_identity().contains("外包")){
-                wb.setVisibility(View.VISIBLE);
-            }
-            if (userInfo.getUser_identity().contains("开发者")){
-                cp.setVisibility(View.VISIBLE);
-            }
-            if (userInfo.getUser_identity().contains("发行")){
-                fx.setVisibility(View.VISIBLE);
-            }
+
+//
+//            if (userInfo.getUser_identity().contains("投资人")){
+//                textView1.setVisibility(View.VISIBLE);
+//                textView1.setText();
+//            }
+//            if (userInfo.getUser_identity().contains("外包")){
+//                wb.setVisibility(View.VISIBLE);
+//            }
+//            if (userInfo.getUser_identity().contains("开发者")){
+//                cp.setVisibility(View.VISIBLE);
+//            }
+//            if (userInfo.getUser_identity().contains("发行")){
+//                fx.setVisibility(View.VISIBLE);
+//            }
+//            if (userInfo.getUser_identity().contains("发行")){
+//                fx.setVisibility(View.VISIBLE);
+//            }
         }
 
         if (!userInfo.getEdu_name().equals("null")){
@@ -274,10 +310,10 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
     private void initView() {
         icon= (CircleImageView) view.findViewById(R.id.roundImage_myaccountsetting);
         name= (TextView) view.findViewById(R.id.name_myaccountsettting);
-        cp= (TextView) view.findViewById(R.id.cp_myaccountysetting);
-        tz= (TextView) view.findViewById(R.id.tz_myaccountysetting);
-        fx= (TextView) view.findViewById(R.id.fx_myaccountysetting);
-        wb= (TextView) view.findViewById(R.id.wb_myaccountysetting);
+//        cp= (TextView) view.findViewById(R.id.cp_myaccountysetting);
+//        tz= (TextView) view.findViewById(R.id.tz_myaccountysetting);
+//        fx= (TextView) view.findViewById(R.id.fx_myaccountysetting);
+//        wb= (TextView) view.findViewById(R.id.wb_myaccountysetting);
         setnick= (RelativeLayout) view.findViewById(R.id.setnick_myacset_fg);
         setad= (RelativeLayout) view.findViewById(R.id.setad_myacset_fg);
         setedu= (RelativeLayout) view.findViewById(R.id.setedu_myacset_fg);
@@ -343,10 +379,25 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
 
     }
 
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void change(ChangeEvent event){
+        //type 为0变昵称，为1变头像
+        ImageLoader imageLoader=ImageLoader.getInstance();
 
+        switch (event.type){
+            case 1:
+                if (event.data.contains("http")) {
+                    imageLoader.displayImage(event.data, icon, MyDisplayImageOptions.getIconOptions());
+                }else {
+                    imageLoader.displayImage( Url.prePic+event.data, icon,MyDisplayImageOptions.getIconOptions());
+                }
+                break;
+        }
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -408,7 +459,7 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
 //        uploadUtil.setOnUploadProcessListener(this);  //设置监听器监听上传状态
 //        uploadUtil.uploadFile( picPath,fileKey, requestURL,params);
 
-        RequestParams baseParams=new RequestParams(requestURL);
+        RequestParams baseParams=new RequestParams(Url.IconUploadUrlPrefix+Url.IconUploadUrl);
 
         baseParams.setMultipart(true);
         baseParams.addBodyParameter("imei", MyApplication.imei);

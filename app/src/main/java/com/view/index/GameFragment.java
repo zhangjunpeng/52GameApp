@@ -309,6 +309,8 @@ public class GameFragment extends Fragment implements View.OnClickListener{
                     gameInfo.setGame_grade(game.getString("game_grade"));
                     gameInfo.setPack(game.getString("pack"));
                     gameInfo.setChecked(game.getString("checked"));
+                    gameInfo.setGame_dev(game.getString("identity_cat"));
+
                     allgames.add(gameInfo);
                 }
             }
@@ -455,7 +457,7 @@ public class GameFragment extends Fragment implements View.OnClickListener{
                 @Override
                 public void onClick(View v) {
                     GameInfo gameinfo=gameinfos.get(j);
-                    goDetail(gameinfo.getGame_id());
+                    goDetail(gameinfo.getGame_id(),gameinfo.getGame_dev());
                 }
             });
         }
@@ -495,9 +497,10 @@ public class GameFragment extends Fragment implements View.OnClickListener{
         TextView tj;
         TextView more;
     }
-    private void goDetail(String gameid){
+    private void goDetail(String gameid,String ident_cat){
         Intent intent= new Intent(getActivity(),GameDetailActivity.class);
         intent.putExtra("game_id",gameid);
+        intent.putExtra("ident_cat",ident_cat);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
 
@@ -559,6 +562,7 @@ public class GameFragment extends Fragment implements View.OnClickListener{
                         gameInfo.setGame_img(jsonObject1.getString("game_img"));
                         gameInfo.setGame_id(jsonObject1.getString("game_id"));
                         gameInfo.setGame_name(jsonObject1.getString("game_name"));
+                        gameInfo.setGame_dev(jsonObject1.getString("identity_cat"));
                         try {
                             gameInfo.setGame_grade(jsonObject1.getString("game_grade"));
 

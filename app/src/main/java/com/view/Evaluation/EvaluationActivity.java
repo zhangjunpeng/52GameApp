@@ -38,7 +38,7 @@ public class EvaluationActivity extends BaseActivity {
         title= (TextView) findViewById(R.id.textView_titlebar_save);
         save= (TextView) findViewById(R.id.save_savebar);
 
-        title.setText("我的评测");
+        title.setText("玩家评测");
         save.setVisibility(View.INVISIBLE);
         back.setOnClickListener(new View.OnClickListener() {
             @Override

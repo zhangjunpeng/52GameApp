@@ -75,6 +75,7 @@ public class MyGameListAdapter extends BaseAdapter {
             if (TextUtils.isEmpty(gameInfo.getGame_grade())){
                 viewHolder.gamerating.setVisibility(View.INVISIBLE);
             }else {
+                viewHolder.gamerating.setVisibility(View.VISIBLE);
                 ImageLoader.getInstance().displayImage(Url.prePic+gameInfo.getGame_grade(),viewHolder.gamerating, MyDisplayImageOptions.getdefaultImageOptions());
             }
 
@@ -196,7 +197,9 @@ public class MyGameListAdapter extends BaseAdapter {
     private void addMyEvaluation(String game_id){
         BaseParams baseParams=new BaseParams("test/downloadgame");
         baseParams.addParams("game_id",game_id);
-        baseParams.addParams("token",MyAccount.getInstance().getToken());
+        if (MyAccount.isLogin) {
+            baseParams.addParams("token", MyAccount.getInstance().getToken());
+        }
         baseParams.addSign();
         x.http().post(baseParams.getRequestParams(), new Callback.CommonCallback<String>() {
             @Override

@@ -25,6 +25,8 @@ public class IdentifitionFragment extends Fragment implements View.OnClickListen
     private TextView ident_person;
     private TextView ident_company;
 
+    public static final int STARTIDNET=101;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,16 +60,17 @@ public class IdentifitionFragment extends Fragment implements View.OnClickListen
                 Intent intent=new Intent(getActivity(),IdentificaSubActivity.class);
                 intent.putExtra("cattype",type);
                 intent.putExtra("type","person");
-                startActivity(intent);
+                getActivity().startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                getActivity().finish();
                 break;
             case R.id.ident_tob:
                 Intent intent1=new Intent(getActivity(),IdentificaSubActivity.class);
                 intent1.putExtra("cattype",type);
                 intent1.putExtra("type","company");
-                startActivity(intent1);
+                getActivity().startActivity(intent1);
                 getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-
+                getActivity().finish();
                 break;
         }
     }

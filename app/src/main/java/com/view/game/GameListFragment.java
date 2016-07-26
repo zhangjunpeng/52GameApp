@@ -174,7 +174,6 @@ public class GameListFragment extends Fragment implements View.OnClickListener {
             @Override
             public void run() {
                 ptrFrameLayout.autoRefresh();
-                pullToRefreshListView.addFooterView(footview);
             }
         },100);
     }
@@ -225,6 +224,7 @@ public class GameListFragment extends Fragment implements View.OnClickListener {
                 Intent intent= new Intent(getActivity(),GameDetailActivity.class);
                 MyLog.i("game_id==="+gameInfo.getGame_id());
                 intent.putExtra("game_id",gameInfo.getGame_id());
+                intent.putExtra("ident_cat",gameInfo.getGame_dev());
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
             }
@@ -333,6 +333,8 @@ public class GameListFragment extends Fragment implements View.OnClickListener {
                     gameInfo.setChecked(game.getString("checked"));
                     gameInfo.setGame_type(game.getString("game_type"));
                     gameInfo.setGame_stage(game.getString("game_stage"));
+                    gameInfo.setGame_dev(game.getString("identity_cat"));
+
                     if (MyAccount.isLogin){
                         gameInfo.setIscare(game.getBoolean("iscare"));
                     }

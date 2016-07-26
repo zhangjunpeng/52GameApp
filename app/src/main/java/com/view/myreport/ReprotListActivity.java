@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class ReprotListActivity extends BaseActivity {
                 finish();
             }
         });
-        title.setText("我的报告");
+        title.setText("我的游戏");
         save.setVisibility(View.INVISIBLE);
 
         gameReportInfos=new ArrayList<>();
@@ -111,6 +112,7 @@ public class ReprotListActivity extends BaseActivity {
                             gamereportInfo.setGame_type(info.getString("game_type"));
                             gamereportInfo.setStatus(info.getString("status"));
                             gamereportInfo.setChecked(info.getString("checked"));
+                            gamereportInfo.setIdent_cat(info.getString("identity_cat"));
                             gameReportInfos.add(gamereportInfo);
                         }
                     }
@@ -203,6 +205,7 @@ public class ReprotListActivity extends BaseActivity {
                 public void onClick(View v) {
                     Intent intent=new Intent(context, GameDetailActivity.class);
                     intent.putExtra("game_id",gameInfo.getGame_id());
+                    intent.putExtra("ident_cat",gameInfo.getIdent_cat());
                     startActivity(intent);
                     overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                 }
@@ -212,6 +215,7 @@ public class ReprotListActivity extends BaseActivity {
                 public void onClick(View v) {
                     Intent intent=new Intent(context, GameDetailActivity.class);
                     intent.putExtra("game_id",gameInfo.getGame_id());
+                    intent.putExtra("ident_cat",gameInfo.getIdent_cat());
                     startActivity(intent);
                     overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                 }
@@ -236,20 +240,33 @@ public class ReprotListActivity extends BaseActivity {
 //                    .load(Url.prePic+gameInfo.getGame_grade())
 //                    .into(viewHolder.gamerating);
             imageLoader.displayImage(Url.prePic+gameInfo.getGame_img(),viewHolder.icon, MyDisplayImageOptions.getdefaultImageOptions());
-            imageLoader.displayImage(Url.prePic+gameInfo.getGame_grade(),viewHolder.gamerating,MyDisplayImageOptions.getdefaultImageOptions());
+            if (TextUtils.isEmpty(gameInfo.getGame_grade())){
+                viewHolder.gamerating.setVisibility(View.GONE);
+
+            }else {
+                viewHolder.gamerating.setVisibility(View.VISIBLE);
+
+                imageLoader.displayImage(Url.prePic+gameInfo.getGame_grade(),viewHolder.gamerating,MyDisplayImageOptions.getdefaultImageOptions());
+            }
 
             viewHolder.name.setText(gameInfo.getGame_name());
 
             viewHolder.info.setText(gameInfo.getGame_platform()+"\n"+gameInfo.getGame_stage()+" / "+gameInfo.getGame_type()+"\n"+timeToDate(gameInfo.getCreate_time()));
             switch (gameInfo.getChecked()){
                 case "0":
-                    viewHolder.bg.setText(gameInfo.getStatus());
+                case "2":
+
+                case "3":
+                case "4":
+                case "5":
+
                     viewHolder.bg.setTextColor(Color.rgb(76,76,76));
                     viewHolder.bg.setBackgroundResource(R.drawable.grayborder_button);
                     viewHolder.bg.setClickable(false);
+                    viewHolder.bg.setText("评测中");
                     break;
                 case "1":
-                    viewHolder.bg.setText(gameInfo.getStatus());
+                    viewHolder.bg.setText("查看报告");
                     viewHolder.bg.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -260,6 +277,9 @@ public class ReprotListActivity extends BaseActivity {
                         }
                     });
                     break;
+
+
+
             }
 //            switch (gameInfo.getStatus()){
 //                case "查看报告":

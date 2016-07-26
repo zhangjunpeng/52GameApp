@@ -20,11 +20,14 @@ import com.test4s.account.UserInfo;
 import com.test4s.myapp.BaseFragment;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
+import com.view.index.ChangeEvent;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.x;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Administrator on 2016/2/22.
@@ -103,6 +106,9 @@ public class SetNickFragment extends BaseFragment implements View.OnClickListene
                                 MyAccount.getInstance().getUserInfo().setNickname(nickname_s);
                                 MyAccount.getInstance().setNickname(nickname_s);
                                 MyAccount.getInstance().saveUserInfo();
+
+                                ChangeEvent event=new ChangeEvent(nickname_s,0);
+                                EventBus.getDefault().post(event);
 
                                 MyAcountSettingFragment myAcountSettingFragment=new MyAcountSettingFragment();
                                 FragmentTransaction transaction= getActivity().getSupportFragmentManager().beginTransaction();

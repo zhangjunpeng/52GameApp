@@ -76,7 +76,6 @@ public class FirsActivity extends AppCompatActivity {
 
         sharedPreferences= MyApplication.mcontext.getSharedPreferences(SP_NAME, Context.MODE_PRIVATE);
         isFirstin=sharedPreferences.getBoolean("isFirstin",true);
-        getKey();
 
         //获取屏幕密度
         DisplayMetrics metric = new DisplayMetrics();
@@ -96,6 +95,7 @@ public class FirsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         BaseParams.urlindex = MyApplication.mcontext.getString(R.string.url_index_test);
+                        getKey();
 
                         Intent intent=new Intent(FirsActivity.this,MainActivity.class);
                         startActivity(intent);
@@ -106,6 +106,8 @@ public class FirsActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         BaseParams.urlindex =MyApplication.mcontext.getString(R.string.url_index);
+                        getKey();
+
                         Intent intent=new Intent(FirsActivity.this,MainActivity.class);
                         startActivity(intent);
                         finish();
@@ -113,6 +115,8 @@ public class FirsActivity extends AppCompatActivity {
                 });
 
             }else {
+                getKey();
+
                 degug.setVisibility(View.INVISIBLE);
                 relaless.setVisibility(View.INVISIBLE);
                 Executors.newSingleThreadExecutor().execute(new Runnable() {
@@ -132,7 +136,7 @@ public class FirsActivity extends AppCompatActivity {
     }
 
     private void getKey() {
-        MyLog.i("getkey");
+        MyLog.i("getkey firstActivity");
 
         BaseParams baseparam=new BaseParams("api/getkey");
         x.http().post(baseparam.getRequestParams(), new Callback.CommonCallback<String>() {
@@ -146,6 +150,11 @@ public class FirsActivity extends AppCompatActivity {
                     if (su&&code==200){
                         JSONObject data=jsonObject.getJSONObject("data");
                         Url.key=data.getString("md5key");
+                        JSONObject uploadurl=data.getJSONObject("uploadurl");
+                        JSONObject user=uploadurl.getJSONObject("user");
+                        Url.IconUploadUrl=user.getString("url");
+
+                        Url.IconUploadUrlPrefix=data.getString("uploadurlPrefix");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -155,6 +164,7 @@ public class FirsActivity extends AppCompatActivity {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
+                MyLog.i("getkey error=="+ex.toString());
 
             }
 

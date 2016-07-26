@@ -155,6 +155,15 @@ public class GameDetailActivity extends BaseActivity implements View.OnClickList
         back= (ImageView) findViewById(R.id.back_gamedetail);
 
         game_id=getIntent().getStringExtra("game_id");
+        try {
+            ident_cat=getIntent().getStringExtra("ident_cat");
+        }catch (Exception e){
+        }
+        if(TextUtils.isEmpty(ident_cat)){
+            ident_cat="2";
+        }
+        MyLog.i("ident_cat==="+ident_cat);
+
 
         icon= (ImageView) findViewById(R.id.image_game_detail);
         game_name= (TextView) findViewById(R.id.gamename_game);
@@ -279,6 +288,8 @@ public class GameDetailActivity extends BaseActivity implements View.OnClickList
         if (MyAccount.isLogin){
             gamedetail.addParams("token",MyAccount.getInstance().getToken());
         }
+        gamedetail.addParams("identity_cat",ident_cat);
+
         gamedetail.addSign();
         gamedetail.getRequestParams().setCacheMaxAge(1000*60*30);
 
@@ -343,7 +354,7 @@ public class GameDetailActivity extends BaseActivity implements View.OnClickList
                 create_timestring=info.getString("create_time");
                 game_test_numsstring=info.getString("game_test_nums");
                 requirement=info.getString("requirement");
-                ident_cat=info.getString("identity_cat");
+//                ident_cat=info.getString("identity_cat");
 
                 gameInfo.setPack(info.getString("pack"));
                 gameInfo.setChecked(info.getString("checked"));

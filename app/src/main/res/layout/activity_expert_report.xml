@@ -173,7 +173,7 @@
                 android:id="@+id/text_gamescore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="评级预期："
+                android:text="游戏评分："
                 android:layout_marginLeft="10dp"
                 android:textColor="#353535"
                 android:textSize="14.66dp"

@@ -85,7 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="21.33dp"
-                android:text="评分权重占比"
+                android:text="游戏专项评分"
                 android:textColor="#4c4c4c"
                 android:layout_marginLeft="24dp"
                 />

@@ -49,6 +49,9 @@ public class IdentiSuccFragment extends Fragment implements View.OnClickListener
         stage=Integer.parseInt(mess.getChecked());
 
         setView();
+        if (stage==3){
+
+        }
         check.setOnClickListener(this);
 
         return view;
@@ -92,7 +95,6 @@ public class IdentiSuccFragment extends Fragment implements View.OnClickListener
                         break;
                     case 0:
                     case 1:
-                    case 3:
                         gotocheck();
                         break;
                 }
@@ -111,10 +113,11 @@ public class IdentiSuccFragment extends Fragment implements View.OnClickListener
         Intent intent=new Intent(getActivity(),IdentificaSubActivity.class);
         intent.putExtra("type","company");
         intent.putExtra("cattype",mess.getId());
-
+        intent.putExtra("note",mess.getNote());
         intent.putExtra("stage",stage);
         startActivity(intent);
         getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+        getActivity().finish();
     }
 
 }

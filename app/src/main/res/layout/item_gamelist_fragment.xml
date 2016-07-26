@@ -35,7 +35,9 @@
             <com.app.view.TopLeftCornerImage
                 android:id="@+id/gamerating"
                 android:layout_width="23dp"
-                android:layout_height="23dp" />
+                android:layout_height="23dp"
+                android:scaleType="fitXY"
+                />
         </RelativeLayout>
 
 
@@ -86,12 +88,14 @@
             android:ellipsize="end"
             />
         <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="43.33dp"
+            android:layout_height="match_parent"
             android:layout_centerVertical="true"
             android:orientation="vertical"
             android:layout_alignParentRight="true"
-            android:layout_marginRight="12dp"
+            android:gravity="center"
+            android:background="@drawable/solid_rightconner"
+            android:layout_margin="1px"
             >
             <ImageView
                 android:id="@+id/download_item_list"

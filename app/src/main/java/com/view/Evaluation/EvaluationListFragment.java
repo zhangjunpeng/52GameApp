@@ -8,6 +8,7 @@ import android.graphics.Color;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -156,13 +157,14 @@ public class EvaluationListFragment extends Fragment {
                     gameInfo.setGame_name(info.getString("game_name"));
                     gameInfo.setGame_img(info.getString("game_img"));
                     gameInfo.setGame_grade(info.getString("game_grade"));
-                    gameInfo.setGame_dev(info.getString("game_dev"));
+                    gameInfo.setGame_platform(info.getString("game_platform"));
                     gameInfo.setCreate_time(info.getString("create_time"));
                     gameInfo.setIs_test(info.getString("is_test"));
                     gameInfo.setGame_type(info.getString("game_type"));
                     gameInfo.setOnline(info.getInt("online"));
                     gameInfo.setEnabled(info.getInt("enabled"));
                     gameInfo.setSdk(info.getString("sdk"));
+                    gameInfo.setGame_dev(info.getString("identity_cat"));
                     gamelist.add(gameInfo);
                 }
             }
@@ -229,6 +231,7 @@ public class EvaluationListFragment extends Fragment {
                 public void onClick(View v) {
                     Intent intent=new Intent(context, GameDetailActivity.class);
                     intent.putExtra("game_id",gameInfo.getGame_id());
+                    intent.putExtra("ident_cat",gameInfo.getGame_dev());
                     context.startActivity(intent);
                     context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                 }
@@ -238,15 +241,24 @@ public class EvaluationListFragment extends Fragment {
                 public void onClick(View v) {
                     Intent intent=new Intent(context, GameDetailActivity.class);
                     intent.putExtra("game_id",gameInfo.getGame_id());
+                    intent.putExtra("ident_cat",gameInfo.getGame_dev());
                     context.startActivity(intent);
                     context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                 }
             });
             imageLoader.displayImage(Url.prePic+gameInfo.getGame_img(),viewHolder.icon, MyDisplayImageOptions.getdefaultImageOptions());
 
-            imageLoader.displayImage(Url.prePic+gameInfo.getGame_grade(),viewHolder.gamerating, MyDisplayImageOptions.getdefaultImageOptions());
+            if (TextUtils.isEmpty(gameInfo.getGame_grade())) {
+                viewHolder.gamerating.setVisibility(View.GONE);
 
-            viewHolder.info.setText(gameInfo.getGame_dev()+" / "+gameInfo.getGame_type()+"\n"+gameInfo.getCreate_time());
+            }else {
+                viewHolder.gamerating.setVisibility(View.VISIBLE);
+
+                imageLoader.displayImage(Url.prePic+gameInfo.getGame_grade(),viewHolder.gamerating, MyDisplayImageOptions.getdefaultImageOptions());
+
+            }
+
+            viewHolder.info.setText(gameInfo.getGame_platform()+" / "+gameInfo.getGame_type()+"\n"+gameInfo.getCreate_time());
             viewHolder.name.setText(gameInfo.getGame_name());
             if ("0".equals(gameInfo.getIs_test())){
                 //未评测

@@ -1,6 +1,7 @@
 package com.view.Identification;
 
 import android.app.Dialog;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -31,9 +32,6 @@ import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.view.activity.BaseActivity;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -94,6 +92,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
         save.setVisibility(View.INVISIBLE);
 
         initData();
+//        addfragment();
         cattype=getIntent().getStringExtra("cattype");
         type=getIntent().getStringExtra("type");
 
@@ -178,6 +177,14 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
 //
 //        companySize_text.setOnClickListener(this);
 //        area_text.setOnClickListener(this);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
+            }
+        });
     }
     private void initData() {
         BaseParams params=new BaseParams("identity/identityselect");
@@ -222,6 +229,9 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
         bundle.putString("cattype",cattype);
         bundle.putString("type",type);
         bundle.putInt("stage",stage);
+        if (stage==2){
+            bundle.putString("note",getIntent().getStringExtra("note"));
+        }
         fragment.setArguments(bundle);
 
         getSupportFragmentManager().beginTransaction()
@@ -241,7 +251,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
                 JSONObject selectList=data.getJSONObject("selectList");
                 JSONArray areaArr=selectList.getJSONArray("area");
                 List<NameVal> areaList=new ArrayList<>();
-                for (int i=0;i<areaArr.length();i++){
+                for (int i=1;i<areaArr.length();i++){
 //                    Map<String,String> map=new HashMap<>();
                     NameVal nameVal=new NameVal();
                     JSONObject object=areaArr.getJSONObject(i);
@@ -259,7 +269,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
                 JSONArray sizeArr=selectList.getJSONArray("companysize");
                 List<NameVal> sizeList=new ArrayList<>();
 
-                for (int i=0;i<sizeArr.length();i++){
+                for (int i=1;i<sizeArr.length();i++){
                     NameVal nameVal=new NameVal();
                     JSONObject object=sizeArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
@@ -270,7 +280,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
                 JSONArray osresArr=selectList.getJSONArray("outsorcestyle");
                 List<NameVal> osresList=new ArrayList<>();
 
-                for (int i=0;i<osresArr.length();i++){
+                for (int i=1;i<osresArr.length();i++){
                     NameVal nameVal=new NameVal();
                     JSONObject object=osresArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
@@ -281,7 +291,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
                 JSONArray copstageArr=selectList.getJSONArray("coompstage");
                 List<NameVal> stageList=new ArrayList<>();
 
-                for (int i=0;i<copstageArr.length();i++){
+                for (int i=1;i<copstageArr.length();i++){
                     NameVal nameVal=new NameVal();
                     JSONObject object=copstageArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
@@ -292,7 +302,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
                 JSONArray coopcatArr=selectList.getJSONArray("coopcat");
                 List<NameVal> isscatList=new ArrayList<>();
 
-                for (int i=0;i<coopcatArr.length();i++){
+                for (int i=1;i<coopcatArr.length();i++){
                     NameVal nameVal=new NameVal();
                     JSONObject object=coopcatArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
@@ -304,7 +314,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
                 List<NameVal> busiscatList=new ArrayList<>();
 
 
-                for (int i=0;i<businecatArr.length();i++){
+                for (int i=1;i<businecatArr.length();i++){
                     NameVal nameVal=new NameVal();
                     JSONObject object=businecatArr.getJSONObject(i);
                     nameVal.setId(object.getString("id"));
@@ -316,7 +326,7 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
                 List<NameVal> invescatList=new ArrayList<>();
 
 
-                for (int i=0;i<investcatArr.length();i++){
+                for (int i=1;i<investcatArr.length();i++){
                     if (i==0){
                         continue;
                     }
@@ -396,19 +406,48 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
                 subinfo.setApply(info.getString("apply"));
                 subinfo.setLogo(info.getString("logo"));
 //                company_scale=info.getString("company_scale");
-                subinfo.setCompany_scale(info.getJSONObject("size").getString("company_scale_name"));
+                NameVal companysize=new NameVal();
+                companysize.setId(info.getJSONObject("size").getString("company_scale"));
+                companysize.setVal(info.getJSONObject("size").getString("company_scale_name"));
+
+                subinfo.setCompany_scale(companysize);
 
                 subinfo.setCompany_phone(info.getString("company_phone"));
-                subinfo.setAddress(info.getString("area"));
+                subinfo.setAddress(info.getString("addr"));
                 subinfo.setCompany_info(info.getString("company_intro"));
                 subinfo.setIdnum(info.getString("business_id"));
                 subinfo.setCompany_photo(info.getString("business_pic"));
+
                 subinfo.setCoop_cat(info.getString("coop_cat"));
-                subinfo.setInvest_cat(info.getString("invest_cat"));
+
+                NameVal invescat=new NameVal();
+                invescat.setId(info.getString("invest_cat"));
+                invescat.setVal(info.getJSONObject("invest").getString("invest_cat_name"));
+                subinfo.setInvest_cat(invescat);
+
                 subinfo.setInvest_stage(info.getString("invest_stage"));
                 subinfo.setBusiness_cat(info.getString("business_cat"));
                 subinfo.setOutsource_cat(info.getString("outsource_cat"));
-                subinfo.setArea(info.getJSONObject("region").getString("area_name"));
+
+                NameVal area=new NameVal();
+                area.setId(info.getString("area_id"));
+                area.setVal(info.getJSONObject("region").getString("area_name"));
+                subinfo.setArea(area);
+
+                NameVal province=new NameVal();
+                province.setId(info.getString("province"));
+                province.setVal(info.getString("province_name"));
+                subinfo.setProvince(province);
+
+                NameVal city=new NameVal();
+                city.setId(info.getString("city"));
+                city.setVal(info.getString("city_name"));
+                subinfo.setCity(city);
+
+                NameVal country=new NameVal();
+                country.setId(info.getString("county"));
+                country.setVal(info.getString("county_name"));
+                subinfo.setCountry(country);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -488,5 +527,13 @@ public class IdentificaSubActivity extends BaseActivity implements View.OnClickL
     public void onClick(View v) {
         switch (v.getId()){
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(this,IdentificationActivity.class);
+        startActivity(intent);
+        overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
+        finish();
     }
 }

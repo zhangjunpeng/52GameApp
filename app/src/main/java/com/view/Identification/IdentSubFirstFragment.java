@@ -169,6 +169,9 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
 
 
     public IdentSubInfo subinfo;
+
+    private TextView failemessText;
+    private TextView faileresonText;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -211,10 +214,13 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
 
         error= (TextView) view.findViewById(R.id.text_error_ident);
 
+        failemessText= (TextView) view.findViewById(R.id.fail_mess);
+        faileresonText= (TextView) view.findViewById(R.id.fail_reson);
+
+
         if (stage==2){
             relativeLayout.setVisibility(View.VISIBLE);
             subinfo=IdentificaSubActivity.subinfo;
-            initView();
             switch (subinfo.getPersonal()){
                 case "1":
                     type="person";
@@ -223,8 +229,36 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                     type="company";
                     break;
             }
+            String failemess="你的";
+            switch (cattype){
+                //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
+                case "2":
+                    failemess=failemess+"开发者";
+                    break;
+                case "3":
+                    failemess=failemess+"外包";
+
+                    break;
+                case "4":
+                    failemess=failemess+"投资人";
+
+                    break;
+                case "5":
+                    failemess=failemess+"IP方";
+
+                    break;
+                case "6":
+                    failemess=failemess+"发行方";
+
+                    break;
+            }
+            failemess=failemess+"未通过认证，\n您可以补充资料重新提交认证！";
+            String failereson="失败原因："+getArguments().getString("note");
+            failemessText.setText(failemess);
+            faileresonText.setText(failereson);
 
         }
+
 
         switch (cattype){
             //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
@@ -256,6 +290,8 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 busiLayout.setVisibility(View.GONE);
                 issCatLayout.setVisibility(View.GONE);
                 invesCatLayout.setVisibility(View.GONE);
+                view.findViewById(R.id.line_needgone2).setVisibility(View.GONE);
+                view.findViewById(R.id.line_needgone).setVisibility(View.GONE);
                 break;
             case "6":
                 resLayout.setVisibility(View.GONE);
@@ -266,10 +302,17 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 break;
         }
 
+
+        if (stage==2){
+            initView();
+
+        }
         if (!TextUtils.isEmpty(identificationConfig.getCompanyName())){
             companyName_edit.setText(identificationConfig.getCompanyName());
             companyName_edit.setEnabled(false);
         }
+
+
 
 
 
@@ -295,14 +338,22 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
     private void initView() {
         ImageLoader imageLoader=ImageLoader.getInstance();
         if(subinfo==null){
-            MyLog.i("subinfo null");
+            MyLog.i("initView subinfo null");
             return;
         }
         companyName_edit.setText(subinfo.getCompany_name());
+
         imageLoader.displayImage(Url.prePic+subinfo.getLogo(),icon_sub, MyDisplayImageOptions.getBigImageOption());
-        size_text.setText(subinfo.getCompany_scale());
-        area_text.setText(subinfo.getArea());
+        params.setIconUrl(subinfo.getLogo());
+
+        size_text.setText(subinfo.getCompany_scale().getVal());
+        params.setCompanySize(subinfo.getCompany_scale().getId());
+
+        area_text.setText(subinfo.getArea().getVal());
+        params.setArea(subinfo.getArea().getId());
+
         companyInfo_edit.setText(subinfo.getCompany_info());
+        params.setCompanyInfo(subinfo.getCompany_info());
 
         switch (cattype){
             //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
@@ -311,10 +362,32 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 break;
             case "3":
                 initTextViews(config.getOsresList(),subinfo.getOutsource_cat());
+                String resIds=subinfo.getOutsource_cat();
+                List<NameVal> os_sel=new ArrayList<>();
+                for (int i=0;i<config.getOsresList().size();i++){
+                    NameVal nameVal=config.getOsresList().get(i);
+                    if (resIds.contains(nameVal.getId())){
+                        os_sel.add(nameVal);
+                    }
+                }
+
+                params.setOsresSelected(os_sel);
+
                 break;
             case "4":
                 initTextViews(config.getStageList(),subinfo.getInvest_stage());
-                invescat_text.setText(subinfo.getInvest_cat());
+                String stageIds=subinfo.getInvest_stage();
+                List<NameVal> stage_sel=new ArrayList<>();
+                for (int i=0;i<config.getStageList().size();i++){
+                    NameVal nameVal=config.getStageList().get(i);
+                    if (stageIds.contains(nameVal.getId())){
+                        stage_sel.add(nameVal);
+                    }
+                }
+                params.setInvesStageSelected(stage_sel);
+
+                invescat_text.setText(subinfo.getInvest_cat().getVal());
+                params.setInvescat(subinfo.getInvest_cat().getId());
                 break;
             case "5":
 
@@ -342,9 +415,27 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
     private void initBusSelect() {
         final List<NameVal> buisCatList=config.getBuscatList();
         if (buisCatList==null){
-            MyLog.i("buisCatList null");
+            MyLog.i("initBusSelect buisCatList null");
             return;
         }
+        if (stage==2){
+            if (subinfo==null){
+                MyLog.i("initBusSelect subinfo null");
+                return;
+            }
+            List<NameVal> nameValListss=new ArrayList<>();
+            for (int i=0;i<buisCatList.size();i++) {
+                NameVal nameVal=buisCatList.get(i);
+                if (subinfo.getBusiness_cat().contains(nameVal.getId())) {
+                    nameValListss.add(nameVal);
+                }
+                params.setBuscatSelected(nameValListss);
+
+            }
+        }
+
+
+
         for (int i=0;i<linear_buscat.getChildCount();i++){
             if (i>=buisCatList.size()){
                 linear_buscat.getChildAt(i).setVisibility(View.INVISIBLE);
@@ -354,6 +445,7 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 textView.setText(nameVal.getVal());
 
                 if (stage==2){
+
                     if (subinfo.getBusiness_cat().contains(nameVal.getId())){
                         textView.setSelected(true);
                         textView.setTextColor(Color.WHITE);
@@ -382,6 +474,22 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
         if (issCatList==null){
             return;
         }
+        if (stage==2){
+            if (subinfo==null){
+                MyLog.i("intIssSelect subinfo null");
+                return;
+            }
+            List<NameVal> nameValListss=new ArrayList<>();
+            for (int i=0;i<issCatList.size();i++) {
+                NameVal nameVal=issCatList.get(i);
+                if (subinfo.getCoop_cat().contains(nameVal.getId())) {
+                    nameValListss.add(nameVal);
+                }
+                params.setIsscatSelected(nameValListss);
+
+            }
+        }
+
         for (int i=0;i<linear_isscat.getChildCount();i++){
             if (i>=issCatList.size()){
                 linear_isscat.getChildAt(i).setVisibility(View.INVISIBLE);
@@ -390,7 +498,7 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 final NameVal nameVal=issCatList.get(i);
                 textView.setText(nameVal.getVal());
                 if (stage==2){
-                    if (subinfo.getBusiness_cat().contains(nameVal.getId())){
+                    if (subinfo.getCoop_cat().contains(nameVal.getId())){
                         textView.setSelected(true);
                         textView.setTextColor(Color.WHITE);
                     }
@@ -428,6 +536,10 @@ public class IdentSubFirstFragment extends Fragment implements View.OnClickListe
                 showSelectDiaolog(invescat_text,config.getInvescatList(),"invescat");
                 break;
             case R.id.nextstep_first:
+
+                MyLog.i("buscat size=="+params.getBuscatSelected().size());
+                MyLog.i("isscat size=="+params.getIsscatSelected().size());
+
                 if ( checkParams()){
                     IdentSubSecondFragment fragment=new IdentSubSecondFragment();
 

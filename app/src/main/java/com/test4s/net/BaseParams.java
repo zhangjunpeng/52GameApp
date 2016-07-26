@@ -33,8 +33,11 @@ public class BaseParams {
 //        }
 //        urlindex =MyApplication.mcontext.getString(R.string.url_index);
 
-        if (!MyApplication.DeBug){
+        if (MyApplication.DeBug){
+
+        }else {
             urlindex=MyApplication.mcontext.getString(R.string.url_index);
+
         }
 
 //        MyLog.i("version=="+MyApplication.versionName);

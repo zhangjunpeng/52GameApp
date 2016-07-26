@@ -47,6 +47,9 @@ import org.xutils.x;
 
 import java.io.File;
 
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
@@ -76,7 +79,11 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
     public static boolean changeIcon=false;
 
 
-
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        EventBus.getDefault().register(this);
+        super.onCreate(savedInstanceState);
+    }
 
     @Nullable
     @Override
@@ -97,41 +104,32 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
 
         myAccount=MyAccount.getInstance();
 
-        initView();
+        updataUserName();
+        updataAva();
 
         return view;
     }
 
-    @Override
-    public void onResume() {
-        if (myAccount.getUserInfo()!=null){
-            if (!myAccount.getAvatar().equals(myAccount.getUserInfo().getAvatar())){
-                myAccount.setAvatar(myAccount.getUserInfo().getAvatar());
-                imageLoader.displayImage(myAccount.getAvatar(),roundedIcon,MyDisplayImageOptions.getdefaultImageOptions());
-                myAccount.saveUserInfo();
-            }
-            if (changeIcon){
-                updataAva();
-            }
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void change(ChangeEvent event){
+        //type 为0变昵称，为1变头像
+        switch (event.type){
+            case 0:
+                textView.setText(event.data);
+                break;
+            case 1:
+                if (event.data.contains("http")) {
+                    imageLoader.displayImage(event.data, roundedIcon, MyDisplayImageOptions.getIconOptions());
+                }else {
+                    imageLoader.displayImage( Url.prePic+event.data, roundedIcon,MyDisplayImageOptions.getIconOptions());
+                }
+                break;
         }
-
-        super.onResume();
     }
 
-    private void initView() {
-        //设置界面
-        if (MyAccount.isLogin){
-            initData();
 
-//            textView.setText(myAccount.getNickname());
-            name2.setVisibility(View.GONE);
-        }else{
-            textView.setText("未登录");
-            name2.setVisibility(View.VISIBLE);
-            roundedIcon.setImageResource(R.drawable.default_icon);
-        }
 
-    }
+
 
     private void initData() {
         if (MyAccount.isLogin){
@@ -162,7 +160,7 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
         }else {
             textView.setText(myAccount.getNickname());
         }
-        updataAva();
+//        updataAva();
     }
 
     @Override
@@ -263,20 +261,23 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
 
             }else {
                 CusToast.showToast(getActivity(),"登录成功",Toast.LENGTH_SHORT);
-                name2.setVisibility(View.GONE);
+//                name2.setVisibility(View.GONE);
+                updataUserName();
+                updataAva();
                 initUserInfo();
             }
         }
         if (resultCode==Activity.RESULT_OK&&requestCode==RequestCode_setting){
 
             MyLog.i("mysetting~~~~~RequestCode_setting");
-            initView();
+//            initView();
+            updataUserName();
+            updataAva();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    private void updataInfo() {
-        myAccount=MyAccount.getInstance();
+    private void updataUserName() {
         if (MyAccount.isLogin){
             name2.setVisibility(View.GONE);
             MyLog.i("myaccount=="+myAccount.toString());
@@ -289,27 +290,22 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
             }else {
                 textView.setText(myAccount.getNickname());
             }
-            updataAva();
-            initUserInfo();
-        }else{
+        }else {
             roundedIcon.setImageResource(R.drawable.default_icon);
             textView.setText("未登录");
             name2.setVisibility(View.VISIBLE);
         }
-
     }
+
+
 
     private void updataAva() {
         if (MyAccount.isLogin){
-            UserInfo userInfo=myAccount.getUserInfo();
-            if (userInfo!=null){
-                if (userInfo.getAvatar().contains("http")) {
-                    imageLoader.displayImage( userInfo.getAvatar(), roundedIcon, MyDisplayImageOptions.getIconOptions());
-                }else {
-                    imageLoader.displayImage( Url.prePic+userInfo.getAvatar(), roundedIcon,MyDisplayImageOptions.getIconOptions());
-                }
+            myAccount=MyAccount.getInstance();
+            if (myAccount.getAvatar().contains("http")) {
+                imageLoader.displayImage( myAccount.getAvatar(), roundedIcon, MyDisplayImageOptions.getIconOptions());
             }else {
-                initUserInfo();
+                imageLoader.displayImage( Url.prePic+myAccount.getAvatar(), roundedIcon,MyDisplayImageOptions.getIconOptions());
             }
             changeIcon=false;
         }else {
@@ -398,4 +394,9 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
         getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
     }
 
+    @Override
+    public void onDestroy() {
+        EventBus.getDefault().unregister(this);
+        super.onDestroy();
+    }
 }

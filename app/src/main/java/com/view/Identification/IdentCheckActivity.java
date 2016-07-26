@@ -74,6 +74,7 @@ public class IdentCheckActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         cattype=getIntent().getStringExtra("cattype");
+        stage=getIntent().getIntExtra("stage",2);
 
         setContentView(R.layout.activity_identinfo_check);
 
@@ -112,6 +113,14 @@ public class IdentCheckActivity extends BaseActivity {
 
         save.setVisibility(View.INVISIBLE);
         title.setText("查看认证资料");
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+                overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
+            }
+        });
 
         initLayout();
 
@@ -302,19 +311,48 @@ public class IdentCheckActivity extends BaseActivity {
                 subinfo.setApply(info.getString("apply"));
                 subinfo.setLogo(info.getString("logo"));
 //                company_scale=info.getString("company_scale");
-                subinfo.setCompany_scale(info.getJSONObject("size").getString("company_scale_name"));
+                NameVal companysize=new NameVal();
+                companysize.setId(info.getJSONObject("size").getString("company_scale"));
+                companysize.setVal(info.getJSONObject("size").getString("company_scale_name"));
+
+                subinfo.setCompany_scale(companysize);
 
                 subinfo.setCompany_phone(info.getString("company_phone"));
-                subinfo.setAddress(info.getString("area"));
+                subinfo.setAddress(info.getString("addr"));
                 subinfo.setCompany_info(info.getString("company_intro"));
                 subinfo.setIdnum(info.getString("business_id"));
                 subinfo.setCompany_photo(info.getString("business_pic"));
+
                 subinfo.setCoop_cat(info.getString("coop_cat"));
-                subinfo.setInvest_cat(info.getString("invest_cat"));
+
+                NameVal invescat=new NameVal();
+                invescat.setId(info.getString("invest_cat"));
+                invescat.setVal(info.getJSONObject("invest").getString("invest_cat_name"));
+                subinfo.setInvest_cat(invescat);
+
                 subinfo.setInvest_stage(info.getString("invest_stage"));
                 subinfo.setBusiness_cat(info.getString("business_cat"));
                 subinfo.setOutsource_cat(info.getString("outsource_cat"));
-                subinfo.setArea(info.getJSONObject("region").getString("area_name"));
+
+                NameVal area=new NameVal();
+                area.setId(info.getString("area_id"));
+                area.setVal(info.getJSONObject("region").getString("area_name"));
+                subinfo.setArea(area);
+
+                NameVal province=new NameVal();
+                province.setId(info.getString("province"));
+                province.setVal(info.getString("province_name"));
+                subinfo.setProvince(province);
+
+                NameVal city=new NameVal();
+                city.setId(info.getString("city"));
+                city.setVal(info.getString("city_name"));
+                subinfo.setCity(city);
+
+                NameVal country=new NameVal();
+                country.setId(info.getString("county"));
+                country.setVal(info.getString("county_name"));
+                subinfo.setCountry(country);
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -325,12 +363,13 @@ public class IdentCheckActivity extends BaseActivity {
         ImageLoader imageLoader=ImageLoader.getInstance();
         companyname_text.setText(subinfo.getCompany_name());
         imageLoader.displayImage(Url.prePic+subinfo.getLogo(),icon_image, MyDisplayImageOptions.getBigImageOption());
-        company_size.setText(subinfo.getCompany_scale());
-        area_text.setText(subinfo.getArea());
+        company_size.setText(subinfo.getCompany_scale().getVal());
+        area_text.setText(subinfo.getArea().getVal());
         companyinfo_text.setText(subinfo.getCompany_info());
         username_text.setText(subinfo.getApply());
         phonenum_text.setText(subinfo.getCompany_phone());
-        address_text.setText(subinfo.getAddress());
+        String addr=subinfo.getProvince().getVal()+subinfo.getCity().getVal()+subinfo.getCountry().getVal()+subinfo.getAddress();
+        address_text.setText(addr);
         switch (cattype){
             //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
             case "2":
@@ -341,7 +380,7 @@ public class IdentCheckActivity extends BaseActivity {
                 break;
             case "4":
                 initReslayout(config.getStageList(),subinfo.getInvest_stage());
-                investcat_text.setText(subinfo.getInvest_cat());
+                investcat_text.setText(subinfo.getInvest_cat().getVal());
                 break;
             case "5":
 

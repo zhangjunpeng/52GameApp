@@ -86,6 +86,8 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
     private IdentSubInfo subinfo;
     private ImageLoader imageLoader=ImageLoader.getInstance();
 
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -162,14 +164,36 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
 
     private void initView() {
         name_edit.setText(subinfo.getApply());
+        username=subinfo.getApply();
+
+
+        phone_edit.setText(subinfo.getCompany_phone());
+        phonenum=subinfo.getCompany_phone();
+
+        String address_sel=subinfo.getProvince().getVal()+"-"+subinfo.getCity().getVal()+"-"+subinfo.getCountry().getVal();
+        selectAddress.setText(address_sel);
+        provinceid=subinfo.getProvince().getId();
+        cityid=subinfo.getCity().getId();
+        countryId=subinfo.getCountry().getId();
+
+        address=subinfo.getAddress();
+        address_edit.setText(address);
+
         switch (subinfo.getPersonal()){
             case "1":
                 idnum_edit.setText(subinfo.getIdnum());
+                Idnum=subinfo.getIdnum();
+
                 break;
             case "2":
                 imageLoader.displayImage(Url.prePic+subinfo.getCompany_photo(),comphoto,MyDisplayImageOptions.getBigImageOption());
+                companyPhotoUrl=subinfo.getCompany_photo();
+
                 break;
         }
+
+
+
     }
 
     /**
@@ -217,6 +241,10 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
             case R.id.address_text:
                 ChangeAddressDialog mChangeAddressDialog = new ChangeAddressDialog(
                         getActivity());
+                if (stage==2){
+                    mChangeAddressDialog.setAddress(subinfo.getProvince(),subinfo.getCity(),subinfo.getCountry());
+                }
+
                 mChangeAddressDialog.show();
                 mChangeAddressDialog
                         .setAddresskListener(new ChangeAddressDialog.OnAddressCListener() {
@@ -243,6 +271,7 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
         phonenum=phone_edit.getText().toString();
         code=code_edit.getText().toString();
         address=address_edit.getText().toString();
+        Idnum=idnum_edit.getText().toString();
 
         if (TextUtils.isEmpty(username)||TextUtils.isEmpty(phonenum)||TextUtils.isEmpty(code)||TextUtils.isEmpty(address)){
             showwarn("资料未填写完整");
@@ -258,7 +287,7 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
                 break;
             case "person":
                 if (TextUtils.isEmpty(Idnum)){
-                    showwarn("资料未填写完整");
+                    showwarn("身份证号码未填写");
                     return false;
                 }
                 break;
@@ -279,6 +308,10 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
 
     private void changeCode() {
         phonenum=phone_edit.getText().toString();
+        if (phonenum.length()<11){
+            showwarn("请输入正确的电话号码");
+            return;
+        }
         getcode_text.setClickable(false);
         getCode();
         Executors.newSingleThreadExecutor().execute(new Runnable() {
@@ -332,15 +365,21 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
                     break;
                 case 666:
                     String data= (String) msg.obj;
+                    MyLog.i("data==="+data);
                     try {
                         JSONObject jsonObject=new JSONObject(data);
                         boolean su=jsonObject.getBoolean("success");
                         int code=jsonObject.getInt("code");
                         if (su&&code==200){
+//                            getActivity().setResult(Activity.RESULT_OK);
+//                            getActivity().finish();
                             Intent intent=new Intent(getActivity(),IdentificationActivity.class);
                             startActivity(intent);
                             getActivity().overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
                             getActivity().finish();
+                        }else {
+                            String mess=jsonObject.getString("msg");
+                            showwarn(mess);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -599,20 +638,29 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
         map.put("county",countryId);
         map.put("addr",address);
         map.put("area_id",identParams.getArea());
-        map.put("company_intro",identParams.getCompanyInfo());
 
         map.put("identity_cat",cattype);
 
         //2:开发者 3:外包 4:投资人 5:IP方 6:发行方
         switch (cattype){
+            case "2":
+                map.put("company_intro",identParams.getCompanyInfo());
+
+                break;
             case "3":
                 String oscats=getParamsFromList(identParams.getOsresSelected());
                 map.put("outsource_cat",oscats);
+
+                map.put("company_intro",identParams.getCompanyInfo());
+
                 break;
             case "4":
                 String stages=getParamsFromList(identParams.getInvesStageSelected());
                 map.put("invest_stage",stages);
                 map.put("invest_cat",identParams.getInvescat());
+
+                map.put("company_intro",identParams.getCompanyInfo());
+
                 break;
             case "5":
                 break;
@@ -621,6 +669,9 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
                 map.put("coop_cat",coops);
                 String busis=getParamsFromList(identParams.getBuscatSelected());
                 map.put("business_cat",busis);
+
+                map.put("company_intro",identParams.getCompanyInfo());
+
                 break;
         }
 

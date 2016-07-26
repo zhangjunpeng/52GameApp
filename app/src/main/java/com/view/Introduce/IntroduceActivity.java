@@ -18,10 +18,18 @@ import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import com.app.tools.MyLog;
 import com.test4s.myapp.MainActivity;
 import com.test4s.myapp.MyApplication;
 import com.test4s.myapp.R;
+import com.test4s.net.BaseParams;
+import com.test4s.net.Url;
 import com.view.activity.BaseActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.xutils.common.Callback;
+import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +57,8 @@ public class IntroduceActivity extends BaseActivity {
         setContentView(R.layout.activity_introduce);
         viewPager= (ViewPager) findViewById(R.id.viewpager_introduce);
         linear= (LinearLayout) findViewById(R.id.dots_linear_intro);
+        getKey();
+
         initView();
 
         initListener();
@@ -118,6 +128,50 @@ public class IntroduceActivity extends BaseActivity {
         }
         ImageView dot= (ImageView) linear.getChildAt(position);
         dot.setImageResource(R.drawable.orangedot);
+    }
+    private void getKey() {
+        MyLog.i("getkey firstActivity");
+
+        BaseParams baseparam=new BaseParams("api/getkey");
+        x.http().post(baseparam.getRequestParams(), new Callback.CommonCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                MyLog.i("getkey back=="+result);
+                try {
+                    JSONObject jsonObject=new JSONObject(result);
+                    boolean su=jsonObject.getBoolean("success");
+                    int code=jsonObject.getInt("code");
+                    if (su&&code==200){
+                        JSONObject data=jsonObject.getJSONObject("data");
+                        Url.key=data.getString("md5key");
+                        JSONObject uploadurl=data.getJSONObject("uploadurl");
+                        JSONObject user=uploadurl.getJSONObject("user");
+                        Url.IconUploadUrl=user.getString("url");
+
+                        Url.IconUploadUrlPrefix=data.getString("uploadurlPrefix");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+
+                }
+            }
+
+            @Override
+            public void onError(Throwable ex, boolean isOnCallback) {
+                MyLog.i("getkey error=="+ex.toString());
+
+            }
+
+            @Override
+            public void onCancelled(CancelledException cex) {
+
+            }
+
+            @Override
+            public void onFinished() {
+
+            }
+        });
     }
 
 }

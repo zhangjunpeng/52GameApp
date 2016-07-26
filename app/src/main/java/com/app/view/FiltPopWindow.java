@@ -7,6 +7,7 @@ import android.support.annotation.ColorInt;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
@@ -52,6 +53,7 @@ public class FiltPopWindow extends PopupWindow {
         // 点back键和其他地方使其消失,设置了这个才能触发OnDismisslistener ，设置其他控件变化等操作
         this.setBackgroundDrawable(cd);
         this.setAnimationStyle(R.style.AnimationPreview);
+        this.setOnDismissListener(new poponDismissListener());
     }
 
     private void initView() {
@@ -98,6 +100,7 @@ public class FiltPopWindow extends PopupWindow {
     public void showPopupWindow(View parent) {
         if (!this.isShowing()) {
             this.showAsDropDown(parent);
+            backgroundAlpha(0.5f);
         } else {
             this.dismiss();
         }
@@ -105,6 +108,26 @@ public class FiltPopWindow extends PopupWindow {
 
     public void setOnclickListener(AdapterView.OnItemClickListener listener){
         listView.setOnItemClickListener(listener);
+    }
+    /**
+     * 设置添加屏幕的背景透明度
+     * @param bgAlpha
+     */
+    public void backgroundAlpha(float bgAlpha)
+    {
+        WindowManager.LayoutParams lp = context.getWindow().getAttributes();
+        lp.alpha = bgAlpha; //0.0-1.0
+        context.getWindow().setAttributes(lp);
+    }
+    class poponDismissListener implements PopupWindow.OnDismissListener{
+
+        @Override
+        public void onDismiss() {
+            // TODO Auto-generated method stub
+            //Log.v("List_noteTypeActivity:", "我是关闭事件");
+            backgroundAlpha(1f);
+        }
+
     }
 
 }

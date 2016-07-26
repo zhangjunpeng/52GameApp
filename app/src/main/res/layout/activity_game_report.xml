@@ -69,7 +69,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="15dp"
                 android:text="A+"
-                android:textColor="#FF9C00"
+                android:textColor="#fff"
                 android:layout_marginLeft="5dp"
                 />
         </LinearLayout>
@@ -86,7 +86,7 @@
                 android:id="@+id/expertreport_gamereport"
                 android:layout_width="93dp"
                 android:layout_height="20dp"
-                android:background="@drawable/orangeborder_text"
+                android:background="@drawable/borderradius_white"
                 android:textSize="10dp"
                 android:textColor="#fff"
                 android:text="专家评测报告"
@@ -98,7 +98,7 @@
                 android:id="@+id/playerreport_gamereport"
                 android:layout_width="93dp"
                 android:layout_height="20dp"
-                android:background="@drawable/orangeborder_text"
+                android:background="@drawable/borderradius_white"
                 android:textColor="#fff"
                 android:textSize="10dp"
                 android:layout_marginLeft="5dp"

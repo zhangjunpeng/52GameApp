@@ -16,7 +16,15 @@ public class GameReportInfo {
     private String game_type;
     private String checked;
     private String status;
+    private String ident_cat;
 
+    public String getIdent_cat() {
+        return ident_cat;
+    }
+
+    public void setIdent_cat(String ident_cat) {
+        this.ident_cat = ident_cat;
+    }
 
     public String getChecked() {
         return checked;

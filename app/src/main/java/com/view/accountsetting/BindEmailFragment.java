@@ -151,16 +151,18 @@ public class BindEmailFragment extends BaseFragment implements View.OnClickListe
 
 
     private void getEmailCode(){
+
         email=email_editText.getText().toString();
         if (TextUtils.isEmpty(email)||!email.contains("@")){
             showWarning("Email格式错误");
         }
+        getCode.setClickable(false);
+        codeChange();
 
         ClearWindows.clearInput(getActivity(),email_editText);
         final BaseParams baseParams=new BaseParams("api/sendemail");
         baseParams.addParams("email",email);
         baseParams.addSign();
-        getCode.setClickable(false);
         x.http().post(baseParams.getRequestParams(), new Callback.CommonCallback<String>() {
             @Override
             public void onSuccess(String result) {
@@ -170,7 +172,6 @@ public class BindEmailFragment extends BaseFragment implements View.OnClickListe
                     boolean su=js.getBoolean("success");
                     int code=js.getInt("code");
                     if (su&&code==200){
-                        codeChange();
 
                         JSONObject js1=js.getJSONObject("data");
                         pa=js1.getString("pa");
@@ -189,7 +190,7 @@ public class BindEmailFragment extends BaseFragment implements View.OnClickListe
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
+                getCode.setClickable(true);
             }
 
             @Override
@@ -240,7 +241,7 @@ public class BindEmailFragment extends BaseFragment implements View.OnClickListe
                         transaction.replace(R.id.contianner_mysetting,myAcountSettingFragment).commit();
                     }else {
                         String mes=js.getString("msg");
-
+                        showWarning(mes);
                     }
                     
                 } catch (JSONException e) {

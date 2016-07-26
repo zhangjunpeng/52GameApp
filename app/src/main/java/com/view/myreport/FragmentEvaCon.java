@@ -25,7 +25,6 @@ import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
 
-import org.greenrobot.eventbus.EventBus;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -34,6 +33,8 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Administrator on 2016/6/20.
@@ -152,6 +153,9 @@ public class FragmentEvaCon extends Fragment {
                         }else {
                             String name=object.getString("name");
                             String mess=object.getString("data");
+                            if (TextUtils.isEmpty(mess)){
+                                continue;
+                            }
                             info.setData(mess);
                             info.setName(name);
                         }

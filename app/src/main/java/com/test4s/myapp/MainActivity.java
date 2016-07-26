@@ -32,6 +32,7 @@ import com.app.tools.ScreenUtil;
 import com.test4s.gdb.CPDao;
 import com.test4s.gdb.DaoSession;
 import com.view.activity.BaseActivity;
+import com.view.coustomrequire.CustomizedActivity;
 import com.view.index.GameFragment;
 import com.view.index.IndexFragment;
 import com.view.index.InformationFragment;
@@ -40,6 +41,8 @@ import com.view.search.SearchActivity;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends FragmentActivity  implements View.OnClickListener,GestureDetector.OnGestureListener{
 
@@ -77,6 +80,7 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
     private int windowWidth;
     private Fragment mContent;
 
+    private ImageView coustomized;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -151,11 +155,13 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
         gameLinear= (LinearLayout) findViewById(R.id.game_linear);
         infoLinear= (LinearLayout) findViewById(R.id.info_linear);
         myLinear= (LinearLayout) findViewById(R.id.my_linear);
+        coustomized= (ImageView) findViewById(R.id.requirement);
 
         indexLinear.setOnClickListener(this);
         gameLinear.setOnClickListener(this);
         infoLinear.setOnClickListener(this);
         myLinear.setOnClickListener(this);
+        coustomized.setOnClickListener(this);
 
 
         imageViewList=new ArrayList<>();
@@ -180,6 +186,12 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
         textViewList.add(gameText);
         textViewList.add(infoText);
         textViewList.add(myText);
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
 
     }
 
@@ -226,6 +238,11 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
 
 //                fm.beginTransaction().replace(R.id.frameLayout_main,fragments.get(3)).commit();
                 setImageColor(3);
+                break;
+            case R.id.requirement:
+                Intent intent=new Intent(this, CustomizedActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                 break;
         }
 

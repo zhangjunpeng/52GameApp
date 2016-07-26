@@ -10,18 +10,79 @@ public class IdentSubInfo {
     private String company_name;
     private String apply;
     private String logo;
-    private String company_scale;
+    private NameVal company_scale;
     private String company_phone;
     private String address;
     private String company_info;
     private String idnum;
     private String company_photo;
     private String coop_cat;
-    private String invest_cat;
+    private NameVal invest_cat;
     private String invest_stage;
     private String business_cat;
     private String outsource_cat;
-    private String area;
+    private NameVal area;
+    private NameVal province;
+    private NameVal city;
+    private NameVal country;
+
+
+    public String getCoop_cat() {
+        return coop_cat;
+    }
+
+    public void setCoop_cat(String coop_cat) {
+        this.coop_cat = coop_cat;
+    }
+
+    public NameVal getInvest_cat() {
+        return invest_cat;
+    }
+
+    public void setInvest_cat(NameVal invest_cat) {
+        this.invest_cat = invest_cat;
+    }
+
+    public NameVal getCompany_scale() {
+        return company_scale;
+    }
+
+    public void setCompany_scale(NameVal company_scale) {
+        this.company_scale = company_scale;
+    }
+
+
+    public NameVal getArea() {
+        return area;
+    }
+
+    public void setArea(NameVal area) {
+        this.area = area;
+    }
+
+    public NameVal getProvince() {
+        return province;
+    }
+
+    public void setProvince(NameVal province) {
+        this.province = province;
+    }
+
+    public NameVal getCity() {
+        return city;
+    }
+
+    public void setCity(NameVal city) {
+        this.city = city;
+    }
+
+    public NameVal getCountry() {
+        return country;
+    }
+
+    public void setCountry(NameVal country) {
+        this.country = country;
+    }
 
     public String getPersonal() {
         return personal;
@@ -71,13 +132,7 @@ public class IdentSubInfo {
         this.logo = logo;
     }
 
-    public String getCompany_scale() {
-        return company_scale;
-    }
 
-    public void setCompany_scale(String company_scale) {
-        this.company_scale = company_scale;
-    }
 
     public String getCompany_phone() {
         return company_phone;
@@ -119,22 +174,6 @@ public class IdentSubInfo {
         this.company_photo = company_photo;
     }
 
-    public String getCoop_cat() {
-        return coop_cat;
-    }
-
-    public void setCoop_cat(String coop_cat) {
-        this.coop_cat = coop_cat;
-    }
-
-    public String getInvest_cat() {
-        return invest_cat;
-    }
-
-    public void setInvest_cat(String invest_cat) {
-        this.invest_cat = invest_cat;
-    }
-
     public String getInvest_stage() {
         return invest_stage;
     }
@@ -159,11 +198,5 @@ public class IdentSubInfo {
         this.outsource_cat = outsource_cat;
     }
 
-    public String getArea() {
-        return area;
-    }
 
-    public void setArea(String area) {
-        this.area = area;
-    }
 }

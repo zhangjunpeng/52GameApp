@@ -34,9 +34,6 @@ import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.view.activity.BaseActivity;
 
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -48,6 +45,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 public class ExpertReportActivity extends BaseActivity {
 
@@ -177,7 +178,7 @@ public class ExpertReportActivity extends BaseActivity {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.MainThread)
     public void changeScore(GameScoreEvent gameScoreEvent){
         MyLog.i("接受到EventBus");
         pjyqText.setText(gameScoreEvent.grade);

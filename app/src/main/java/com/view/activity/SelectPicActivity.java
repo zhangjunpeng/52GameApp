@@ -1,6 +1,8 @@
 package com.view.activity;
 
 import android.app.Activity;
+import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
@@ -11,10 +13,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -23,12 +28,14 @@ import android.widget.Toast;
 import com.app.tools.CusToast;
 import com.app.tools.FileUtil;
 import com.app.tools.MyLog;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.test4s.account.MyAccount;
 import com.test4s.config.Config;
 import com.test4s.myapp.MyApplication;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
+import com.view.index.ChangeEvent;
 import com.view.index.MySettingFragment;
 
 import org.json.JSONException;
@@ -43,6 +50,9 @@ import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.TreeMap;
+import java.util.concurrent.Executors;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * @author spring sky<br>
@@ -88,12 +98,21 @@ public class SelectPicActivity extends Activity implements OnClickListener{
     private Intent lastIntent ;
 
     private Uri photoUri;
+    private Dialog progressdialog;
+    private float density;
+    private int windowWidth;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_pic);
+        //获取屏幕密度
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        density = metric.density;  // 屏幕密度（0.75 / 1.0 / 1.5）
+        windowWidth=metric.widthPixels;
+
         getWindow().setBackgroundDrawableResource(R.drawable.border_dialog);
         initView();
     }
@@ -319,8 +338,10 @@ public class SelectPicActivity extends Activity implements OnClickListener{
 //        UploadUtil uploadUtil = UploadUtil.getInstance();;
 //        uploadUtil.setOnUploadProcessListener(this);  //设置监听器监听上传状态
 //        uploadUtil.uploadFile( picPath,fileKey, requestURL,params);
+        showProgress();
 
-        RequestParams baseParams=new RequestParams(Config.RequestURL);
+        MyLog.i("url=="+Url.IconUploadUrlPrefix+Url.IconUploadUrl);
+        RequestParams baseParams=new RequestParams(Url.IconUploadUrlPrefix+Url.IconUploadUrl);
 
         baseParams.setMultipart(true);
         baseParams.addBodyParameter("imei", MyApplication.imei);
@@ -363,7 +384,7 @@ public class SelectPicActivity extends Activity implements OnClickListener{
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-
+                MyLog.i("uploadimage error==="+ex.toString());
             }
 
             @Override
@@ -389,9 +410,13 @@ public class SelectPicActivity extends Activity implements OnClickListener{
             @Override
             public void onSuccess(String result) {
                 MyLog.i("上传图片链接"+result);
+                progressdialog.dismiss();
+
                 MyAccount.getInstance().setAvatar(url);
                 MyAccount.getInstance().getUserInfo().setAvatar(url);
                 MySettingFragment.changeIcon=true;
+                MyAccount.getInstance().saveUserInfo();
+                EventBus.getDefault().post(new ChangeEvent(url,1));
             }
 
             @Override
@@ -412,6 +437,27 @@ public class SelectPicActivity extends Activity implements OnClickListener{
             }
         });
 
+    }
+
+    private void showProgress() {
+
+
+        progressdialog=new Dialog(this);
+
+        progressdialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        View view= LayoutInflater.from(this).inflate(R.layout.dialog_clearcahe,null);
+
+        progressdialog.getWindow().setBackgroundDrawableResource(R.drawable.border_dialog);
+//        MyDialog myDialog=new MyDialog(getActivity(),(int) (windowWidth*0.8),(int) (110*density),view,R.style.MyDialog);
+
+        LinearLayout.LayoutParams params= new LinearLayout.LayoutParams((int) (windowWidth*0.8), LinearLayout.LayoutParams.MATCH_PARENT);
+        params.leftMargin= (int) (14*density);
+        params.rightMargin= (int) (14*density);
+        MyLog.i("params width=="+params.width);
+        progressdialog.setContentView(view,params);
+
+        progressdialog.show();
     }
 
 }
