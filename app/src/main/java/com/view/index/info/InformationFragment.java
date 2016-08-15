@@ -1,4 +1,4 @@
-package com.view.index;
+package com.view.index.info;
 
 
 import android.content.Context;
