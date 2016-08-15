@@ -55,7 +55,7 @@ public class MyIpListAdapter extends BaseAdapter {
                 viewHolder.icon= (ImageView) convertView.findViewById(R.id.imageView_iplist);
                 viewHolder.name= (TextView) convertView.findViewById(R.id.name_item_iplist);
                 viewHolder.intro= (TextView) convertView.findViewById(R.id.introuduction_item_iplist);
-                viewHolder.care= (ImageView) convertView.findViewById(R.id.care_item_list);
+                viewHolder.care= (TextView) convertView.findViewById(R.id.care_item_list);
                 convertView.setTag(viewHolder);
             }else {
                 viewHolder= (ViewHolder) convertView.getTag();
@@ -72,9 +72,11 @@ public class MyIpListAdapter extends BaseAdapter {
             viewHolder.intro.setText("类        型 ："+ipSimpleInfo.getIp_cat()+"\n风        格 ："+ipSimpleInfo.getIp_style()+"\n授权范围 ："+ipSimpleInfo.getUthority());
             if (MyAccount.isLogin){
                 if (ipSimpleInfo.iscare()){
-                    viewHolder.care.setImageResource(R.drawable.cared);
+                    viewHolder.care.setText("已关注");
+                    viewHolder.care.setSelected(true);
                 }else {
-                    viewHolder.care.setImageResource(R.drawable.care_gray);
+                    viewHolder.care.setText("关注");
+                    viewHolder.care.setSelected(false);
                 }
                 viewHolder.care.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -86,9 +88,11 @@ public class MyIpListAdapter extends BaseAdapter {
                             ipSimpleInfo.setIscare(true);
                             AttentionChange.addAttention("5",ipSimpleInfo.getId(), context);
                         } if (ipSimpleInfo.iscare()){
-                            viewHolder.care.setImageResource(R.drawable.cared);
+                            viewHolder.care.setText("已关注");
+                            viewHolder.care.setSelected(true);
                         }else {
-                            viewHolder.care.setImageResource(R.drawable.care_gray);
+                            viewHolder.care.setText("关注");
+                            viewHolder.care.setSelected(false);
                         }
 
 
@@ -112,6 +116,6 @@ public class MyIpListAdapter extends BaseAdapter {
             ImageView icon;
             TextView name;
             TextView intro;
-            ImageView care;
+            TextView care;
         }
     }

@@ -3,6 +3,7 @@ package com.app.tools;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -48,6 +49,13 @@ public class ScreenUtil {
            /* int statusBarHeight = ScreenUtil.getStatusBarHeight(this.getBaseContext());
             view.setPadding(0, statusBarHeight, 0, 0);*/
         }
+    }
+    public static float getSreendensity(Activity activity){
+        //获取屏幕密度
+        DisplayMetrics metric = new DisplayMetrics();
+        activity.getWindowManager().getDefaultDisplay().getMetrics(metric);
+        float density = metric.density;  // 屏幕密度（0.75 / 1.0 / 1.5）
+        return density;
     }
 
 }

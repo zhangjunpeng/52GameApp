@@ -154,6 +154,9 @@ public class FirsActivity extends AppCompatActivity {
                         JSONObject user=uploadurl.getJSONObject("user");
                         Url.IconUploadUrl=user.getString("url");
 
+                        JSONObject customize=uploadurl.getJSONObject("customize");
+                        Url.CustomizedFileUploadUrl=customize.getString("url");
+
                         Url.IconUploadUrlPrefix=data.getString("uploadurlPrefix");
                     }
                 } catch (JSONException e) {

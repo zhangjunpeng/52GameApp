@@ -1,2 +1,2 @@
-include ':app', ':daogenerator', ':FancyCoverFlow'
+include ':app', ':daogenerator', ':FancyCoverFlow', ':aFileChooser', ':recylerviewpagerlib'
 include ':xCLCharts'

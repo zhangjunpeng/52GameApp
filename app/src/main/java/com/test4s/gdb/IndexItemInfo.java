@@ -12,6 +12,15 @@ public class IndexItemInfo {
     private String identity_cat;
     private String company_name;
     private String method_name;
+    private String info;
+
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
 
     public IndexItemInfo() {
     }

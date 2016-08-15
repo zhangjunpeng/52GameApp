@@ -1,19 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:fcf="http://schemas.android.com/apk/res-auto"
-    tools:context="com.view.coustomrequire.CustomizedActivity"
+    android:orientation="vertical"
+    >
+    <include
+        android:id="@+id/title_requirement"
+        layout="@layout/titlebar_save"
+        />
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+
     >
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:background="@color/bg"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
 
         >
+
         <LinearLayout
+            android:id="@+id/head_customized"
             android:layout_width="match_parent"
             android:layout_height="219dp"
             android:orientation="vertical"
@@ -28,8 +41,8 @@
 
                 fcf:maxRotation="45"
                 fcf:unselectedAlpha="0.3"
-                fcf:unselectedSaturation="0.0"
-                fcf:unselectedScale="0.4"
+                fcf:unselectedSaturation="0.5"
+                fcf:unselectedScale="0.3"
                 fcf:scaleDownGravity="0.5"
 
                 />
@@ -46,6 +59,7 @@
                     android:src="@drawable/arrow_orange_left"
                     />
                 <TextView
+                    android:id="@+id/identcat_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="开发者"
@@ -62,6 +76,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:id="@+id/linear_findservice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -177,6 +192,7 @@
             android:layout_marginTop="13dp"
             />
         <RelativeLayout
+            android:id="@+id/check_moneyinfo"
             android:layout_width="match_parent"
             android:layout_height="51dp"
             android:background="#fff"
@@ -268,7 +284,7 @@
 
             </LinearLayout>
             <EditText
-                android:id="@+id/edit_companyname"
+                android:id="@+id/edit_username"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginLeft="20dp"
@@ -289,7 +305,7 @@
             />
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="117dp"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             >
             <LinearLayout
@@ -317,10 +333,10 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="40dp"
                 android:orientation="horizontal"
                 android:layout_marginTop="11dp"
+                android:gravity="center_vertical"
                 >
                 <EditText
                     android:id="@+id/edit_phone"
@@ -336,7 +352,7 @@
                     android:hint="请输入手机号码"
                     />
                 <TextView
-                    android:id="@+id/getcode_iden_sub"
+                    android:id="@+id/getcode"
                     android:layout_width="61dp"
                     android:layout_height="27dp"
                     android:text="验证码"
@@ -350,8 +366,7 @@
             <EditText
                 android:id="@+id/edit_code"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:background="@null"
                 android:textSize="12dp"
@@ -359,22 +374,30 @@
                 android:textColor="@color/edittext"
                 android:hint="请输入验证码"
                 android:maxLines="1"
-                android:layout_marginBottom="10dp"
+                android:visibility="gone"
+                />
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/line"
+                android:layout_marginTop="10dp"
                 />
         </LinearLayout>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/line"
-            />
+
         <TextView
+            android:id="@+id/submit"
             android:layout_width="match_parent"
             android:layout_height="51dp"
             android:layout_marginTop="13dp"
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
-            android:background="@drawable/border_button_gray"
+            android:background="@drawable/border_button_orange"
             android:layout_marginBottom="20dp"
+            android:text="提交"
+            android:textColor="#fff"
+            android:textSize="15dp"
+            android:gravity="center"
             />
     </LinearLayout>
 </ScrollView>
+</LinearLayout>

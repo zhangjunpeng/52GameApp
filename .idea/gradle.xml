@@ -9,8 +9,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/FancyCoverFlow" />
+            <option value="$PROJECT_DIR$/aFileChooser" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/daogenerator" />
+            <option value="$PROJECT_DIR$/recylerviewpagerlib" />
             <option value="$PROJECT_DIR$/xCLCharts" />
           </set>
         </option>
@@ -18,8 +20,10 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/FancyCoverFlow" />
+            <option value="$PROJECT_DIR$/aFileChooser" />
             <option value="$PROJECT_DIR$/app" />
             <option value="$PROJECT_DIR$/daogenerator" />
+            <option value="$PROJECT_DIR$/recylerviewpagerlib" />
             <option value="$PROJECT_DIR$/xCLCharts" />
           </set>
         </option>

@@ -1,25 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="117dp"
+    android:layout_height="105dp"
     android:background="#f1f5f8"
     >
 
     <RelativeLayout
 
         android:layout_width="match_parent"
-        android:layout_height="110dp"
+        android:layout_height="95dp"
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         android:background="@drawable/border_edit_comment"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="10dp"
 
         >
 
             <ImageView
                 android:id="@+id/imageView_iplist"
-                android:layout_width="84dp"
-                android:layout_height="84dp"
+                android:layout_width="67dp"
+                android:layout_height="67dp"
                 android:scaleType="fitXY"
                 android:layout_marginLeft="7dp"
                 android:layout_centerVertical="true"
@@ -68,6 +68,7 @@
             android:gravity="center"
             android:background="@drawable/solid_rightconner"
             android:layout_margin="1px"
+            android:visibility="gone"
             >
             <ImageView
                 android:id="@+id/coop_item_list"
@@ -78,13 +79,27 @@
                 android:visibility="gone"
                 />
             <ImageView
-                android:id="@+id/care_item_list"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:src="@drawable/care_gray"
                 />
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/care_item_list"
+
+            android:layout_width="56dp"
+            android:layout_height="27dp"
+            android:text="关注"
+            android:textColor="#fff"
+            android:background="@drawable/radius_orange"
+            android:gravity="center"
+            android:textSize="13dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="11dp"
+            />
 
     </RelativeLayout>
 </LinearLayout>

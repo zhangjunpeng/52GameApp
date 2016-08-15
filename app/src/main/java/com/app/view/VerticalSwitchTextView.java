@@ -13,6 +13,8 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.test4s.myapp.R;
+
 import java.util.List;
 
 /**

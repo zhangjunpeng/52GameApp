@@ -58,13 +58,12 @@ public class MyGameListAdapter extends BaseAdapter {
             if (convertView==null){
                 viewHolder=new ViewHolder();
                 convertView= LayoutInflater.from(mcontext).inflate(R.layout.item_gamelist_fragment,null);
-                viewHolder.icon= (ImageView) convertView.findViewById(R.id.imageView_list);
-                viewHolder.name= (TextView) convertView.findViewById(R.id.name_item_list);
-                viewHolder.down= (ImageView) convertView.findViewById(R.id.download_item_list);
-                viewHolder.info= (TextView) convertView.findViewById(R.id.introuduction_item_list);
-                viewHolder.gamerating= (ImageView) convertView.findViewById(R.id.gamerating);
-                viewHolder.norms= (TextView) convertView.findViewById(R.id.norms_item_gamelist);
-                viewHolder.care= (ImageView) convertView.findViewById(R.id.care_item_list);
+                viewHolder.icon= (ImageView) convertView.findViewById(R.id.icon);
+                viewHolder.name= (TextView) convertView.findViewById(R.id.name);
+                viewHolder.info= (TextView) convertView.findViewById(R.id.info);
+                viewHolder.gamerating= (ImageView) convertView.findViewById(R.id.grade);
+                viewHolder.norms= (TextView) convertView.findViewById(R.id.norms);
+                viewHolder.care= (TextView) convertView.findViewById(R.id.care);
                 convertView.setTag(viewHolder);
             }else {
                 viewHolder= (ViewHolder) convertView.getTag();
@@ -87,21 +86,7 @@ public class MyGameListAdapter extends BaseAdapter {
 //                    .load(Url.prePic+gameInfo.getGame_grade())
 //                    .into(viewHolder.gamerating);
             viewHolder.name.setText(gameInfo.getGame_name());
-            if (TextUtils.isEmpty(gameInfo.getGame_download_url())){
-                viewHolder.down.setClickable(false);
-                viewHolder.down.setVisibility(View.GONE);
-            }else {
-                viewHolder.down.setVisibility(View.VISIBLE);
-                viewHolder.down.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        downLoadGame(Url.packageurl+gameInfo.getGame_download_url());
-                        if (MyAccount.isLogin){
-                            addMyEvaluation(gameInfo.getGame_id());
-                        }
-                    }
-                });
-            }
+
             if ("1".equals(gameInfo.getNorms())){
                 viewHolder.norms.setVisibility(View.VISIBLE);
             }else if("0".equals(gameInfo.getNorms())){
@@ -141,9 +126,11 @@ public class MyGameListAdapter extends BaseAdapter {
             viewHolder.info.setText(mess);
             if (MyAccount.isLogin){
                 if (gameInfo.iscare()){
-                    viewHolder.care.setImageResource(R.drawable.cared);
+                    viewHolder.care.setText("已关注");
+                    viewHolder.care.setSelected(true);
                 }else {
-                    viewHolder.care.setImageResource(R.drawable.care_gray);
+                    viewHolder.care.setText("关注");
+                    viewHolder.care.setSelected(false);
                 }
                 viewHolder.care.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -155,9 +142,11 @@ public class MyGameListAdapter extends BaseAdapter {
                             gameInfo.setIscare(true);
                             AttentionChange.addAttention("1",gameInfo.getGame_id(), mcontext);
                         } if (gameInfo.iscare()){
-                            viewHolder.care.setImageResource(R.drawable.cared);
+                            viewHolder.care.setText("已关注");
+                            viewHolder.care.setSelected(true);
                         }else {
-                            viewHolder.care.setImageResource(R.drawable.care_gray);
+                            viewHolder.care.setText("关注");
+                            viewHolder.care.setSelected(false);
                         }
 
 
@@ -180,11 +169,10 @@ public class MyGameListAdapter extends BaseAdapter {
         class ViewHolder{
             ImageView icon;
             TextView name;
-            ImageView down;
             ImageView gamerating;
             TextView info;
             TextView norms;
-            ImageView care;
+            TextView care;
         }
 
     private void downLoadGame(String url){

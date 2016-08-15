@@ -706,7 +706,7 @@ public class IdentSubSecondFragment extends Fragment implements View.OnClickList
                         pa = jsonObject1.getString("pa");
                     }else {
                         String mes=jsonObject.getString("msg");
-//                        showwarn(mes);
+                        showwarn(mes);
                     }
 
                 } catch (JSONException e) {

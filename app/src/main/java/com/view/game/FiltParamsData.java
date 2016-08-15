@@ -1,6 +1,7 @@
 package com.view.game;
 
 import com.app.tools.MyLog;
+import com.test4s.account.MyAccount;
 import com.test4s.net.BaseParams;
 import com.view.Identification.NameVal;
 
@@ -36,6 +37,9 @@ public class FiltParamsData {
     private void initPopList() {
         BaseParams baseParams=new BaseParams("api/selecttype");
         baseParams.addParams("type","all");
+        if (MyAccount.isLogin){
+            baseParams.addParams("token",MyAccount.getInstance().getToken());
+        }
         baseParams.addSign();
         x.http().post(baseParams.getRequestParams(), new Callback.CommonCallback<String>() {
             @Override
@@ -94,6 +98,8 @@ public class FiltParamsData {
                                 val.setVal(nameJson.getString("name"));
                             } else if (nameJson.has("val")) {
                                 val.setVal(nameJson.getString("val"));
+                            }else if (nameJson.has("game_name")){
+                                val.setVal(nameJson.getString("game_name"));
                             }
                         }
                         nameValList.add(val);

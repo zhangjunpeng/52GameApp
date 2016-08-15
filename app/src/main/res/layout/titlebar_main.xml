@@ -1,6 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/orange"
+    >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
 
-</LinearLayout>
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_centerInParent="true"
+
+            >
+            <EditText
+                android:id="@+id/title_titlebar"
+                android:layout_width="290dp"
+                android:layout_height="32dp"
+                android:textSize="12dp"
+                android:focusable="false"
+                android:textColor="#fff"
+                android:hint="      很多人都在搜：新莽荒纪"
+                android:textColorHint="#989898"
+                android:layout_centerVertical="true"
+                android:background="@drawable/radius_edit"
+                />
+            <ImageView
+                android:id="@+id/search_titlebar"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/search"
+                android:layout_marginLeft="18dp"
+                android:layout_gravity="center_vertical"
+                />
+
+        </LinearLayout>
+
+    </RelativeLayout>
+</FrameLayout>

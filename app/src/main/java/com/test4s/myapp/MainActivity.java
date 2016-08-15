@@ -1,7 +1,6 @@
 package com.test4s.myapp;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
@@ -13,7 +12,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.DisplayMetrics;
 import android.view.GestureDetector;
-import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuInflater;
@@ -27,15 +25,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.app.tools.CusToast;
 import com.app.tools.MyLog;
 import com.app.tools.ScreenUtil;
+import com.test4s.Event.ToastEvent;
 import com.test4s.gdb.CPDao;
 import com.test4s.gdb.DaoSession;
-import com.view.activity.BaseActivity;
 import com.view.coustomrequire.CustomizedActivity;
-import com.view.index.GameFragment;
+import com.view.index.game.GameFragment;
 import com.view.index.IndexFragment;
-import com.view.index.InformationFragment;
+import com.view.index.info.InformationFragment;
 import com.view.index.MySettingFragment;
 import com.view.search.SearchActivity;
 
@@ -43,6 +42,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+import de.greenrobot.event.Subscribe;
+import de.greenrobot.event.ThreadMode;
 
 public class MainActivity extends FragmentActivity  implements View.OnClickListener,GestureDetector.OnGestureListener{
 
@@ -50,10 +51,8 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
     private List<Fragment> fragments;
     FragmentManager fm;
 
-    TextView title_bar;
 
     String[] titles={"首页","游戏","资讯","我的"};
-    ImageView search;
 
     //底部导航栏
     List<ImageView> imageViewList;
@@ -92,12 +91,10 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
 
         setImmerseLayout(findViewById(R.id.title_main));
 
-        title_bar= (TextView) findViewById(R.id.title_titlebar);
-        search= (ImageView) findViewById(R.id.search_titlebar);
-        search.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.title_titlebar).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(MainActivity.this, SearchActivity.class);
+                Intent intent=new Intent(MainActivity.this,SearchActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
             }
@@ -132,6 +129,8 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
         getWindowManager().getDefaultDisplay().getMetrics(metric);
         density = metric.density;  // 屏幕密度（0.75 / 1.0 / 1.5）
         windowWidth=metric.widthPixels;
+
+        EventBus.getDefault().register(this);
 
     }
 
@@ -192,11 +191,11 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
 
     }
 
     private void setImageColor(int position){
-        title_bar.setText(titles[position]);
         if (imageViewList==null||textViewList==null){
             return;
         }
@@ -354,7 +353,8 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
     public void switchContent(Fragment from, Fragment to) {
         if (mContent != to) {
             mContent = to;
-            FragmentTransaction transaction =fm.beginTransaction().setCustomAnimations(
+            FragmentTransaction transaction =fm.beginTransaction();
+            transaction.setCustomAnimations(
                     android.R.anim.fade_in, android.R.anim.fade_out);
             if (!to.isAdded()) {    // 先判断是否被add过
                 transaction.hide(from).add(R.id.frameLayout_main, to).commit(); // 隐藏当前的fragment，add下一个到Activity中
@@ -422,5 +422,10 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
 
         ad.start();
         return dialog;
+    }
+
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void showToast(ToastEvent toastEvent){
+        CusToast.showToast(this,toastEvent.getMessage(),Toast.LENGTH_SHORT);
     }
 }

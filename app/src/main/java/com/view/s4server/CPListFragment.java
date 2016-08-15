@@ -410,7 +410,7 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
                 viewHolder.icon= (ImageView) convertView.findViewById(R.id.imageView_iplist);
                 viewHolder.name= (TextView) convertView.findViewById(R.id.name_item_iplist);
                 viewHolder.intro= (TextView) convertView.findViewById(R.id.introuduction_item_iplist);
-                viewHolder.care= (ImageView) convertView.findViewById(R.id.care_item_list);
+                viewHolder.care= (TextView) convertView.findViewById(R.id.care_item_list);
                 convertView.setTag(viewHolder);
             }else {
                 viewHolder= (ViewHolder) convertView.getTag();
@@ -424,9 +424,9 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
             viewHolder.intro.setText("所在区域："+cpinfo.getArea()+"\n公司规模："+cpinfo.getScale());
             if (MyAccount.isLogin){
                 if (cpinfo.iscare()){
-                    viewHolder.care.setImageResource(R.drawable.cared);
+                    viewHolder.care.setText("已关注");
                 }else {
-                    viewHolder.care.setImageResource(R.drawable.care_gray);
+                    viewHolder.care.setText("关注");
                 }
                 viewHolder.care.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -438,9 +438,9 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
                             cpinfo.setIscare(true);
                             AttentionChange.addAttention("2",cpinfo.getUser_id(), context);
                         } if (cpinfo.iscare()){
-                            viewHolder.care.setImageResource(R.drawable.cared);
+                            viewHolder.care.setText("已关注");
                         }else {
-                            viewHolder.care.setImageResource(R.drawable.care_gray);
+                            viewHolder.care.setText("关注");
                         }
 
 
@@ -466,7 +466,7 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
             ImageView icon;
             TextView name;
             TextView intro;
-            ImageView care;
+            TextView care;
         }
     }
 

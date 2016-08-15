@@ -1,5 +1,13 @@
 package com.app.view;
 
+import android.content.Context;
+import android.database.DataSetObserver;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+
 public class CycleViewPager extends ViewPager {
     private InnerPagerAdapter mAdapter;
 

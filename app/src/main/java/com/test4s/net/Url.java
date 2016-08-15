@@ -44,6 +44,7 @@ public class Url {
     //图片上传路径
     public static String IconUploadUrl="";
     public static String IconUploadUrlPrefix="";
+    public static String CustomizedFileUploadUrl="";
 
 
     public static String getSign(Set<Map.Entry<String, String>> set) {

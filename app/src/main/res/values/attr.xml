@@ -18,4 +18,13 @@
         <attr name="type" />
     </declare-styleable>
 
+    <declare-styleable name="VerticalSwitchTextView">
+        <attr name="switchDuaration" format="integer"/>
+        <attr name="idleDuaration" format="integer"/>
+        <attr name="switchOrientation">
+            <enum name="up"  value="0"/>
+            <enum name="down"  value="1"/>
+        </attr>
+    </declare-styleable>
+
 </resources>

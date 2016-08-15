@@ -5,6 +5,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.app.tools.ScreenUtil;
+import com.test4s.myapp.MyApplication;
 import com.test4s.myapp.R;
 
 import at.technikum.mti.fancycoverflow.FancyCoverFlow;
@@ -18,9 +20,11 @@ public class FancyCoverFlowSampleAdapter extends FancyCoverFlowAdapter {
 
     private Activity context;
     private int size;
+    private float density;
     FancyCoverFlowSampleAdapter(Activity context,int size){
         this.context=context;
         this.size=size;
+        density= ScreenUtil.getSreendensity(context);
     }
 
     @Override
@@ -32,7 +36,8 @@ public class FancyCoverFlowSampleAdapter extends FancyCoverFlowAdapter {
             view= (CircleImageView) reusableView;
             view.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
         }
-        view.setLayoutParams(new FancyCoverFlow.LayoutParams(300,300));
+
+        view.setLayoutParams(new FancyCoverFlow.LayoutParams((int)(100*density), (int) (100*density)));
 
         view.setImageResource(R.drawable.require_icon);
         return view;

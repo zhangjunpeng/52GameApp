@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.test4s.myapp"
     android:versionCode="6"
-    android:versionName="2.1">
+    android:versionName="2.2">
 
     <uses-sdk android:minSdkVersion="18" />
 
@@ -396,7 +396,18 @@
         <activity
             android:name="com.view.Identification.IdentCheckActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.view.coustomrequire.CustomizedActivity"></activity>
+        <activity
+            android:name="com.view.coustomrequire.CustomizedActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.coustomrequire.CustomizedListActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.view.coustomrequire.ChangeCustomInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.view.coustomrequire.ServiceMoneyInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            ></activity>
     </application>
 
 </manifest>
