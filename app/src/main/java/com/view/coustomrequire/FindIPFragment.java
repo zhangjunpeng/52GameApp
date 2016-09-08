@@ -57,6 +57,7 @@ public class FindIPFragment extends CoustomBaseFragment {
         ipcoottype_sel=new ArrayList<>();
         ipcat_sel=new ArrayList<>();
         ipstyle_sel=new ArrayList<>();
+        other="";
 
         if (info!=null){
             findIPInfo= (FindIPInfo) info;

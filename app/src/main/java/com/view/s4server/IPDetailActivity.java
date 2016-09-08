@@ -110,24 +110,6 @@ public class IPDetailActivity extends BaseActivity implements View.OnClickListen
     private LinearLayout div_des;
     private LinearLayout div_relate;
 
-    private String html="<div id=\"youkuplayer\" style=\"width:996px;height:561px\"></div>\n" +
-            "<script type=\"text/javascript\" src=\"http://player.youku.com/jsapi\">\n" +
-            "    player = new YKU.Player('youkuplayer',{\n" +
-            "        styleid: '0',\n" +
-            "        client_id: '22f67ce1674f8f6e',\n" +
-            "        vid: 'XMTU4MDI2MDEyNA',\n" +
-            "        autoplay: true,\n" +
-            "        show_related: true,\n" +
-            "        embsig: 'VERSION_TIMESTAMP_SIGNATURE',\n" +
-            "        events:{\n" +
-            "            onPlayEnd: function(){ /*your code*/ }\n" +
-            "        }\n" +
-            "    });\n" +
-            "    function playVideo(){\n" +
-            "        player.playVideo();\n" +
-            "    }\n" +
-            "</script>";
-    private String html2="<iframe height=187 width=332 src=\"http://player.youku.com/embed/XMTU4MDI2MDEyNA==\" frameborder=0 allowfullscreen></iframe>";
 
 
     private ImageLoader imageloder=ImageLoader.getInstance();
@@ -690,7 +672,7 @@ public class IPDetailActivity extends BaseActivity implements View.OnClickListen
             params.leftMargin= (int) (14*density);
             params.rightMargin= (int) (14*density);
             params.bottomMargin= (int) (6*density);
-            imageView.setImageResource(R.drawable.a1);
+
             imageView.setId(i);
             imageView.setScaleType(ImageView.ScaleType.FIT_XY);
 

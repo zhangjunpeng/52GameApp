@@ -197,6 +197,7 @@
                 android:text="*"
                 android:textColor="#eb1b1b"
                 android:layout_marginLeft="15dp"
+                android:visibility="invisible"
                 />
             <TextView
                 android:layout_width="wrap_content"
@@ -263,7 +264,7 @@
         android:layout_marginRight="13.33dp"
         />
     <LinearLayout
-        android:id="@+id/layout_wbrescat"
+        android:id="@+id/linear_games"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
@@ -292,117 +293,16 @@
                 android:textColor="#4c4c4c"
                 />
         </LinearLayout>
-        <LinearLayout
-            android:id="@+id/linear_inssuegames"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="13dp"
-            >
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="23.33dp"
-                android:gravity="center"
-                android:text="美术外包"
-                android:background="@drawable/select_item_identsub"
-                android:textColor="#7c7c7c"
-                android:textSize="12dp"
-                />
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="23.33dp"
-                android:gravity="center"
-                android:text="美术外包"
-                android:background="@drawable/select_item_identsub"
-                android:textColor="#7c7c7c"
-                android:layout_marginLeft="7dp"
-                android:textSize="12dp"
-                />
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="23.33dp"
-                android:gravity="center"
-                android:text="美术外包"
-                android:background="@drawable/select_item_identsub"
-                android:textColor="#7c7c7c"
-                android:layout_marginLeft="7dp"
 
-                android:textSize="12dp"
-                />
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="23.33dp"
-                android:gravity="center"
-                android:text="美术外包"
-                android:background="@drawable/select_item_identsub"
-                android:textColor="#7c7c7c"
-                android:layout_marginLeft="7dp"
 
-                android:textSize="12dp"
-                />
-        </LinearLayout>
-        <LinearLayout
-            android:id="@+id/linear2_os"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
-            android:orientation="horizontal"
-            android:layout_marginBottom="12dp"
-            android:visibility="gone"
-            >
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="23.33dp"
-                android:gravity="center"
-                android:text="美术外包"
-                android:background="@drawable/select_item_identsub"
-                android:textColor="#7c7c7c"
-                android:textSize="12dp"
-                />
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="23.33dp"
-                android:gravity="center"
-                android:text="美术外包"
-                android:background="@drawable/select_item_identsub"
-                android:textColor="#7c7c7c"
-                android:layout_marginLeft="7dp"
-                android:textSize="12dp"
-                />
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="23.33dp"
-                android:gravity="center"
-                android:text="美术外包"
-                android:background="@drawable/select_item_identsub"
-                android:textColor="#7c7c7c"
-                android:layout_marginLeft="7dp"
-
-                android:textSize="12dp"
-                />
-            <TextView
-                android:layout_width="70dp"
-                android:layout_height="23.33dp"
-                android:gravity="center"
-                android:text="美术外包"
-                android:background="@drawable/select_item_identsub"
-                android:textColor="#7c7c7c"
-                android:layout_marginLeft="7dp"
-
-                android:textSize="12dp"
-                />
-        </LinearLayout>
-        <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="1px"
-            android:background="@color/line"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="13.33dp"
-            />
+    </LinearLayout>
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/line"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="13.33dp"
+        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -448,6 +348,4 @@
             android:hint="补充描述"
             />
     </LinearLayout>
-</LinearLayout>
-
 </LinearLayout>

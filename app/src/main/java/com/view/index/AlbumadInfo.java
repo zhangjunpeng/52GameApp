@@ -4,9 +4,18 @@ package com.view.index;
  * Created by Administrator on 2016/8/11.
  */
 public class AlbumadInfo {
+    private String id;
     private String logo;
     private String intro;
     private String content;
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
 
     public String getLogo() {
         return logo;

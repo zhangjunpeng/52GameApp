@@ -24,6 +24,16 @@ public class IP {
     private String address;
     private String otherIp;
 
+    private boolean iscare;
+
+    public boolean iscare() {
+        return iscare;
+    }
+
+    public void setIscare(boolean iscare) {
+        this.iscare = iscare;
+    }
+
     public IP() {
     }
 

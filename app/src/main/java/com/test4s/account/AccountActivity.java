@@ -23,6 +23,7 @@ import com.test4s.net.BaseParams;
 import com.test4s.net.LoginParams;
 import com.view.Evaluation.EvaluationActivity;
 import com.view.activity.BaseActivity;
+import com.view.coustomrequire.CustomizedListActivity;
 import com.view.messagecenter.MessageList;
 import com.view.myattention.AttentionActivity;
 import com.view.myreport.ReprotListActivity;
@@ -153,6 +154,11 @@ public class AccountActivity extends BaseActivity {
                 overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 break;
             case "sina":
+                break;
+            case "customized":
+                intent= new Intent(this, CustomizedListActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 break;
             default:
                 break;

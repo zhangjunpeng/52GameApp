@@ -57,6 +57,7 @@ public class FindTeam extends CoustomBaseFragment {
         stage_sel=new ArrayList<>();
         teamtypeText=new ArrayList<>();
         stageText=new ArrayList<>();
+        otherStr="";
 
         if (info!=null){
             findTeamInfo= (FindTeamInfo) info;

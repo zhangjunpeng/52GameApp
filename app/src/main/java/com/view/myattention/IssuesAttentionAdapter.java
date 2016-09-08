@@ -86,7 +86,7 @@ public class IssuesAttentionAdapter extends BaseAdapter {
                 .placeholder(R.drawable.default_icon)
                 .into(viewHolder.icon);
         viewHolder.name.setText(issueSimpleInfo.getCompany_name());
-        viewHolder.intro.setText("业务类型："+issueSimpleInfo.getBusiness_cat()+"\n合作类型："+issueSimpleInfo.getCoop_cat());
+        viewHolder.intro.setText("业务类型："+issueSimpleInfo.getBusiness_cat()+"\n发行方式："+issueSimpleInfo.getCoop_cat());
         viewHolder.uncare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

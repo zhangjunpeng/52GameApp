@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,6 @@ public class IPFindRecompose extends CoustomBaseFragment{
 
     public static String otherStr;
 
-    private LinearLayout linear1_ip;
-    private LinearLayout linear2_ip;
     private LinearLayout linear1_gametype;
     private LinearLayout linear2_gametype;
     private LinearLayout linear3_gametype;
@@ -51,6 +50,8 @@ public class IPFindRecompose extends CoustomBaseFragment{
     private CustomizedData customizedData=CustomizedData.getInstance();
 
     private IPFindRecomposeInfo ipFindRecomposeInfo=new IPFindRecomposeInfo();
+    private LinearLayout linear_ipcoop;
+    private float density;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,10 +63,13 @@ public class IPFindRecompose extends CoustomBaseFragment{
         ip_sel=new ArrayList<>();
         gametypes_sel=new ArrayList<>();
         cusgamestages_sel=new ArrayList<>();
+        otherStr="";
 
         ips=customizedData.getMap().get("ipnames");
         gametypes=customizedData.getMap().get("gametype");
         cusgamestages=customizedData.getMap().get("cusgamestage");
+
+        getDensity();
 
         if (info!=null){
             ipFindRecomposeInfo= (IPFindRecomposeInfo) info;
@@ -88,8 +92,8 @@ public class IPFindRecompose extends CoustomBaseFragment{
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        linear1_ip= (LinearLayout) view.findViewById(R.id.linear1_os);
-        linear2_ip= (LinearLayout) view.findViewById(R.id.linear2_os);
+
+        linear_ipcoop= (LinearLayout) view.findViewById(R.id.linear_ipcoop);
 
         linear1_gametype= (LinearLayout) view.findViewById(R.id.linear1_gametype);
         linear2_gametype= (LinearLayout) view.findViewById(R.id.linear2_gametype);
@@ -102,18 +106,6 @@ public class IPFindRecompose extends CoustomBaseFragment{
     }
 
     private void initView() {
-        for (int i=0;i<linear1_ip.getChildCount();i++){
-            TextView textView= (TextView) linear1_ip.getChildAt(i);
-            ipsText.add(textView);
-        }
-        if (ips.size()<=4){
-            linear2_ip.setVisibility(View.GONE);
-        }else {
-            for (int i=0;i<linear2_ip.getChildCount();i++){
-                TextView textView= (TextView) linear2_ip.getChildAt(i);
-                ipsText.add(textView);
-            }
-        }
 
         for (int i=0;i<linear1_gametype.getChildCount();i++){
             TextView textView= (TextView) linear1_gametype.getChildAt(i);
@@ -133,30 +125,7 @@ public class IPFindRecompose extends CoustomBaseFragment{
             cusgamestageText.add(textView);
         }
 
-        initTextViewSelect(ipsText, ips, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView textView= (TextView) v;
-                textView.setSelected(!textView.isSelected());
-
-                NameVal nameVal= (NameVal) textView.getTag();
-
-                if (textView.isSelected()){
-                    textView.setTextColor(Color.WHITE);
-                    ip_sel.add(nameVal);
-                }else {
-                    textView.setTextColor(Color.rgb(124, 124, 124));
-                    Iterator it = ip_sel.iterator();
-                    while (it.hasNext()) {
-                        NameVal nameVal1 = (NameVal) it.next();
-                        if (nameVal1.getId().equals(nameVal.getId())) {
-                            //移除当前的对象
-                            it.remove();
-                        }
-                    }
-                }
-            }
-        });
+        addIPCoop(ips);
 
         initTextViewSelect(gametypeText, gametypes, new View.OnClickListener() {
             @Override
@@ -224,6 +193,84 @@ public class IPFindRecompose extends CoustomBaseFragment{
 
             otherEdit.setText(otherStr);
         }
+    }
 
+    public void getDensity(){
+        DisplayMetrics metric = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
+        density = metric.density;  // 屏幕密度（0.75 / 1.0 / 1.5）
+    }
+
+    private void addIPCoop(List<NameVal> ips) {
+        if(ips.size()==0){
+            TextView noip=new TextView(getActivity());
+            noip.setText("没有IP，请先上传IP");
+            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.leftMargin= (int) (17*density);
+            layoutParams.topMargin= (int) (15*density);
+            layoutParams.bottomMargin= (int) (15*density);
+            noip.setTextColor(Color.RED);
+            linear_ipcoop.addView(noip,layoutParams);
+            return;
+        }
+
+        int lines=ips.size()/4;
+        int yip=ips.size()%4;
+
+        for (int i=0;i<lines;i++){
+            LinearLayout view= (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.item_linear_ipcoop,linear_ipcoop,false);
+            for (int j=0;j<4;j++){
+                int position=i*4+j;
+                TextView textView= (TextView) view.getChildAt(j);
+                NameVal nameVal=ips.get(position);
+                textView.setTag(nameVal);
+                textView.setText(nameVal.getVal());
+                ipsText.add(textView);
+            }
+            linear_ipcoop.addView(view);
+        }
+        LinearLayout view1= (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.item_linear_ipcoop,linear_ipcoop,false);
+        for (int i=0;i<4;i++){
+            TextView textView= (TextView) view1.getChildAt(i);
+            int position=lines*4+i;
+            if (i>=yip){
+                textView.setVisibility(View.INVISIBLE);
+            }else {
+                NameVal nameVal=ips.get(position);
+                textView.setTag(nameVal);
+                textView.setText(nameVal.getVal());
+                ipsText.add(textView);
+            }
+        }
+        linear_ipcoop.addView(view1);
+
+
+        for (TextView textView:ipsText){
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView _textView= (TextView) v;
+                    _textView.setSelected(!_textView.isSelected());
+
+                    NameVal nameVal= (NameVal) _textView.getTag();
+
+                    if (_textView.isSelected()){
+                        _textView.setTextColor(Color.WHITE);
+                        ip_sel.add(nameVal);
+                    }else {
+                        _textView.setTextColor(Color.rgb(124, 124, 124));
+                        Iterator it = ip_sel.iterator();
+                        while (it.hasNext()) {
+                            NameVal nameVal1 = (NameVal) it.next();
+                            if (nameVal1.getId().equals(nameVal.getId())) {
+                                //移除当前的对象
+                                it.remove();
+                            }
+                        }
+                    }
+                }
+            });
+
+        }
     }
 }

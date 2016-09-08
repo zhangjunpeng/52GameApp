@@ -401,11 +401,16 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.view.coustomrequire.CustomizedListActivity"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name="com.view.coustomrequire.ChangeCustomInfoActivity"
+
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name="com.view.coustomrequire.ServiceMoneyInfoActivity"
+        <activity
+            android:name="com.view.coustomrequire.ServiceMoneyInfoActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.view.index.index.SubjectActivity"
             android:theme="@style/AppTheme.NoActionBar"
             ></activity>
     </application>

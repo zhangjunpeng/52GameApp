@@ -325,7 +325,7 @@ public class IssueDetailActivity extends BaseActivity {
 //                    .into(viewHolder.icon);
             viewHolder.time.setText("上线时间 ："+caseInfo.getOnline_time());
             viewHolder.name.setText(caseInfo.getName());
-            viewHolder.money.setText("合作类型 ："+caseInfo.getCoop_cat());
+            viewHolder.money.setText("发行方式 ："+caseInfo.getCoop_cat());
             viewHolder.stage.setText("游戏类型 ："+caseInfo.getGame_type());
 
             if (i==0){

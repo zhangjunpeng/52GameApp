@@ -29,12 +29,14 @@ import com.app.tools.CusToast;
 import com.app.tools.MyLog;
 import com.app.tools.ScreenUtil;
 import com.test4s.Event.ToastEvent;
+import com.test4s.account.AccountActivity;
+import com.test4s.account.MyAccount;
 import com.test4s.gdb.CPDao;
 import com.test4s.gdb.DaoSession;
 import com.view.coustomrequire.CustomizedActivity;
 import com.view.index.game.GameFragment;
-import com.view.index.IndexFragment;
-import com.view.index.info.InformationFragment;
+import com.view.index.index.IndexFragment;
+import com.view.index.info.IndexInfoFragment;
 import com.view.index.MySettingFragment;
 import com.view.search.SearchActivity;
 
@@ -48,7 +50,7 @@ import de.greenrobot.event.ThreadMode;
 public class MainActivity extends FragmentActivity  implements View.OnClickListener,GestureDetector.OnGestureListener{
 
     DaoSession daoSession;
-    private List<Fragment> fragments;
+//    private List<Fragment> fragments;
     FragmentManager fm;
 
 
@@ -86,6 +88,31 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        fm=getSupportFragmentManager();
+
+        if (savedInstanceState == null) {
+            // getFragmentManager().beginTransaction()...commit()
+
+            Fragment indexFragment=new IndexFragment();
+            mContent=indexFragment;
+            fm.beginTransaction().add(R.id.frameLayout_main,indexFragment,"index").commit();
+        }else{
+            //先通过id或者tag找到“复活”的所有UI-Fragment
+            Fragment indexFragment =fm.findFragmentByTag("index");
+            Fragment gameFragment =fm.findFragmentByTag("game");
+            Fragment infoFragment =fm.findFragmentByTag("info");
+            Fragment mysetting=fm.findFragmentByTag("setting");
+
+            //show()一个即可
+            fm.beginTransaction()
+                    .show(indexFragment)
+                    .hide(gameFragment)
+                    .hide(infoFragment)
+                    .hide(mysetting)
+            .commit();
+        }
+
+
         initBottomView();
 
 
@@ -107,21 +134,20 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
         daoSession=MyApplication.daoSession;
         CPDao cpDao=daoSession.getCPDao();
 
-        fragments=new ArrayList<>();
+//        fragments=new ArrayList<>();
+//
 
-        Fragment indexFragment=new IndexFragment();
-        Fragment gameFragment=new GameFragment();
-        Fragment informationFragment=new InformationFragment();
-        Fragment mySettingFragment=new MySettingFragment();
-        mContent=indexFragment;
 
-        fragments.add(indexFragment);
-        fragments.add(gameFragment);
-        fragments.add(informationFragment);
-        fragments.add(mySettingFragment);
+//        Fragment gameFragment=new GameFragment();
+//        Fragment indexInfoFragment=new IndexInfoFragment();
+//        Fragment mySettingFragment=new MySettingFragment();
+//
+//        fragments.add(indexFragment);
+//        fragments.add(gameFragment);
+//        fragments.add(indexInfoFragment);
+//        fragments.add(mySettingFragment);
 
         setImageColor(0);
-        fm.beginTransaction().replace(R.id.frameLayout_main,indexFragment).commit();
 
 
         //获取屏幕密度
@@ -216,32 +242,46 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.index_linear:
-                switchContent(mContent,fragments.get(0));
+                IndexFragment indexFragment=new IndexFragment();
+                switchContent(mContent,indexFragment,"index");
 //                fm.beginTransaction().replace(R.id.frameLayout_main,fragments.get(0)).commit();
                 setImageColor(0);
                 break;
             case R.id.game_linear:
-                switchContent(mContent,fragments.get(1));
+                GameFragment gameFragment=new GameFragment();
+                switchContent(mContent,gameFragment,"game");
 
 //                fm.beginTransaction().replace(R.id.frameLayout_main,fragments.get(1)).commit();
                 setImageColor(1);
                 break;
             case R.id.info_linear:
-                switchContent(mContent,fragments.get(2));
+                IndexInfoFragment indexInfoFragment =new IndexInfoFragment();
+                switchContent(mContent,indexInfoFragment,"info");
 
 //                fm.beginTransaction().replace(R.id.frameLayout_main,fragments.get(2)).commit();
                 setImageColor(2);
                 break;
             case R.id.my_linear:
-                switchContent(mContent,fragments.get(3));
+                MySettingFragment mySettingFragment=new MySettingFragment();
+                switchContent(mContent,mySettingFragment,"setting");
 
 //                fm.beginTransaction().replace(R.id.frameLayout_main,fragments.get(3)).commit();
                 setImageColor(3);
                 break;
             case R.id.requirement:
-                Intent intent=new Intent(this, CustomizedActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                if(MyAccount.isLogin){
+                    Intent intent=new Intent(this, CustomizedActivity.class);
+                    startActivity(intent);
+                    overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                }else {
+
+                    Intent intent=new Intent(this, AccountActivity.class);
+                    intent.putExtra("tag","custom");
+                    startActivityForResult(intent,MySettingFragment.RequestCode_login);
+                    overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+
+                }
+
                 break;
         }
 
@@ -350,14 +390,14 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
         return true;
     }
 
-    public void switchContent(Fragment from, Fragment to) {
+    public void switchContent(Fragment from, Fragment to,String tag) {
         if (mContent != to) {
             mContent = to;
             FragmentTransaction transaction =fm.beginTransaction();
-            transaction.setCustomAnimations(
-                    android.R.anim.fade_in, android.R.anim.fade_out);
+//            transaction.setCustomAnimations(
+//                    android.R.anim.fade_in, android.R.anim.fade_out);
             if (!to.isAdded()) {    // 先判断是否被add过
-                transaction.hide(from).add(R.id.frameLayout_main, to).commit(); // 隐藏当前的fragment，add下一个到Activity中
+                transaction.hide(from).add(R.id.frameLayout_main, to,tag).commit(); // 隐藏当前的fragment，add下一个到Activity中
             } else {
                 transaction.hide(from).show(to).commit(); // 隐藏当前的fragment，显示下一个
             }

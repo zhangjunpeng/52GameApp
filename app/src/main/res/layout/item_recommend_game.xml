@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="91dp"
-    android:background="#f1f5f8"
     >
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -115,7 +114,7 @@
             android:layout_height="27dp"
             android:text="关注"
             android:textColor="#fff"
-            android:background="@drawable/radius_orange"
+            android:background="@drawable/select_care_text"
             android:gravity="center"
             android:textSize="13dp"
             android:layout_alignParentRight="true"
@@ -123,6 +122,7 @@
             android:layout_marginRight="11dp"
             />
         <ImageView
+            android:id="@+id/line"
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/line"

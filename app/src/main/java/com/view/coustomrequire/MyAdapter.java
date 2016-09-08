@@ -76,7 +76,7 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewholder, int position) {
+    public void onBindViewHolder(RecyclerView.ViewHolder viewholder, final int position) {
         final MyViewHolder holder= (MyViewHolder) viewholder;
         final ItemInfoCustomList itemInfoCustomList= datalist.get(position);
         NameVal nameVal=itemInfoCustomList.getServive_cat();
@@ -91,7 +91,7 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
                 if (nameVal.getId().equals("4")){
                     namestr=namestr+"找投资";
                     FindInvestInfo findInvestInfo= (FindInvestInfo) itemInfoCustomList.getInfo();
-                    infoStr.append("融资阶段："+findInvestInfo.getStarge()
+                    infoStr.append("融资阶段："+findInvestInfo.getStarge_name()
                             +"\n融资金额："+findInvestInfo.getMoney()
                             +"\n出让股份："+findInvestInfo.getMinstock()+"-"+findInvestInfo.getMaxstock());
                 }else if (nameVal.getId().equals("5")){
@@ -170,7 +170,7 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
                 }else if(nameVal.getId().equals("4")){
                     namestr=namestr+"找投资";
                     FindInvestInfo findInvestInfo= (FindInvestInfo) itemInfoCustomList.getInfo();
-                    infoStr.append("融资阶段："+findInvestInfo.getStarge()
+                    infoStr.append("融资阶段："+findInvestInfo.getStarge_name()
                             +"\n融资金额："+findInvestInfo.getMoney()
                             +"\n出让股份："+findInvestInfo.getMinstock()+"-"+findInvestInfo.getMaxstock());
 
@@ -218,26 +218,26 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
 //            layoutParams.height
 //            holder.line.setLayoutParams(layoutParams);
 
-        ViewTreeObserver vto = holder.relative.getViewTreeObserver();
-        final RelativeLayout relativeLayout=holder.relative;
-        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                relativeLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-                int height= relativeLayout.getHeight();
-                MyLog.i("relative height=="+height);
-                RelativeLayout.LayoutParams layoutParams1= (RelativeLayout.LayoutParams) holder.delete.getLayoutParams();
-                layoutParams1.topMargin=height/2;
-                holder.delete.setLayoutParams(layoutParams1);
-
-                RelativeLayout.LayoutParams layoutParams2= (RelativeLayout.LayoutParams) holder.line.getLayoutParams();
-                layoutParams2.height=height;
-                layoutParams2.topMargin=45;
-                layoutParams2.bottomMargin=45;
-                holder.line.setLayoutParams(layoutParams2);
-
-            }
-        });
+//        ViewTreeObserver vto = holder.relative.getViewTreeObserver();
+//        final RelativeLayout relativeLayout=holder.relative;
+//        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+//            @Override
+//            public void onGlobalLayout() {
+//                relativeLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+//                int height= relativeLayout.getHeight();
+//                MyLog.i("relative height=="+height);
+//                RelativeLayout.LayoutParams layoutParams1= (RelativeLayout.LayoutParams) holder.delete.getLayoutParams();
+//                layoutParams1.topMargin=height/2;
+//                holder.delete.setLayoutParams(layoutParams1);
+//
+//                RelativeLayout.LayoutParams layoutParams2= (RelativeLayout.LayoutParams) holder.line.getLayoutParams();
+//                layoutParams2.height=height;
+//                layoutParams2.topMargin=45;
+//                layoutParams2.bottomMargin=45;
+//                holder.line.setLayoutParams(layoutParams2);
+//
+//            }
+//        });
 
 
         holder.relative.setOnClickListener(new View.OnClickListener() {
@@ -249,11 +249,13 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
                 intent.putExtra("data",bundle);
                 context.startActivity(intent);
                 context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                context.finish();
             }
         });
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                MyLog.i("delete "+position);
                 deleteCustomize(itemInfoCustomList);
             }
         });

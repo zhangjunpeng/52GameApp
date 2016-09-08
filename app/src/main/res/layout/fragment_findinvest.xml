@@ -230,6 +230,7 @@
                 android:text="*"
                 android:textColor="#eb1b1b"
                 android:layout_marginLeft="15dp"
+                android:visibility="invisible"
                 />
             <TextView
                 android:layout_width="wrap_content"

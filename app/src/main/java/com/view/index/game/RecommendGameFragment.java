@@ -9,7 +9,9 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,6 +28,8 @@ import com.test4s.myapp.R;
 import com.test4s.net.Url;
 import com.view.activity.ListActivity;
 import com.view.game.GameDetailActivity;
+import com.view.game.RmGameListActivity;
+import com.view.myattention.AttentionChange;
 
 import java.lang.reflect.Field;
 import java.util.List;
@@ -34,24 +38,44 @@ import java.util.Map;
 /**
  * Created by Administrator on 2016/8/11.
  */
-public class RecommendGameFragment extends Fragment{
+public class RecommendGameFragment extends Fragment {
 
     private List<GameType> titles;
     private Map<String,List> map;
 
     private LinearLayout linearLayout;
 
+    private GestureDetector gestureDetector;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         titles=GameFragment.titles;
         map=GameFragment.map;
+        gestureDetector = new GestureDetector(getActivity(),onGestureListener);
     }
+
+    private GestureDetector.OnGestureListener onGestureListener =
+            new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                                       float velocityY) {
+                    return true;
+                }
+            };
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         NestedScrollView view= (NestedScrollView) inflater.inflate(R.layout.fragment_recommendgame,container,false);
+
+//        view.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                return gestureDetector.onTouchEvent(event);
+//            }
+//        });
+
         return view;
     }
 
@@ -70,23 +94,104 @@ public class RecommendGameFragment extends Fragment{
             View contentView = LayoutInflater.from(getActivity()).inflate(R.layout.item_recycler_recommendgame, null);
             TextView tj = (TextView) contentView.findViewById(R.id.text);
             TextView more = (TextView) contentView.findViewById(R.id.more);
-            RecyclerView recyclerView = (RecyclerView) contentView.findViewById(R.id.recycler_index_item);
+            LinearLayout contianer = (LinearLayout) contentView.findViewById(R.id.contianer_recommendgame);
 
             tj.setText(titles.get(i).getTitle());
 
-            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-            //设置Item增加、移除动画
-            recyclerView.setItemAnimator(new DefaultItemAnimator());
+//            recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+//            //设置Item增加、移除动画
+//            recyclerView.setItemAnimator(new DefaultItemAnimator());
+//
+//            recyclerView.setAdapter(new HomeAdapter(gameInfos));
+            for (int m=0;m<gameInfos.size();m++){
+                View view=LayoutInflater.from(
+                        getActivity()).inflate(R.layout.item_recommend_game, contianer, false);
+                ImageView icon = (ImageView) view.findViewById(R.id.icon);
+                TextView name = (TextView) view.findViewById(R.id.name);
+                TextView info = (TextView) view.findViewById(R.id.info);
+                final TextView care = (TextView) view.findViewById(R.id.care);
+                TextView norms = (TextView) view.findViewById(R.id.norms);
+                ImageView grade = (ImageView) view.findViewById(R.id.grade);
+                ImageView line = (ImageView) view.findViewById(R.id.line);
 
-            recyclerView.setAdapter(new HomeAdapter(gameInfos));
+                final GameInfo gameInfo=gameInfos.get(m);
 
+                name.setText(gameInfo.getGame_name());
 
+                ImageLoader.getInstance().displayImage(Url.prePic+gameInfo.getGame_img(),icon,MyDisplayImageOptions.getroundImageOptions());
+                if ("1".equals(gameInfo.getNorms())){
+                    norms.setVisibility(View.VISIBLE);
+                }else if("0".equals(gameInfo.getNorms())){
+                    norms.setVisibility(View.INVISIBLE);
+                }
+                if (TextUtils.isEmpty(gameInfo.getGame_grade())){
+                    grade.setVisibility(View.INVISIBLE);
+                }else {
+                    ImageLoader.getInstance().displayImage(Url.prePic+gameInfo.getGame_grade(),grade, MyDisplayImageOptions.getIconOptions());
+                }
+
+                String mess=gameInfo.getGame_type()+"/"+gameInfo.getGame_stage()+"\n"+gameInfo.getRequire();
+                info.setText(mess);
+
+                if (MyAccount.isLogin){
+                    if (gameInfo.iscare()){
+                        care.setText("已关注");
+                        care.setSelected(true);
+                    }else {
+                        care.setText("关注");
+                        care.setSelected(false);
+                    }
+                    care.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (gameInfo.iscare()){
+                                gameInfo.setIscare(false);
+                                AttentionChange.removeAttention("1",gameInfo.getGame_id(), getActivity());
+                            }else {
+                                gameInfo.setIscare(true);
+                                AttentionChange.addAttention("1",gameInfo.getGame_id(), getActivity());
+                            } if (gameInfo.iscare()){
+                                care.setText("已关注");
+                                care.setSelected(true);
+                            }else {
+                                care.setText("关注");
+                                care.setSelected(false);
+                            }
+                        }
+                    });
+
+                }else {
+                    care.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent=new Intent(getActivity(), AccountActivity.class);
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                        }
+                    });
+                }
+
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        goDetail(gameInfo.getGame_id(),gameInfo.getGame_dev());
+                    }
+                });
+                if (m==gameInfos.size()-1){
+                    line.setVisibility(View.INVISIBLE);
+                }
+
+                contianer.addView(view);
+
+            }
+
+            final int j=i;
             more.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent=new Intent(getActivity(), ListActivity.class);
-                    intent.putExtra("tag",ListActivity.IP_TAG);
-                    intent.putExtra("remment",true);
+                    Intent intent=new Intent(getActivity(), RmGameListActivity.class);
+                    intent.putExtra("position",j);
                     startActivity(intent);
                     getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                 }
@@ -95,7 +200,10 @@ public class RecommendGameFragment extends Fragment{
             LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
             linearLayout.addView(contentView,layoutParams);
         }
+
     }
+
+
 
     @Override
     public void onDetach() {
@@ -108,88 +216,6 @@ public class RecommendGameFragment extends Fragment{
             throw new RuntimeException(e);
         } catch (IllegalAccessException e) {
             throw new RuntimeException(e);
-        }
-    }
-
-    class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.MyViewHolder> {
-
-        private List<GameInfo> datalist;
-
-        ImageLoader imageLoader=ImageLoader.getInstance();
-
-
-        @Override
-        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
-                    getActivity()).inflate(R.layout.item_recommend_game, parent, false));
-            return holder;
-        }
-
-        public HomeAdapter(List<GameInfo> datalist) {
-            this.datalist=datalist;
-        }
-
-
-        @Override
-        public void onBindViewHolder(final MyViewHolder holder, int position) {
-            GameInfo gameInfo=datalist.get(position);
-
-            holder.name.setText(gameInfo.getGame_name());
-
-            imageLoader.displayImage(Url.prePic+gameInfo.getGame_img(),holder.icon,MyDisplayImageOptions.getroundImageOptions());
-            if ("1".equals(gameInfo.getNorms())){
-                holder.norms.setVisibility(View.VISIBLE);
-            }else if("0".equals(gameInfo.getNorms())){
-                holder.norms.setVisibility(View.INVISIBLE);
-            }
-            if (TextUtils.isEmpty(gameInfo.getGame_grade())){
-                holder.grade.setVisibility(View.INVISIBLE);
-            }else {
-                imageLoader.displayImage(Url.prePic+gameInfo.getGame_grade(),holder.grade, MyDisplayImageOptions.getIconOptions());
-            }
-
-            String mess=gameInfo.getGame_type()+"/"+gameInfo.getGame_stage()+"\n"+gameInfo.getRequire();
-            holder.info.setText(mess);
-
-            holder.care.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (MyAccount.isLogin){
-
-                    }else {
-                        Intent intent=new Intent(getActivity(), AccountActivity.class);
-                        startActivity(intent);
-                        getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-                    }
-                }
-            });
-
-        }
-
-        @Override
-        public int getItemCount() {
-            return 3;
-        }
-
-        class MyViewHolder extends RecyclerView.ViewHolder {
-            ImageView icon;
-            TextView name;
-            TextView info;
-            TextView care;
-            View item;
-            TextView norms;
-            ImageView grade;
-
-            public MyViewHolder(View view) {
-                super(view);
-                icon = (ImageView) view.findViewById(R.id.icon);
-                name = (TextView) view.findViewById(R.id.name);
-                info = (TextView) view.findViewById(R.id.info);
-                care = (TextView) view.findViewById(R.id.care);
-                norms= (TextView) view.findViewById(R.id.norms);
-                grade= (ImageView) view.findViewById(R.id.grade);
-                item = view;
-            }
         }
     }
 

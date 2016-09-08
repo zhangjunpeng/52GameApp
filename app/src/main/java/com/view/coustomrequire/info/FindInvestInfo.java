@@ -7,9 +7,18 @@ import java.io.Serializable;
  */
 public class FindInvestInfo implements Serializable{
     private String starge;
+    private String starge_name;
     private String money;
     private String minstock;
     private String maxstock;
+
+    public String getStarge_name() {
+        return starge_name;
+    }
+
+    public void setStarge_name(String starge_name) {
+        this.starge_name = starge_name;
+    }
 
     public String getStarge() {
         return starge;

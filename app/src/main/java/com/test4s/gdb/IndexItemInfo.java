@@ -13,6 +13,15 @@ public class IndexItemInfo {
     private String company_name;
     private String method_name;
     private String info;
+    private boolean iscare;
+
+    public boolean iscare() {
+        return iscare;
+    }
+
+    public void setIscare(boolean iscare) {
+        this.iscare = iscare;
+    }
 
     public String getInfo() {
         return info;

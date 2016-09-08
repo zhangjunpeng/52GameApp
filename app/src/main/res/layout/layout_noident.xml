@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/titlebar_help"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        >
+        <ImageView
+            android:layout_width="157dp"
+            android:layout_height="157dp"
+            android:src="@drawable/noident"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1.请认证身份（投资人、发行方、IP方、开发者）\n2.请根据您的身份提交需求\n3.系统帮您精确匹配资源合作方\n专属客服全程跟进直至项目结束"
+            android:layout_marginTop="30dp"
+            android:lineSpacingExtra="4dp"
+            android:textColor="@color/line"
+            android:textSize="15dp"
+            />
+        <TextView
+            android:id="@+id/go_ident"
+            android:layout_width="140dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="74dp"
+            android:background="@drawable/radius_orange"
+            android:text="身份认证"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="15dp"
+            />
+
+    </LinearLayout>
+</LinearLayout>

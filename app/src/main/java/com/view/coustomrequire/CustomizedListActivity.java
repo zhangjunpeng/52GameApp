@@ -5,8 +5,10 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.app.tools.MyLog;
 import com.test4s.account.MyAccount;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
@@ -87,6 +90,8 @@ public class CustomizedListActivity extends AppCompatActivity {
         //设置Item增加、移除动画
         recyclerView.setItemAnimator(new DefaultItemAnimator());
 
+        recyclerView.addOnScrollListener(new MyScrollListener());
+
 
     }
 
@@ -115,6 +120,10 @@ public class CustomizedListActivity extends AppCompatActivity {
             @Override
             public void onFinished() {
                 adapter.notifyDataSetChanged();
+                if(dataList.size()==0){
+                    setContentView(R.layout.nodata);
+                }
+
             }
         });
     }
@@ -157,13 +166,14 @@ public class CustomizedListActivity extends AppCompatActivity {
                                 FindInvestInfo investInfo=new FindInvestInfo();
                                 investInfo.setMoney(info.getString("money"));
                                 investInfo.setStarge(info.getString("starge"));
+                                investInfo.setStarge_name(info.getString("starge_name"));
                                 JSONArray array=info.getJSONArray("stock");
                                 investInfo.setMinstock(array.getString(0));
                                 investInfo.setMaxstock(array.getString(1));
                                 itemInfo.setInfo(investInfo);
                             }else if (id.equals("5")){
                                 FindIPInfo findIPInfo=new FindIPInfo();
-                                JSONArray coopcatarray=info.getJSONArray("ip_coop_cat");
+                                JSONArray coopcatarray=info.getJSONArray("ip_coop_type");
                                 List<NameVal> coopcats=new ArrayList<>();
                                 for (int j=0;j<coopcatarray.length();j++){
                                     JSONObject object=coopcatarray.getJSONObject(j);
@@ -267,7 +277,7 @@ public class CustomizedListActivity extends AppCompatActivity {
                                 itemInfo.setInfo(findTeamInfo);
                             }else if(id.equals("2")){
                                 FindIPInfo findIPInfo=new FindIPInfo();
-                                JSONArray coopcatarray=info.getJSONArray("ip_coop_cat");
+                                JSONArray coopcatarray=info.getJSONArray("ip_coop_type");
                                 List<NameVal> coopcats=new ArrayList<>();
                                 for (int j=0;j<coopcatarray.length();j++){
                                     JSONObject object=coopcatarray.getJSONObject(j);
@@ -491,6 +501,8 @@ public class CustomizedListActivity extends AppCompatActivity {
                                 FindInvestInfo investInfo=new FindInvestInfo();
                                 investInfo.setMoney(info.getString("money"));
                                 investInfo.setStarge(info.getString("starge"));
+                                investInfo.setStarge_name(info.getString("starge_name"));
+
                                 JSONArray array=info.getJSONArray("stock");
                                 investInfo.setMinstock(array.getString(0));
                                 investInfo.setMaxstock(array.getString(1));
@@ -498,7 +510,7 @@ public class CustomizedListActivity extends AppCompatActivity {
                                 itemInfo.setInfo(investInfo);
                             }else if(id.equals("5")){
                                 FindIPInfo findIPInfo=new FindIPInfo();
-                                JSONArray coopcatarray=info.getJSONArray("ip_coop_cat");
+                                JSONArray coopcatarray=info.getJSONArray("ip_coop_type");
                                 List<NameVal> coopcats=new ArrayList<>();
                                 for (int j=0;j<coopcatarray.length();j++){
                                     JSONObject object=coopcatarray.getJSONObject(j);
@@ -703,6 +715,7 @@ public class CustomizedListActivity extends AppCompatActivity {
                     intent.putExtra("data",bundle);
                     startActivity(intent);
                     overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    finish();
                 }
             });
 
@@ -745,5 +758,94 @@ public class CustomizedListActivity extends AppCompatActivity {
             stringBuffer.append(nameValList.get(i).getVal());
         }
         return stringBuffer.toString();
+    }
+
+    public enum LAYOUT_MANAGER_TYPE {
+        LINEAR,
+        GRID,
+        STAGGERED_GRID
+    }
+
+    class MyScrollListener extends RecyclerView.OnScrollListener {
+
+
+
+        private LAYOUT_MANAGER_TYPE layoutManagerType;
+
+        /**
+         * 最后一个的位置
+         */
+        private int[] lastPositions;
+
+        /**
+         * 最后一个可见的item的位置
+         */
+        private int lastVisibleItemPosition;
+
+
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+
+            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+            if (layoutManagerType == null) {
+                if (layoutManager instanceof LinearLayoutManager) {
+                    layoutManagerType = LAYOUT_MANAGER_TYPE.LINEAR;
+                } else if (layoutManager instanceof StaggeredGridLayoutManager) {
+                    layoutManagerType = LAYOUT_MANAGER_TYPE.STAGGERED_GRID;
+                } else {
+                    throw new RuntimeException(
+                            "Unsupported LayoutManager used. Valid ones are LinearLayoutManager, GridLayoutManager and StaggeredGridLayoutManager");
+                }
+            }
+
+            switch (layoutManagerType) {
+                case LINEAR:
+                    lastVisibleItemPosition = ((LinearLayoutManager) layoutManager).findLastVisibleItemPosition();
+                    break;
+                case GRID:
+                    lastVisibleItemPosition = ((GridLayoutManager) layoutManager).findLastVisibleItemPosition();
+                    break;
+                case STAGGERED_GRID:
+                    StaggeredGridLayoutManager staggeredGridLayoutManager = (StaggeredGridLayoutManager) layoutManager;
+                    if (lastPositions == null) {
+                        lastPositions = new int[staggeredGridLayoutManager.getSpanCount()];
+                    }
+                    staggeredGridLayoutManager.findLastVisibleItemPositions(lastPositions);
+                    lastVisibleItemPosition = findMax(lastPositions);
+                    break;
+            }
+        }
+
+        @Override
+        public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+            super.onScrollStateChanged(recyclerView, newState);
+
+            RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+            int visibleItemCount = layoutManager.getChildCount();
+            int totalItemCount = layoutManager.getItemCount();
+//            LogUtils.i("onScrollStateChanged", "visibleItemCount" + visibleItemCount);
+//            LogUtils.i("onScrollStateChanged", "lastVisibleItemPosition" + lastVisibleItemPosition);
+//            LogUtils.i("onScrollStateChanged", "totalItemCount" + totalItemCount);
+            if (visibleItemCount > 0 && newState == RecyclerView.SCROLL_STATE_IDLE && lastVisibleItemPosition == totalItemCount - 1) {
+//                loadingData.onLoadMore();
+                MyLog.i("RecyclerView 滚动到底部");
+                p++;
+                initData(p+"");
+            }
+        }
+
+        private int findMax(int[] lastPositions) {
+            int max = lastPositions[0];
+            for (int value : lastPositions) {
+                if (value > max) {
+                    max = value;
+                }
+            }
+            return max;
+        }
+
+
     }
 }

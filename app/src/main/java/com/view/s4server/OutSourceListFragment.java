@@ -476,7 +476,7 @@ public class OutSourceListFragment extends BaseFragment{
                 viewHolder.icon= (ImageView) convertView.findViewById(R.id.imageView_iplist);
                 viewHolder.name= (TextView) convertView.findViewById(R.id.name_item_iplist);
                 viewHolder.intro= (TextView) convertView.findViewById(R.id.introuduction_item_iplist);
-                viewHolder.care= (ImageView) convertView.findViewById(R.id.care_item_list);
+                viewHolder.care= (TextView) convertView.findViewById(R.id.care_item_list);
                 convertView.setTag(viewHolder);
             }else {
                 viewHolder= (ViewHolder) convertView.getTag();
@@ -492,9 +492,12 @@ public class OutSourceListFragment extends BaseFragment{
             viewHolder.intro.setText("所在区域 ："+osSimpleInfo.getArea_name()+"\n公司规模 ："+osSimpleInfo.getCompany_scale()+"\n类    型 ："+osSimpleInfo.getOutsource_name());
             if (MyAccount.isLogin){
                 if (osSimpleInfo.iscare()){
-                    viewHolder.care.setImageResource(R.drawable.cared);
+                    viewHolder.care.setText("已关注");
+                    viewHolder.care.setSelected(true);
                 }else {
-                    viewHolder.care.setImageResource(R.drawable.care_gray);
+                    viewHolder.care.setText("关注");
+                    viewHolder.care.setSelected(false);
+
                 }
                 viewHolder.care.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -506,9 +509,12 @@ public class OutSourceListFragment extends BaseFragment{
                             osSimpleInfo.setIscare(true);
                             AttentionChange.addAttention("3",osSimpleInfo.getUser_id(), context);
                         } if (osSimpleInfo.iscare()){
-                            viewHolder.care.setImageResource(R.drawable.cared);
+                            viewHolder.care.setText("已关注");
+                            viewHolder.care.setSelected(true);
                         }else {
-                            viewHolder.care.setImageResource(R.drawable.care_gray);
+                            viewHolder.care.setText("关注");
+                            viewHolder.care.setSelected(false);
+
                         }
 
 
@@ -532,7 +538,7 @@ public class OutSourceListFragment extends BaseFragment{
             ImageView icon;
             TextView name;
             TextView intro;
-            ImageView care;
+            TextView care;
         }
     }
 }

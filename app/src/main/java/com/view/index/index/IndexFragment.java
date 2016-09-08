@@ -1,4 +1,4 @@
-package com.view.index;
+package com.view.index.index;
 
 
 import android.app.Activity;
@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,9 +43,18 @@ import com.test4s.gdb.OrderDao;
 import com.test4s.myapp.MyApplication;
 import com.test4s.net.BaseParams;
 import com.view.activity.ListActivity;
+import com.view.game.GameDetailActivity;
+import com.view.index.AlbumadInfo;
+import com.view.index.FloatadInfo;
 import com.view.index.adapter.LayoutAdapter;
 import com.test4s.myapp.R;
 import com.test4s.net.Url;
+import com.view.myattention.AttentionChange;
+import com.view.s4server.CPDetailActivity;
+import com.view.s4server.IPDetailActivity;
+import com.view.s4server.InvesmentDetialActivity;
+import com.view.s4server.IssueDetailActivity;
+import com.view.s4server.OutSourceActivity;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,6 +101,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
     private DaoSession daoSession;
     private Activity context;
     private ImageLoader imageLoader=ImageLoader.getInstance();
+
+
+    static String data="";
 
     private Handler mhandler=new Handler(){
         @Override
@@ -145,6 +158,11 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         switchTextView= (VerticalSwitchTextView) view.findViewById(R.id.switchtextview);
 //        indexJsonParser=IndexJsonParser.getInstance();
 
+        if (!TextUtils.isEmpty(data)){
+            jsonParser(data);
+            initView();
+            initViewPager();
+        }
 
 
 
@@ -201,7 +219,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
 
     private void initData() {
         BaseParams params=new BaseParams("index/index.html");
-
+        if (MyAccount.isLogin){
+            params.addParams("token",MyAccount.getInstance().getToken());
+        }
         params.addSign();
         params.getRequestParams().setCacheMaxAge(1000*60*30);
 
@@ -236,6 +256,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
 //                indexJsonParser.jsonParser(result);
 //                indexAdvertses=indexJsonParser.indexAdvertses;
                 if (success){
+
+                    data=result;
                     MyLog.i("网络获取数据");
                     deletAll();
                     jsonParser(result);
@@ -301,9 +323,52 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
 
             @Override
             public void onItemClick(int index) {
+                FloatadInfo info=floatadInfos.get(index);
+                if(info.isgame()){
+                    Intent intent=new Intent(getActivity(), GameDetailActivity.class);
+                    intent.putExtra("game_id",info.getUser_id());
+                    intent.putExtra("ident_cat",info.getIdent_cat());
+                    startActivity(intent);
+                }else {
+                    Intent intent=null;
+                    switch (info.getIdent_cat()){
+                        //2:开发者3:外包 4:投资人 5:IP方 6:发行方
 
+                        case "2":
+                            intent=new Intent(getActivity(), CPDetailActivity.class);
+                            intent.putExtra("user_id",info.getUser_id());
+                            intent.putExtra("identity_cat","2");
+                            break;
+                        case "3":
+                            intent=new Intent(getActivity(), OutSourceActivity.class);
+                            intent.putExtra("user_id",info.getUser_id());
+
+                            intent.putExtra("identity_cat","3");
+                            break;
+                        case "4":
+                            intent=new Intent(getActivity(), InvesmentDetialActivity.class);
+                            intent.putExtra("user_id",info.getUser_id());
+
+                            intent.putExtra("identity_cat","4");
+                            break;
+                        case "5":
+                            intent=new Intent(getActivity(), IPDetailActivity.class);
+                            intent.putExtra("id",info.getUser_id());
+                            break;
+                        case "6":
+                            intent=new Intent(getActivity(), IssueDetailActivity.class);
+                            intent.putExtra("user_id",info.getUser_id());
+
+                            intent.putExtra("identity_cat","6");
+                            break;
+                    }
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                }
             }
         });
+        //        switchTextView.invalidate();
+        switchTextView.setVisibility(View.VISIBLE);
 
     }
 
@@ -407,9 +472,18 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         if (position>=albumadInfos.size()){
             view.findViewById(R.id.relative).setVisibility(View.GONE);
         }else {
-            AlbumadInfo albumadInfo=albumadInfos.get(position);
+            final AlbumadInfo albumadInfo=albumadInfos.get(position);
             imageLoader.displayImage(Url.prePic+albumadInfo.getLogo(),imageView,MyDisplayImageOptions.getroundImageOptions());
             image_title.setText(albumadInfo.getIntro());
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(getActivity(),SubjectActivity.class);
+                    intent.putExtra("id",albumadInfo.getId());
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                }
+            });
         }
 
         final Order order=orders.get(position);
@@ -465,9 +539,18 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         if (position>=albumadInfos.size()){
             view.findViewById(R.id.relative).setVisibility(View.GONE);
         }else {
-            AlbumadInfo albumadInfo=albumadInfos.get(position);
+            final AlbumadInfo albumadInfo=albumadInfos.get(position);
             imageLoader.displayImage(Url.prePic+albumadInfo.getLogo(),imageView,MyDisplayImageOptions.getroundImageOptions());
-            image_title.setText(albumadInfo.getIntro());
+            image_title.setText(albumadInfo.getIntro()); imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent=new Intent(getActivity(),SubjectActivity.class);
+                    intent.putExtra("id",albumadInfo.getId());
+                    startActivity(intent);
+                    getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                }
+            });
+
         }
 
 
@@ -521,32 +604,128 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         }
 
         @Override
-        public void onBindViewHolder(final MyViewHolder holder, int position) {
+        public void onBindViewHolder(final MyViewHolder holder, final int position) {
+            boolean iscare=false;
             if (cat.equals("ip")){
-                IP ipSimpleInfo=iplist.get(position);
+                final IP ipSimpleInfo=iplist.get(position);
                 imageLoader.displayImage(Url.prePic+ipSimpleInfo.getIp_logo(),holder.icon,MyDisplayImageOptions.getroundImageOptions());
                 holder.name.setText(ipSimpleInfo.getIp_name());
                 holder.info.setText(ipSimpleInfo.getIntrouduction());
+                iscare=ipSimpleInfo.iscare();
 
-            }else {
-                IndexItemInfo indexItemInfo=datalist.get(position);
-                imageLoader.displayImage(Url.prePic+indexItemInfo.getLogo(),holder.icon,MyDisplayImageOptions.getroundImageOptions());
-                holder.name.setText(indexItemInfo.getCompany_name());
-                holder.info.setText(indexItemInfo.getInfo());
-            }
-
-            holder.care.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (MyAccount.isLogin){
-
-                    }else {
-                        Intent intent=new Intent(getActivity(), AccountActivity.class);
+                holder.item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(getActivity(), IPDetailActivity.class);
+                        intent.putExtra("id",ipSimpleInfo.getId());
                         startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                     }
+                });
+            }else {
+                final IndexItemInfo indexItemInfo=datalist.get(position);
+                imageLoader.displayImage(Url.prePic+indexItemInfo.getLogo(),holder.icon,MyDisplayImageOptions.getroundImageOptions());
+                holder.name.setText(indexItemInfo.getCompany_name());
+                holder.info.setText(indexItemInfo.getInfo());
+                iscare=indexItemInfo.iscare();
+
+                holder.item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=null;
+                        switch (indexItemInfo.getIdentity_cat()){
+                            //2:开发者3:外包 4:投资人 5:IP方 6:发行方
+
+                            case "2":
+                                intent=new Intent(getActivity(), CPDetailActivity.class);
+                                intent.putExtra("user_id",indexItemInfo.getUser_id());
+                                intent.putExtra("identity_cat","2");
+                                break;
+                            case "3":
+                                intent=new Intent(getActivity(), OutSourceActivity.class);
+                                intent.putExtra("user_id",indexItemInfo.getUser_id());
+                                intent.putExtra("identity_cat","3");
+                                break;
+                            case "4":
+                                intent=new Intent(getActivity(), InvesmentDetialActivity.class);
+                                intent.putExtra("user_id",indexItemInfo.getUser_id());
+                                intent.putExtra("identity_cat","4");
+                                break;
+                            case "6":
+                                intent=new Intent(getActivity(), IssueDetailActivity.class);
+                                intent.putExtra("user_id",indexItemInfo.getUser_id());
+                                intent.putExtra("identity_cat","6");
+                                break;
+                        }
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    }
+                });
+            }
+
+            if (MyAccount.isLogin){
+                if (iscare){
+                    holder.care.setText("已关注");
+                    holder.care.setSelected(true);
+                }else {
+                    holder.care.setText("关注");
+                    holder.care.setSelected(false);
                 }
-            });
+                holder.care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        switch (cat){
+                            case "ip":
+                                IP ipSimpleInfo=iplist.get(position);
+                                if (ipSimpleInfo.iscare()){
+                                    ipSimpleInfo.setIscare(false);
+                                    AttentionChange.removeAttention("5",ipSimpleInfo.getId(), getActivity());
+                                }else {
+                                    ipSimpleInfo.setIscare(true);
+                                    AttentionChange.addAttention("5",ipSimpleInfo.getId(), getActivity());
+                                } if (ipSimpleInfo.iscare()){
+                                    holder.care.setText("已关注");
+                                    holder.care.setSelected(true);
+                                }else {
+                                    holder.care.setText("关注");
+                                    holder.care.setSelected(false);
+                                }
+                                break;
+                            default:
+                                IndexItemInfo indexItemInfo=datalist.get(position);
+                                if (indexItemInfo.iscare()){
+                                    indexItemInfo.setIscare(false);
+                                    AttentionChange.removeAttention(indexItemInfo.getIdentity_cat(),indexItemInfo.getUser_id(), getActivity());
+                                }else {
+                                    indexItemInfo.setIscare(true);
+                                    AttentionChange.addAttention(indexItemInfo.getIdentity_cat(),indexItemInfo.getUser_id(), getActivity());
+                                } if (indexItemInfo.iscare()){
+                                    holder.care.setText("已关注");
+                                    holder.care.setSelected(true);
+                                }else {
+                                    holder.care.setText("关注");
+                                    holder.care.setSelected(false);
+                                }
+                                break;
+                        }
+
+                    }
+                });
+            }else {
+                holder.care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(getActivity(), AccountActivity.class);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+
+                    }
+                });
+
+            }
+            if (position==2){
+                holder.line.setVisibility(View.INVISIBLE);
+            }
 
         }
 
@@ -561,7 +740,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
             TextView info;
             TextView care;
             View item;
-
+            ImageView line;
 
             public MyViewHolder(View view) {
                 super(view);
@@ -569,6 +748,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
                 name = (TextView) view.findViewById(R.id.name_item_iplist);
                 info = (TextView) view.findViewById(R.id.introuduction_item_iplist);
                 care = (TextView) view.findViewById(R.id.care_item_list);
+                line= (ImageView) view.findViewById(R.id.line);
                 item = view;
             }
         }
@@ -587,123 +767,123 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         MyLog.i("initViewPager");
 
 
-        viewPager.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
-//                updateState(scrollState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int i, int i2) {
-//                mPositionText.setText("First: " + mRecyclerViewPager.getFirstVisiblePosition());
-                int childCount = viewPager.getChildCount();
-                int width = viewPager.getChildAt(0).getWidth();
-                int padding = (viewPager.getWidth() - width) / 2;
-//                mCountText.setText("Count: " + childCount);
-
-                for (int j = 0; j < childCount; j++) {
-                    View v = recyclerView.getChildAt(j);
-                    //往左 从 padding 到 -(v.getWidth()-padding) 的过程中，由大到小
-                    float rate = 0;
-                    ;
-                    if (v.getLeft() <= padding) {
-                        if (v.getLeft() >= padding - v.getWidth()) {
-                            rate = (padding - v.getLeft()) * 1f / v.getWidth();
-                        } else {
-                            rate = 1;
-                        }
-                        v.setScaleY(1 - rate * 0.1f);
-                        v.setScaleX(1 - rate * 0.1f);
-
-                    } else {
-                        //往右 从 padding 到 recyclerView.getWidth()-padding 的过程中，由大到小
-                        if (v.getLeft() <= recyclerView.getWidth() - padding) {
-                            rate = (recyclerView.getWidth() - padding - v.getLeft()) * 1f / v.getWidth();
-                        }
-                        v.setScaleY(0.9f + rate * 0.1f);
-                        v.setScaleX(0.9f + rate * 0.1f);
-                    }
-                }
-            }
-        });
-
-
-        viewPager.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (viewPager.getChildCount() < 3) {
-                    if (viewPager.getChildAt(1) != null) {
-                        if (viewPager.getCurrentPosition() == 0) {
-                            View v1 = viewPager.getChildAt(1);
-                            v1.setScaleY(0.9f);
-                            v1.setScaleX(0.9f);
-                        } else {
-                            View v1 = viewPager.getChildAt(0);
-                            v1.setScaleY(0.9f);
-                            v1.setScaleX(0.9f);
-                        }
-                    }
-                } else {
-                    if (viewPager.getChildAt(0) != null) {
-                        View v0 = viewPager.getChildAt(0);
-                        v0.setScaleY(0.9f);
-                        v0.setScaleX(0.9f);
-                    }
-                    if (viewPager.getChildAt(2) != null) {
-                        View v2 = viewPager.getChildAt(2);
-                        v2.setScaleY(0.9f);
-                        v2.setScaleX(0.9f);
-                    }
-                }
-
-            }
-        });
-
-        imageViewList.clear();
-        whiteDots.removeAllViews();
-
-
-        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams((int)(332*density),(int) (167*density));
-        LinearLayout.LayoutParams params1=new LinearLayout.LayoutParams((int)(9*density),(int)(9*density));
-
-        for (int i=0;i<indexAdvertses.size();i++){
-            int j=i;
-            if (i>=indexAdvertses.size()){
-                j=i%indexAdvertses.size();
-            }
-
-            ImageView imageView=new ImageView(context);
-            imageView.setLayoutParams(params);
-
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            imageViewList.add(imageView);
-            MyLog.i("addimageView");
-            if (i>0){
-                params1.leftMargin=(int)(12.66*density);
-            }
-            ImageView dot=new ImageView(context);
-            dot.setImageResource(R.drawable.whitedotselected);
-            dot.setLayoutParams(params1);
-            whiteDots.addView(dot);
-            MyLog.i("imageUrl==="+Url.prePic+indexAdvertses.get(j).getAdvert_pic());
-
-
-            imageLoader.displayImage(Url.prePic+indexAdvertses.get(j).getAdvert_pic(),imageView, MyDisplayImageOptions.getdefaultBannerOptions());
-//            Picasso.with(getActivity())
-//                    .load()
-//                    .into(imageView);
-            final IndexAdvert indexAdvert=indexAdvertses.get(j);
-//            imageView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    String url=indexAdvert.getAdvert_url();
-//                    Intent intent=new Intent(context, InfomaionDetailActivity.class);
-//                    intent.putExtra("url",url);
-//                    startActivity(intent);
-//                    context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+//        viewPager.addOnScrollListener(new RecyclerView.OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(RecyclerView recyclerView, int scrollState) {
+////                updateState(scrollState);
+//            }
+//
+//            @Override
+//            public void onScrolled(RecyclerView recyclerView, int i, int i2) {
+////                mPositionText.setText("First: " + mRecyclerViewPager.getFirstVisiblePosition());
+//                int childCount = viewPager.getChildCount();
+//                int width = viewPager.getChildAt(0).getWidth();
+//                int padding = (viewPager.getWidth() - width) / 2;
+////                mCountText.setText("Count: " + childCount);
+//
+//                for (int j = 0; j < childCount; j++) {
+//                    View v = recyclerView.getChildAt(j);
+//                    //往左 从 padding 到 -(v.getWidth()-padding) 的过程中，由大到小
+//                    float rate = 0;
+//                    ;
+//                    if (v.getLeft() <= padding) {
+//                        if (v.getLeft() >= padding - v.getWidth()) {
+//                            rate = (padding - v.getLeft()) * 1f / v.getWidth();
+//                        } else {
+//                            rate = 1;
+//                        }
+//                        v.setScaleY(1 - rate * 0.1f);
+//                        v.setScaleX(1 - rate * 0.1f);
+//
+//                    } else {
+//                        //往右 从 padding 到 recyclerView.getWidth()-padding 的过程中，由大到小
+//                        if (v.getLeft() <= recyclerView.getWidth() - padding) {
+//                            rate = (recyclerView.getWidth() - padding - v.getLeft()) * 1f / v.getWidth();
+//                        }
+//                        v.setScaleY(0.9f + rate * 0.1f);
+//                        v.setScaleX(0.9f + rate * 0.1f);
+//                    }
 //                }
-//            });
-        }
+//            }
+//        });
+
+
+//        viewPager.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+//            @Override
+//            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+//                if (viewPager.getChildCount() < 3) {
+//                    if (viewPager.getChildAt(1) != null) {
+//                        if (viewPager.getCurrentPosition() == 0) {
+//                            View v1 = viewPager.getChildAt(1);
+//                            v1.setScaleY(0.9f);
+//                            v1.setScaleX(0.9f);
+//                        } else {
+//                            View v1 = viewPager.getChildAt(0);
+//                            v1.setScaleY(0.9f);
+//                            v1.setScaleX(0.9f);
+//                        }
+//                    }
+//                } else {
+//                    if (viewPager.getChildAt(0) != null) {
+//                        View v0 = viewPager.getChildAt(0);
+//                        v0.setScaleY(0.9f);
+//                        v0.setScaleX(0.9f);
+//                    }
+//                    if (viewPager.getChildAt(2) != null) {
+//                        View v2 = viewPager.getChildAt(2);
+//                        v2.setScaleY(0.9f);
+//                        v2.setScaleX(0.9f);
+//                    }
+//                }
+//
+//            }
+//        });
+
+//        imageViewList.clear();
+//        whiteDots.removeAllViews();
+//
+//
+//        LinearLayout.LayoutParams params=new LinearLayout.LayoutParams((int)(332*density),(int) (167*density));
+//        LinearLayout.LayoutParams params1=new LinearLayout.LayoutParams((int)(9*density),(int)(9*density));
+//
+//        for (int i=0;i<indexAdvertses.size();i++){
+//            int j=i;
+//            if (i>=indexAdvertses.size()){
+//                j=i%indexAdvertses.size();
+//            }
+//
+//            ImageView imageView=new ImageView(context);
+//            imageView.setLayoutParams(params);
+//
+//            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
+//            imageViewList.add(imageView);
+//            MyLog.i("addimageView");
+//            if (i>0){
+//                params1.leftMargin=(int)(12.66*density);
+//            }
+//            ImageView dot=new ImageView(context);
+//            dot.setImageResource(R.drawable.whitedotselected);
+//            dot.setLayoutParams(params1);
+//            whiteDots.addView(dot);
+//            MyLog.i("imageUrl==="+Url.prePic+indexAdvertses.get(j).getAdvert_pic());
+//
+//
+//            imageLoader.displayImage(Url.prePic+indexAdvertses.get(j).getAdvert_pic(),imageView, MyDisplayImageOptions.getdefaultBannerOptions());
+////            Picasso.with(getActivity())
+////                    .load()
+////                    .into(imageView);
+//            final IndexAdvert indexAdvert=indexAdvertses.get(j);
+////            imageView.setOnClickListener(new View.OnClickListener() {
+////                @Override
+////                public void onClick(View v) {
+////                    String url=indexAdvert.getAdvert_url();
+////                    Intent intent=new Intent(context, InfomaionDetailActivity.class);
+////                    intent.putExtra("url",url);
+////                    startActivity(intent);
+////                    context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+////                }
+////            });
+//        }
         setDot(0);
         MyLog.i("setAdapter");
 
@@ -834,6 +1014,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
                             ipsimpleInfo.setIp_name(item.getString("ip_name"));
                             ipsimpleInfo.setIp_logo(item.getString("ip_logo"));
                             ipsimpleInfo.setId(item.getString("id"));
+                            if (MyAccount.isLogin) {
+                                ipsimpleInfo.setIscare(item.getBoolean("iscare"));
+                            }
                             String info_s="类    型："+item.getString("ip_cat")
                                             +"\n风    格："+item.getString("ip_style")
                                             +"\n授权范围："+item.getString("uthority");
@@ -851,6 +1034,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
                             simpleInfo.setLogo(item.getString("logo"));
                             simpleInfo.setIdentity_cat(item.getString("identity_cat"));
                             simpleInfo.setCompany_name(item.getString("company_name"));
+                            if (MyAccount.isLogin){
+                                simpleInfo.setIscare(item.getBoolean("iscare"));
+                            }
                             String info_s="";
                             switch (simpleInfo.getIdentity_cat()){
                                 case "2":
@@ -907,6 +1093,20 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
                 for (int i=0;i<floatadarray.length();i++){
                     FloatadInfo floatadInfo=new FloatadInfo();
                     JSONObject floatObject=floatadarray.getJSONObject(i);
+                    if (floatObject.has("user_id")){
+                        floatadInfo.setUser_id(floatObject.getString("user_id"));
+                        floatadInfo.setIsgame(false);
+
+                    }
+                    if (floatObject.has("ip_id")){
+                        floatadInfo.setUser_id(floatObject.getString("ip_id"));
+                        floatadInfo.setIsgame(false);
+                    }
+                    if (floatObject.has("game_id")){
+                        floatadInfo.setUser_id(floatObject.getString("game_id"));
+                        floatadInfo.setIsgame(true);
+                    }
+
                     floatadInfo.setCat(floatObject.getString("cat"));
                     floatadInfo.setIdent_cat(floatObject.getString("identity_cat"));
                     floatadInfo.setName(floatObject.getString("name"));
@@ -918,9 +1118,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
                 for (int i=0;i<albumadArray.length();i++){
                     JSONObject albumajson=albumadArray.getJSONObject(i);
                     AlbumadInfo albumadInfo=new AlbumadInfo();
+                    albumadInfo.setId(albumajson.getString("id"));
                     albumadInfo.setLogo(albumajson.getString("logo"));
                     albumadInfo.setIntro(albumajson.getString("intro"));
-                    albumadInfo.setContent(albumajson.getString("content"));
                     albumadInfos.add(albumadInfo);
                 }
 

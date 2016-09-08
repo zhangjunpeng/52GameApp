@@ -90,6 +90,7 @@ public class FindGameFragment extends CoustomBaseFragment {
         gamestage_select=new ArrayList<>();
         region_select=new ArrayList<>();
         issuecat_select=new ArrayList<>();
+        otherStr="";
 
         if (info!=null) {
             findGameInfo = (FindGameInfo) info;
@@ -177,11 +178,12 @@ public class FindGameFragment extends CoustomBaseFragment {
                     gamegrade_select.add(nameVal);
                 }else {
                     textView.setTextColor(Color.rgb(124, 124, 124));
-                    int size=gamegrade_select.size();
-                    for (int i=0;i<size;i++){
-                        NameVal nameVal1=gamegrade_select.get(i);
-                        if (nameVal1.getId().equals(nameVal.getId())){
-                            gamegrade_select.remove(nameVal1);
+                    Iterator it = gamegrade_select.iterator();
+                    while (it.hasNext()) {
+                        NameVal nameVal1 = (NameVal) it.next();
+                        if (nameVal1.getId().equals(nameVal.getId())) {
+                            //移除当前的对象
+                            it.remove();
                         }
                     }
                 }

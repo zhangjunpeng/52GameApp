@@ -425,8 +425,11 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
             if (MyAccount.isLogin){
                 if (cpinfo.iscare()){
                     viewHolder.care.setText("已关注");
+                    viewHolder.care.setSelected(true);
                 }else {
                     viewHolder.care.setText("关注");
+                    viewHolder.care.setSelected(false);
+
                 }
                 viewHolder.care.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -439,8 +442,11 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
                             AttentionChange.addAttention("2",cpinfo.getUser_id(), context);
                         } if (cpinfo.iscare()){
                             viewHolder.care.setText("已关注");
+                            viewHolder.care.setSelected(true);
                         }else {
                             viewHolder.care.setText("关注");
+                            viewHolder.care.setSelected(false);
+
                         }
 
 

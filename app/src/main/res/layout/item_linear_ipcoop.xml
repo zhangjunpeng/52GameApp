@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear1_os"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="20dp"
+    android:layout_marginRight="20dp"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:layout_marginTop="15dp"
+    android:layout_marginBottom="13dp"
+    >
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:minHeight="23.33dp"
+        android:gravity="center"
+        android:text="树林的开始腐烂的撒asda是的撒打算撒大苏打撒大苏打"
+        android:background="@drawable/select_item_identsub"
+        android:textColor="#7c7c7c"
+        android:textSize="12dp"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:minHeight="23.33dp"
+        android:gravity="center"
+        android:text="美术外包"
+        android:background="@drawable/select_item_identsub"
+        android:textColor="#7c7c7c"
+        android:layout_marginLeft="7dp"
+        android:textSize="12dp"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:minHeight="23.33dp"
+        android:gravity="center"
+
+        android:text="美术外包"
+        android:background="@drawable/select_item_identsub"
+        android:textColor="#7c7c7c"
+        android:layout_marginLeft="7dp"
+
+        android:textSize="12dp"
+        />
+    <TextView
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:minHeight="23.33dp"
+        android:gravity="center"
+        android:text="美术外包"
+        android:background="@drawable/select_item_identsub"
+        android:textColor="#7c7c7c"
+        android:layout_marginLeft="7dp"
+
+        android:textSize="12dp"
+        />
+</LinearLayout>

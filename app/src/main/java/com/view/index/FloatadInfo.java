@@ -8,6 +8,15 @@ public class FloatadInfo {
     private String ident_cat;
     private String cat;
     private String name;
+    private boolean isgame;
+
+    public boolean isgame() {
+        return isgame;
+    }
+
+    public void setIsgame(boolean isgame) {
+        this.isgame = isgame;
+    }
 
     public String getUser_id() {
         return user_id;

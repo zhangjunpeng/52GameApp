@@ -95,6 +95,18 @@ public class GameListFragment extends Fragment implements View.OnClickListener {
     private String requir_sel;
     private String norms_sel;
 
+    private String order="time";
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        Bundle bundle=getArguments();
+        if (bundle!=null){
+            order=bundle.getString("order","time");
+        }
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -241,6 +253,7 @@ public class GameListFragment extends Fragment implements View.OnClickListener {
 
         gameParams.addParams("p",p);
 
+//        gameParams.addParams("order",order);
         if (!TextUtils.isEmpty(type_sel)){
             gameParams.addParams("game_type",type_sel);
         }

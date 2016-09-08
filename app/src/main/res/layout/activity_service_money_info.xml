@@ -29,7 +29,7 @@
                     android:textSize="15dp"
                     android:textColor="@color/orange"
                     android:layout_marginLeft="17dp"
-                    android:text="1. 需求定制 商务服务流程简述"
+                    android:text="需求定制 商务服务流程简述"
                     android:gravity="center_vertical"
                     />
 
@@ -90,64 +90,7 @@
                 android:background="@color/line"
                 android:layout_marginTop="20dp"
                 />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:orientation="vertical"
-                android:background="@color/bg"
-                >
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:textSize="15dp"
-                    android:textColor="@color/orange"
-                    android:layout_marginLeft="17dp"
-                    android:text="2. 需求定制 资费标准及规则"
-                    android:gravity="center_vertical"
-                    />
 
-            </LinearLayout>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="@color/line"
-                />
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="20dp"
-                >
-                <ImageView
-                    android:layout_width="4dp"
-                    android:layout_height="17dp"
-                    android:background="@color/orange"
-                    android:layout_marginLeft="16dp"
-                    />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="15dp"
-                    android:text="2016创客季，52Game全平台服务限时免费"
-                    android:layout_marginLeft="12dp"
-                    android:layout_marginRight="18dp"
-                    android:textColor="#4C4C4C"
-                    />
-
-            </LinearLayout>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="22dp"
-                android:layout_marginTop="21dp"
-                android:textSize="12dp"
-                android:textColor="#7c7c7c"
-                android:text="尊敬的52Game用户，感谢您选择平台4S服务，凡成功注册和完成身份认证的公司/个人，即日起至2016年12月31日期 间，所有新发起的各类需求，52Game所有服务将全程免费。"
-                android:lineSpacingExtra="4dp"
-                android:layout_marginBottom="20dp"
-                />
         </LinearLayout>
     </ScrollView>
 

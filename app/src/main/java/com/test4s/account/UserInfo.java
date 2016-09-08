@@ -1,5 +1,7 @@
 package com.test4s.account;
 
+import java.util.List;
+
 /**
  * Created by Administrator on 2016/2/23.
  */
@@ -28,6 +30,15 @@ public class UserInfo {
     private String qq_sign;
     private String age;
     private String sex;
+    private List<String> userIdent;
+
+    public List<String> getUserIdent() {
+        return userIdent;
+    }
+
+    public void setUserIdent(List<String> userIdent) {
+        this.userIdent = userIdent;
+    }
 
     public String getAge() {
         return age;

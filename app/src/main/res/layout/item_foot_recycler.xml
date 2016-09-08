@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="70dp"
+    android:gravity="center_vertical"
+    android:background="@color/bg"
+    >
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/radius_orange"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:text="查看全部"
+        android:textColor="#fff"
+        android:gravity="center"
+        android:textSize="15dp"
+        />
+</LinearLayout>

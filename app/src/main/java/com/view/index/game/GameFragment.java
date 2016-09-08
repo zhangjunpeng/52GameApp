@@ -3,6 +3,7 @@ package com.view.index.game;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
@@ -13,8 +14,11 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -37,6 +41,7 @@ import com.test4s.myapp.MyApplication;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
 import com.test4s.myapp.R;
+import com.view.game.GameDetailActivity;
 import com.view.index.adapter.GameLayoutAdapter;
 import com.view.index.adapter.LayoutAdapter;
 
@@ -108,6 +113,8 @@ public class GameFragment extends Fragment implements View.OnClickListener{
     private Thread thread;
     private Activity context;
 
+    static String data="";
+
     private int currentItem;
     android.os.Handler handler=new android.os.Handler(){
         @Override
@@ -153,6 +160,24 @@ public class GameFragment extends Fragment implements View.OnClickListener{
 //
 //    }
 
+    private GestureDetector gestureDetector;
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState==null){
+            MyLog.i("info 重新获取数据");
+
+            initData();
+
+        }else {
+
+        }
+
+        gestureDetector = new GestureDetector(getActivity(),onGestureListener);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -170,29 +195,52 @@ public class GameFragment extends Fragment implements View.OnClickListener{
 
         getDensity();
 //        parser=GameJsonParser.getIntance();
+//
+//        Executors.newSingleThreadExecutor().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                getDateFromDB();
+//
+//                mhander.sendEmptyMessage(0);
+//            }
+//        });
+//        Executors.newSingleThreadExecutor().execute(new Runnable() {
+//            @Override
+//            public void run() {
+//                initViewPagerFromDB();
+//
+//                mhander.sendEmptyMessage(1);
+//            }
+//        });
 
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
+
+        view.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public void run() {
-                getDateFromDB();
-
-                mhander.sendEmptyMessage(0);
+            public boolean onTouch(View v, MotionEvent event) {
+                return gestureDetector.onTouchEvent(event);
             }
         });
-        Executors.newSingleThreadExecutor().execute(new Runnable() {
-            @Override
-            public void run() {
-                initViewPagerFromDB();
 
-                mhander.sendEmptyMessage(1);
-            }
-        });
+        if (!TextUtils.isEmpty(data)){
+            deleteAll();
+            parser(data);
+            initView();
+            initViewPager();
+            initViewPagerFrag();
+        }
 
-
-        initData();
 
         return view;
     }
+
+    private GestureDetector.OnGestureListener onGestureListener =
+            new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
+                                       float velocityY) {
+                    return false;
+                }
+            };
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -340,14 +388,14 @@ public class GameFragment extends Fragment implements View.OnClickListener{
 
         RecyclerGameFragment recyclerGameFragment2=new RecyclerGameFragment();
         Bundle bundle2=new Bundle();
-        bundle1.putString("type","grade");
+        bundle2.putString("type","grade");
         recyclerGameFragment2.setArguments(bundle2);
 
         fragmentList.add(fragment);
         fragmentList.add(recyclerGameFragment1);
         fragmentList.add(recyclerGameFragment2);
 
-        MyFragmentViewPager myFragmentViewPager=new MyFragmentViewPager(getFragmentManager());
+        MyFragmentViewPager myFragmentViewPager=new MyFragmentViewPager(getChildFragmentManager());
         viewPager_fragment.setAdapter(myFragmentViewPager);
     }
 
@@ -412,36 +460,36 @@ public class GameFragment extends Fragment implements View.OnClickListener{
         viewPager.setHasFixedSize(true);
         viewPager.setLongClickable(true);
 
-        viewPager.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (viewPager.getChildCount() < 3) {
-                    if (viewPager.getChildAt(1) != null) {
-                        if (viewPager.getCurrentPosition() == 0) {
-                            View v1 = viewPager.getChildAt(1);
-                            v1.setScaleY(0.9f);
-                            v1.setScaleX(0.9f);
-                        } else {
-                            View v1 = viewPager.getChildAt(0);
-                            v1.setScaleY(0.9f);
-                            v1.setScaleX(0.9f);
-                        }
-                    }
-                } else {
-                    if (viewPager.getChildAt(0) != null) {
-                        View v0 = viewPager.getChildAt(0);
-                        v0.setScaleY(0.9f);
-                        v0.setScaleX(0.9f);
-                    }
-                    if (viewPager.getChildAt(2) != null) {
-                        View v2 = viewPager.getChildAt(2);
-                        v2.setScaleY(0.9f);
-                        v2.setScaleX(0.9f);
-                    }
-                }
-
-            }
-        });
+//        viewPager.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+//            @Override
+//            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+//                if (viewPager.getChildCount() < 3) {
+//                    if (viewPager.getChildAt(1) != null) {
+//                        if (viewPager.getCurrentPosition() == 0) {
+//                            View v1 = viewPager.getChildAt(1);
+//                            v1.setScaleY(0.9f);
+//                            v1.setScaleX(0.9f);
+//                        } else {
+//                            View v1 = viewPager.getChildAt(0);
+//                            v1.setScaleY(0.9f);
+//                            v1.setScaleX(0.9f);
+//                        }
+//                    }
+//                } else {
+//                    if (viewPager.getChildAt(0) != null) {
+//                        View v0 = viewPager.getChildAt(0);
+//                        v0.setScaleY(0.9f);
+//                        v0.setScaleX(0.9f);
+//                    }
+//                    if (viewPager.getChildAt(2) != null) {
+//                        View v2 = viewPager.getChildAt(2);
+//                        v2.setScaleY(0.9f);
+//                        v2.setScaleX(0.9f);
+//                    }
+//                }
+//
+//            }
+//        });
 
         adapter=new GameLayoutAdapter(getActivity(),viewPager,gameAdverts);
         viewPager.setAdapter(adapter);
@@ -525,6 +573,10 @@ public class GameFragment extends Fragment implements View.OnClickListener{
                         gameInfo.setGame_id(jsonObject1.getString("game_id"));
                         gameInfo.setGame_name(jsonObject1.getString("game_name"));
                         gameInfo.setGame_dev(jsonObject1.getString("identity_cat"));
+                        gameInfo.setGame_type(jsonObject1.getString("game_type"));
+                        gameInfo.setGame_stage(jsonObject1.getString("game_stage"));
+                        gameInfo.setNorms(jsonObject1.getString("norms"));
+                        gameInfo.setRequire(jsonObject1.getString("require"));
                         try {
                             gameInfo.setGame_grade(jsonObject1.getString("game_grade"));
 
@@ -567,7 +619,7 @@ public class GameFragment extends Fragment implements View.OnClickListener{
                 JSONArray gradeArray=data.getJSONArray("gradeList");
                 gradeGames=new ArrayList<>();
                 for (int i=0;i<gradeArray.length();i++){
-                    JSONObject newObject=newsArray.getJSONObject(i);
+                    JSONObject newObject=gradeArray.getJSONObject(i);
                     GameInfo gameInfo=new GameInfo();
                     gameInfo.setGame_id(newObject.getString("game_id"));
                     gameInfo.setGame_name(newObject.getString("game_name"));
@@ -651,5 +703,6 @@ public class GameFragment extends Fragment implements View.OnClickListener{
             return fragmentList.size();
         }
     }
+
 
 }

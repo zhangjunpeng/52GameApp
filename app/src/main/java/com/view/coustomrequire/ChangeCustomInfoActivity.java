@@ -60,7 +60,7 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
 
     private ImageView back;
     private TextView title;
-    private TextView save;
+    private ImageView save;
 
 
     @Override
@@ -78,9 +78,17 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
 
         back= (ImageView) findViewById(R.id.back_savebar);
         title= (TextView) findViewById(R.id.textView_titlebar_save);
-        save= (TextView) findViewById(R.id.save_savebar);
+        save= (ImageView) findViewById(R.id.help_savebar);
 
-        save.setVisibility(View.INVISIBLE);
+        save.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(ChangeCustomInfoActivity.this,ServiceMoneyInfoActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+            }
+        });
+
         title.setText("需求定制");
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -88,14 +96,6 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 finish();
                 overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
-            }
-        });
-        findViewById(R.id.check_moneyinfo).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent=new Intent(ChangeCustomInfoActivity.this,ServiceMoneyInfoActivity.class);
-                startActivity(intent);
-                overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
             }
         });
 
@@ -114,6 +114,12 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
         }else {
             initFragment();
         }
+
+        if(itemInfo.getChecked().equals("1")||itemInfo.getChecked().equals("2")){
+            submit.setVisibility(View.GONE);
+        }
+
+
         initView();
     }
 
@@ -124,6 +130,7 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
         usernameEdit.setText(name);
         phoneEdit.setEnabled(false);
         phoneEdit.setText(itemInfo.getPhone());
+
         getcode.setText("更换");
         getcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -142,6 +149,10 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                submit.setFocusable(true);
+                submit.setFocusableInTouchMode(true);
+                submit.requestFocus();
+                submit.requestFocusFromTouch();
                 if (checkParams()){
                     name=usernameEdit.getText().toString();
                     phonenum=phoneEdit.getText().toString();
@@ -187,11 +198,14 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
                     baseParams.addParams("money",FindInvestFragment.neednum);
                     baseParams.addParams("stock_start",FindInvestFragment.minshare);
                     baseParams.addParams("stock_end",FindInvestFragment.maxshare);
+                    if (!TextUtils.isEmpty(FindInvestFragment.fileUrl)){
+                        baseParams.addParams("appendix",FindInvestFragment.fileUrl);
+                    }
                     if (!TextUtils.isEmpty(FindInvestFragment.other)){
                         baseParams.addParams("note",FindInvestFragment.other);
                     }
                 }else if (service_cat.getId().equals("5")){
-                    baseParams.addParams("ip_coop_cat",getStringFromList(FindIPFragment.ipcoottype_sel));
+                    baseParams.addParams("ip_coop_type",getStringFromList(FindIPFragment.ipcoottype_sel));
                     baseParams.addParams("ip_cat",getStringFromList(FindIPFragment.ipcat_sel));
                     baseParams.addParams("ip_style",getStringFromList(FindIPFragment.ipstyle_sel));
                     if (!TextUtils.isEmpty(FindIPFragment.other)){
@@ -202,7 +216,9 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
                     baseParams.addParams("region",getStringFromList(FindIssuesFragment.issueregions_sel));
                     baseParams.addParams("issue_game",getStringFromList(FindIssuesFragment.issuegames_sel));
                     baseParams.addParams("issue_cat",getStringFromList(FindIssuesFragment.inssuecats_sel));
-                    baseParams.addParams("appendix",FindIssuesFragment.fileUrl);
+                    if (!TextUtils.isEmpty(FindIssuesFragment.fileUrl)){
+                        baseParams.addParams("appendix",FindIssuesFragment.fileUrl);
+                    }
                     if (!TextUtils.isEmpty(FindIssuesFragment.otherStr)){
                         baseParams.addParams("note",FindIssuesFragment.otherStr);
                     }
@@ -218,7 +234,7 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
                     }
 
                 }else if(service_cat.getId().equals("2")){
-                    baseParams.addParams("ip_coop_cat",getStringFromList(FindIPFragment.ipcoottype_sel));
+                    baseParams.addParams("ip_coop_type",getStringFromList(FindIPFragment.ipcoottype_sel));
                     baseParams.addParams("ip_cat",getStringFromList(FindIPFragment.ipcat_sel));
                     baseParams.addParams("ip_style",getStringFromList(FindIPFragment.ipstyle_sel));
                     if (!TextUtils.isEmpty(FindIPFragment.other)){
@@ -272,11 +288,15 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
                     baseParams.addParams("money",FindInvestFragment.neednum);
                     baseParams.addParams("stock_start",FindInvestFragment.minshare);
                     baseParams.addParams("stock_end",FindInvestFragment.maxshare);
+                    if (!TextUtils.isEmpty(FindInvestFragment.fileUrl)){
+                        baseParams.addParams("appendix",FindInvestFragment.fileUrl);
+                    }
+
                     if (!TextUtils.isEmpty(FindInvestFragment.other)){
                         baseParams.addParams("note",FindInvestFragment.other);
                     }
                 }else if(service_cat.getId().equals("5")){
-                    baseParams.addParams("ip_coop_cat",getStringFromList(FindIPFragment.ipcoottype_sel));
+                    baseParams.addParams("ip_coop_type",getStringFromList(FindIPFragment.ipcoottype_sel));
                     baseParams.addParams("ip_cat",getStringFromList(FindIPFragment.ipcat_sel));
                     baseParams.addParams("ip_style",getStringFromList(FindIPFragment.ipstyle_sel));
                     if (!TextUtils.isEmpty(FindIPFragment.other)){
@@ -296,8 +316,10 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
                     boolean su=jsonObject.getBoolean("success");
                     int code=jsonObject.getInt("code");
                     if (su&&code==200){
-                        finish();
+                        Intent intent=new Intent(ChangeCustomInfoActivity.this,CustomizedListActivity.class);
+                        startActivity(intent);
                         overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
+                        finish();
                         ToastEvent toastEvent=new ToastEvent();
                         toastEvent.setId("0");
                         toastEvent.setMessage("需求定制提交成功");
@@ -352,7 +374,6 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
                 // "4": "找投资","5": "找IP","6": "找发行"
                 if (service_cat.getId().equals("4")){
                     if (TextUtils.isEmpty(FindInvestFragment.stageStr)
-                            ||TextUtils.isEmpty(FindInvestFragment.fileUrl)
                             ||TextUtils.isEmpty(FindInvestFragment.maxshare)
                             ||TextUtils.isEmpty(FindInvestFragment.minshare)
                             ||TextUtils.isEmpty(FindInvestFragment.neednum)){
@@ -369,8 +390,7 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
 //                    fm.beginTransaction().replace(R.id.contianer_coustomized,new FindIssuesFragment()).commit();
                     if (FindIssuesFragment.issuegames_sel.size()==0
                             ||FindIssuesFragment.issueregions_sel.size()==0
-                            ||FindIssuesFragment.inssuecats_sel.size()==0
-                            ||TextUtils.isEmpty(FindIssuesFragment.fileUrl)){
+                            ||FindIssuesFragment.inssuecats_sel.size()==0){
                         return false;
                     }
                 }
@@ -436,7 +456,6 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
                 }else if(service_cat.getId().equals("4")){
 //                    fm.beginTransaction().replace(R.id.contianer_coustomized,new FindInvestFragment()).commit();
                     if (TextUtils.isEmpty(FindInvestFragment.stageStr)
-                            ||TextUtils.isEmpty(FindInvestFragment.fileUrl)
                             ||TextUtils.isEmpty(FindInvestFragment.maxshare)
                             ||TextUtils.isEmpty(FindInvestFragment.minshare)
                             ||TextUtils.isEmpty(FindInvestFragment.neednum)){
@@ -454,7 +473,12 @@ public class ChangeCustomInfoActivity extends AppCompatActivity {
 
         }
 
-
+        String phone_new=phoneEdit.getText().toString();
+        if (!phone_new.equals(itemInfo.getPhone())){
+            if (TextUtils.isEmpty(pa)||TextUtils.isEmpty(codeEdit.getText().toString())){
+                return false;
+            }
+        }
 
 
         return true;

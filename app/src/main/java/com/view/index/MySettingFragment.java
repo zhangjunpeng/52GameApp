@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,6 +41,7 @@ import com.view.myattention.AttentionActivity;
 import com.view.myreport.ReprotListActivity;
 import com.view.setting.SettingActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
@@ -47,6 +49,8 @@ import org.xutils.http.RequestParams;
 import org.xutils.x;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -71,13 +75,14 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
     public static final int RequestCode_login=101;
     public static final int RequestCode_setting=102;
 
-    public MyAccount myAccount;
 
     public boolean network=true;
 
     private ImageLoader imageLoader=ImageLoader.getInstance();
 
     public static boolean changeIcon=false;
+
+    private LinearLayout require;
 
 
     @Override
@@ -106,7 +111,8 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
         view.findViewById(R.id.customized_my).setOnClickListener(this);
         view.findViewById(R.id.cooperation_my).setOnClickListener(this);
 
-        myAccount=MyAccount.getInstance();
+        require= (LinearLayout) view.findViewById(R.id.require_linear);
+
 
         updataUserName();
         updataAva();
@@ -137,8 +143,9 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
 
     private void initData() {
         if (MyAccount.isLogin){
-            UserInfo userInfo=myAccount.getUserInfo();
+            UserInfo userInfo=MyAccount.getInstance().getUserInfo();
             if (userInfo!=null) {
+                MyLog.i("userInfo not null");
                 if (!TextUtils.isEmpty(userInfo.getNickname())) {
                     textView.setText(userInfo.getNickname());
                 } else {
@@ -157,12 +164,14 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
                     }
                 }
             }else {
+                MyLog.i("userInfo null");
+
                 initUserInfo();
 
             }
 
         }else {
-            textView.setText(myAccount.getNickname());
+            textView.setText(MyAccount.getInstance().getNickname());
         }
 //        updataAva();
     }
@@ -261,7 +270,7 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
                     getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 }else {
                     //未登录
-                    gologin("report");
+                    gologin("customized");
                 }
                 break;
             case R.id.cooperation_my:
@@ -280,7 +289,7 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
 
             }else {
                 CusToast.showToast(getActivity(),"登录成功",Toast.LENGTH_SHORT);
-//                name2.setVisibility(View.GONE);
+
                 updataUserName();
                 updataAva();
                 initUserInfo();
@@ -299,6 +308,7 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
     private void updataUserName() {
         if (MyAccount.isLogin){
             name2.setVisibility(View.GONE);
+            MyAccount myAccount=MyAccount.getInstance();
             MyLog.i("myaccount=="+myAccount.toString());
             if (TextUtils.isEmpty(myAccount.getNickname())){
                 String nickname=myAccount.getUsername();
@@ -309,6 +319,28 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
             }else {
                 textView.setText(myAccount.getNickname());
             }
+            if (myAccount.getUserident()!=null){
+
+                    List<String> stringList=myAccount.getUserident();
+                    if (stringList.size()!=0){
+                        require.setVisibility(View.VISIBLE);
+                        for (int i=0;i<require.getChildCount();i++){
+                            TextView textView= (TextView) require.getChildAt(i);
+                            if (i>=stringList.size()){
+                                textView.setVisibility(View.GONE);
+                            }else {
+                                textView.setText(stringList.get(i));
+                            }
+                        }
+                    }else {
+                        require.setVisibility(View.GONE);
+                    }
+            }else {
+                require.setVisibility(View.GONE);
+
+            }
+
+
         }else {
             roundedIcon.setImageResource(R.drawable.default_icon);
             textView.setText("未登录");
@@ -320,7 +352,7 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
 
     private void updataAva() {
         if (MyAccount.isLogin){
-            myAccount=MyAccount.getInstance();
+            MyAccount myAccount=MyAccount.getInstance();
             if (myAccount.getAvatar().contains("http")) {
                 imageLoader.displayImage( myAccount.getAvatar(), roundedIcon, MyDisplayImageOptions.getIconOptions());
             }else {
@@ -371,6 +403,17 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
                         userInfo.setQq_sign(jsonObject3.getString("qq_sign"));
                         userInfo.setWeixin_sign(jsonObject3.getString("weixin_sign"));
                         userInfo.setSina_sign(jsonObject3.getString("sina_sign"));
+
+                        String ident=jsonObject3.getString("user_identity");
+                        if (!TextUtils.isEmpty(ident)){
+                            JSONArray identArray=jsonObject3.getJSONArray("user_identity");
+                            List<String> identList=new ArrayList<String>();
+                            for (int i=0;i<identArray.length();i++){
+                                identList.add(identArray.getString(i));
+                            }
+                            userInfo.setUserIdent(identList);
+                            MyAccount.getInstance().setUserident(identList);
+                        }
 
 
                         MyAccount.getInstance().setUsername(jsonObject3.getString("username"));

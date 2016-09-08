@@ -93,7 +93,7 @@
             android:layout_height="27dp"
             android:text="关注"
             android:textColor="#fff"
-            android:background="@drawable/radius_orange"
+            android:background="@drawable/select_care_text"
             android:gravity="center"
             android:textSize="13dp"
             android:layout_alignParentRight="true"

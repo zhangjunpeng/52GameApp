@@ -10,14 +10,16 @@
         android:id="@+id/myAccount_my"
         android:layout_width="match_parent"
         android:layout_height="111dp"
-        android:background="@drawable/bg_my"
+        android:layout_marginRight="14dp"
+        android:layout_marginLeft="14dp"
+        android:background="@drawable/border_edit_comment"
+        android:layout_marginTop="8dp"
         >
         <de.hdodenhof.circleimageview.CircleImageView
-            xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/icon_roundImage"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:layout_marginTop="25.33dp"
+            android:layout_centerVertical="true"
             android:layout_marginLeft="24dp"
             android:src="@drawable/default_icon"
 
@@ -36,7 +38,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="15.33dp"
                 android:text="未登录"
-                android:textColor="#fff"
+                android:textColor="#282828"
                 />
             <TextView
                 android:id="@+id/name2_my"
@@ -44,9 +46,65 @@
                 android:layout_height="wrap_content"
                 android:textSize="13.33dp"
                 android:text="点击登录"
-                android:textColor="#fff"
-                android:layout_marginTop="8.33dp"
+                android:textColor="#B4B4B4"
+                android:layout_marginTop="7dp"
                 />
+            <LinearLayout
+                android:id="@+id/require_linear"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="7dp"
+                android:orientation="horizontal"
+                android:visibility="gone"
+                >
+                <TextView
+                    android:layout_width="34dp"
+                    android:layout_height="16dp"
+                    android:textSize="9dp"
+                    android:textColor="@color/orange"
+                    android:gravity="center"
+                    android:background="@drawable/orangeborder_text"
+                    />
+                <TextView
+                    android:layout_width="34dp"
+                    android:layout_height="16dp"
+                    android:textSize="9dp"
+                    android:textColor="@color/orange"
+                    android:gravity="center"
+                    android:background="@drawable/orangeborder_text"
+                    android:layout_marginLeft="1dp"
+                    />
+                <TextView
+                    android:layout_width="34dp"
+                    android:layout_height="16dp"
+                    android:textSize="9dp"
+                    android:textColor="@color/orange"
+                    android:gravity="center"
+                    android:background="@drawable/orangeborder_text"
+                    android:layout_marginLeft="1dp"
+
+                    />
+                <TextView
+                    android:layout_width="34dp"
+                    android:layout_height="16dp"
+                    android:textSize="9dp"
+                    android:textColor="@color/orange"
+                    android:gravity="center"
+                    android:background="@drawable/orangeborder_text"
+                    android:layout_marginLeft="1dp"
+
+                    />
+                <TextView
+                    android:layout_width="34dp"
+                    android:layout_height="16dp"
+                    android:textSize="9dp"
+                    android:textColor="@color/orange"
+                    android:gravity="center"
+                    android:background="@drawable/orangeborder_text"
+                    android:layout_marginLeft="1dp"
+
+                    />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -55,7 +113,7 @@
             android:layout_width="7.33dp"
             android:layout_height="15dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/whitearrow"
+            android:src="@drawable/grayarrow"
             android:layout_centerVertical="true"
             android:layout_alignParentRight="true"
             android:layout_marginRight="24dp"
@@ -64,18 +122,15 @@
         
     </RelativeLayout>
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#CACACA"
-        android:layout_marginTop="20dp"
 
-        />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="95dp"
-        android:background="#fff"
+        android:background="@drawable/border_edit_comment"
         android:orientation="horizontal"
+        android:layout_marginTop="7dp"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
         >
         <LinearLayout
             android:id="@+id/customized_my"
@@ -157,7 +212,7 @@
             android:orientation="vertical"
             android:gravity="center"
             android:layout_marginRight="6.66dp"
-
+            android:visibility="gone"
             >
             <ImageView
                 android:layout_width="40dp"
@@ -176,164 +231,149 @@
         </LinearLayout>
 
     </LinearLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#CACACA"
-        />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#CACACA"
-        android:layout_marginTop="20dp"
-        />
-    <RelativeLayout
-        android:id="@+id/messagecenter_my"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#fff"
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/border_edit_comment"
+        android:layout_marginLeft="14dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginTop="7dp"
         >
-        <ImageView
-            android:id="@+id/image_messcenter_my"
-            android:layout_width="21.66dp"
-            android:layout_height="21.66dp"
-            android:src="@drawable/messcenter_my"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="27.33dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#4B4B4B"
-            android:textSize="15.33dp"
-            android:text="消息中心"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/image_messcenter_my"
-            android:layout_marginLeft="18.67dp"
-            />
-        <ImageView
-            android:id="@+id/arrow_mess_my"
-            android:layout_width="7.33dp"
-            android:layout_height="15dp"
-            android:src="@drawable/grayarrow"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="24dp"
-            />
-        <ImageView
-            android:id="@+id/redot_my"
-            android:layout_width="6.67dp"
-            android:layout_height="6.67dp"
-            android:src="@drawable/reddot"
-            android:layout_toLeftOf="@+id/arrow_mess_my"
-            android:layout_marginRight="9.67dp"
-            android:visibility="invisible"
-            android:layout_centerVertical="true"
-            />
-    </RelativeLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#C3C3C3"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
-        />
-    <RelativeLayout
-        android:id="@+id/pc_my"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#fff"
-        >
-        <ImageView
-            android:id="@+id/image_pc_my"
-            android:layout_width="21.66dp"
-            android:layout_height="21.66dp"
-            android:src="@drawable/pc_my"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="27.33dp"
-            />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#4B4B4B"
-            android:textSize="15.33dp"
-            android:text="玩家评测"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/image_pc_my"
-            android:layout_marginLeft="18.67dp"
-            />
-        <ImageView
-            android:id="@+id/arrow_pc_my"
-            android:layout_width="7.33dp"
-            android:layout_height="15dp"
-            android:src="@drawable/grayarrow"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="24dp"
-            />
+        <RelativeLayout
+            android:id="@+id/messagecenter_my"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
 
-    </RelativeLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:layout_marginRight="15dp"
-        android:layout_marginLeft="15dp"
-        android:background="#C3C3C3"
-
-        />
-    <RelativeLayout
-        android:id="@+id/idtifition_mysetting"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="#fff"
-        >
+            >
+            <ImageView
+                android:id="@+id/image_messcenter_my"
+                android:layout_width="21.66dp"
+                android:layout_height="21.66dp"
+                android:src="@drawable/messcenter_my"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="27.33dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#4B4B4B"
+                android:textSize="15.33dp"
+                android:text="消息中心"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/image_messcenter_my"
+                android:layout_marginLeft="18.67dp"
+                />
+            <ImageView
+                android:id="@+id/arrow_mess_my"
+                android:layout_width="7.33dp"
+                android:layout_height="15dp"
+                android:src="@drawable/grayarrow"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="24dp"
+                />
+            <ImageView
+                android:id="@+id/redot_my"
+                android:layout_width="6.67dp"
+                android:layout_height="6.67dp"
+                android:src="@drawable/reddot"
+                android:layout_toLeftOf="@+id/arrow_mess_my"
+                android:layout_marginRight="9.67dp"
+                android:visibility="invisible"
+                android:layout_centerVertical="true"
+                />
+        </RelativeLayout>
         <ImageView
-            android:id="@+id/image_rz_my"
-            android:layout_width="21.66dp"
-            android:layout_height="21.66dp"
-            android:src="@drawable/rz_setting"
-            android:layout_centerVertical="true"
-            android:layout_marginLeft="27.33dp"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line"
             />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="#4B4B4B"
-            android:textSize="15.33dp"
-            android:text="身份认证"
-            android:layout_centerVertical="true"
-            android:layout_toRightOf="@+id/image_rz_my"
-            android:layout_marginLeft="18.67dp"
-            />
-        <ImageView
-            android:id="@+id/arrow_rz_my"
-            android:layout_width="7.33dp"
-            android:layout_height="15dp"
-            android:src="@drawable/grayarrow"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="24dp"
-            />
+        <RelativeLayout
+            android:id="@+id/pc_my"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            >
+            <ImageView
+                android:id="@+id/image_pc_my"
+                android:layout_width="21.66dp"
+                android:layout_height="21.66dp"
+                android:src="@drawable/pc_my"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="27.33dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#4B4B4B"
+                android:textSize="15.33dp"
+                android:text="玩家评测"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/image_pc_my"
+                android:layout_marginLeft="18.67dp"
+                />
+            <ImageView
+                android:id="@+id/arrow_pc_my"
+                android:layout_width="7.33dp"
+                android:layout_height="15dp"
+                android:src="@drawable/grayarrow"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="24dp"
+                />
 
-    </RelativeLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#CACACA"
-        />
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#CACACA"
-        android:layout_marginTop="20dp"
-        />
+        </RelativeLayout>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line"
+            />
+        <RelativeLayout
+            android:id="@+id/idtifition_mysetting"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            >
+            <ImageView
+                android:id="@+id/image_rz_my"
+                android:layout_width="21.66dp"
+                android:layout_height="21.66dp"
+                android:src="@drawable/rz_setting"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="27.33dp"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#4B4B4B"
+                android:textSize="15.33dp"
+                android:text="身份认证"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@+id/image_rz_my"
+                android:layout_marginLeft="18.67dp"
+                />
+            <ImageView
+                android:id="@+id/arrow_rz_my"
+                android:layout_width="7.33dp"
+                android:layout_height="15dp"
+                android:src="@drawable/grayarrow"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="24dp"
+                />
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/seting_mysetting"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:background="#fff"
+        android:background="@drawable/border_edit_comment"
+        android:layout_marginTop="7dp"
+        android:layout_marginRight="14dp"
+        android:layout_marginLeft="14dp"
         >
 
         <ImageView
@@ -364,9 +404,4 @@
             android:layout_marginRight="24dp"
             />
     </RelativeLayout>
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="#CACACA"
-        />
 </LinearLayout>

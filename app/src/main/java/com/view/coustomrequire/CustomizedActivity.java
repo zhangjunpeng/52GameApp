@@ -1,5 +1,6 @@
 package com.view.coustomrequire;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Handler;
@@ -8,7 +9,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -22,6 +26,7 @@ import com.test4s.Event.ToastEvent;
 import com.test4s.account.MyAccount;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
+import com.view.Identification.IdentificationActivity;
 import com.view.Identification.NameVal;
 import com.view.game.FiltParamsData;
 
@@ -75,19 +80,51 @@ public class CustomizedActivity extends AppCompatActivity {
 
     private ImageView back;
     private TextView title;
-    private TextView save;
+    private ImageView save;
+    private Dialog dialog;
+    private float density;
+    private int windowWidth;
+
+    private boolean changePhone=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        initData();
+
+        initView();
+
+
+//        findViewById(R.id.check_moneyinfo).setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intent=new Intent(CustomizedActivity.this,ServiceMoneyInfoActivity.class);
+//                startActivity(intent);
+//                overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+//            }
+//        });
+
+
+
+    }
+
+    private void initView() {
+
         setContentView(R.layout.activity_customized);
 
 
+        //获取屏幕密度
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        density = metric.density;  // 屏幕密度（0.75 / 1.0 / 1.5）
+        windowWidth=metric.widthPixels;
+
         back= (ImageView) findViewById(R.id.back_savebar);
         title= (TextView) findViewById(R.id.textView_titlebar_save);
-        save= (TextView) findViewById(R.id.save_savebar);
+        save= (ImageView) findViewById(R.id.help_savebar);
 
-        save.setVisibility(View.INVISIBLE);
         title.setText("需求定制");
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -100,7 +137,8 @@ public class CustomizedActivity extends AppCompatActivity {
 
         fm=getSupportFragmentManager();
 
-        findViewById(R.id.check_moneyinfo).setOnClickListener(new View.OnClickListener() {
+
+        save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(CustomizedActivity.this,ServiceMoneyInfoActivity.class);
@@ -109,8 +147,6 @@ public class CustomizedActivity extends AppCompatActivity {
             }
         });
 
-        initData();
-        initPopList();
 
         usernameEdit= (EditText) findViewById(R.id.edit_username);
         phoneEdit= (EditText) findViewById(R.id.edit_phone);
@@ -136,6 +172,10 @@ public class CustomizedActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                submit.setFocusable(true);
+                submit.setFocusableInTouchMode(true);
+                submit.requestFocus();
+                submit.requestFocusFromTouch();
                 if (checkParams()){
                     name=usernameEdit.getText().toString();
                     phonenum=phoneEdit.getText().toString();
@@ -194,11 +234,14 @@ public class CustomizedActivity extends AppCompatActivity {
                     baseParams.addParams("money",FindInvestFragment.neednum);
                     baseParams.addParams("stock_start",FindInvestFragment.minshare);
                     baseParams.addParams("stock_end",FindInvestFragment.maxshare);
+                    if (!TextUtils.isEmpty(FindInvestFragment.fileUrl)){
+                        baseParams.addParams("appendix",FindInvestFragment.fileUrl);
+                    }
                     if (!TextUtils.isEmpty(FindInvestFragment.other)){
                         baseParams.addParams("note",FindInvestFragment.other);
                     }
                 }else if (nameVal.getId().equals("5")){
-                    baseParams.addParams("ip_coop_cat",getStringFromList(FindIPFragment.ipcoottype_sel));
+                    baseParams.addParams("ip_coop_type",getStringFromList(FindIPFragment.ipcoottype_sel));
                     baseParams.addParams("ip_cat",getStringFromList(FindIPFragment.ipcat_sel));
                     baseParams.addParams("ip_style",getStringFromList(FindIPFragment.ipstyle_sel));
                     if (!TextUtils.isEmpty(FindIPFragment.other)){
@@ -209,7 +252,9 @@ public class CustomizedActivity extends AppCompatActivity {
                     baseParams.addParams("region",getStringFromList(FindIssuesFragment.issueregions_sel));
                     baseParams.addParams("issue_game",getStringFromList(FindIssuesFragment.issuegames_sel));
                     baseParams.addParams("issue_cat",getStringFromList(FindIssuesFragment.inssuecats_sel));
-                    baseParams.addParams("appendix",FindIssuesFragment.fileUrl);
+                    if (!TextUtils.isEmpty(FindIssuesFragment.fileUrl)){
+                        baseParams.addParams("appendix",FindIssuesFragment.fileUrl);
+                    }
                     if (!TextUtils.isEmpty(FindIssuesFragment.otherStr)){
                         baseParams.addParams("note",FindIssuesFragment.otherStr);
                     }
@@ -225,7 +270,7 @@ public class CustomizedActivity extends AppCompatActivity {
                     }
 
                 }else if(nameVal.getId().equals("2")){
-                    baseParams.addParams("ip_coop_cat",getStringFromList(FindIPFragment.ipcoottype_sel));
+                    baseParams.addParams("ip_coop_type",getStringFromList(FindIPFragment.ipcoottype_sel));
                     baseParams.addParams("ip_cat",getStringFromList(FindIPFragment.ipcat_sel));
                     baseParams.addParams("ip_style",getStringFromList(FindIPFragment.ipstyle_sel));
                     if (!TextUtils.isEmpty(FindIPFragment.other)){
@@ -279,11 +324,15 @@ public class CustomizedActivity extends AppCompatActivity {
                     baseParams.addParams("money",FindInvestFragment.neednum);
                     baseParams.addParams("stock_start",FindInvestFragment.minshare);
                     baseParams.addParams("stock_end",FindInvestFragment.maxshare);
+                    if (!TextUtils.isEmpty(FindInvestFragment.fileUrl)){
+                        baseParams.addParams("appendix",FindInvestFragment.fileUrl);
+                    }
+
                     if (!TextUtils.isEmpty(FindInvestFragment.other)){
                         baseParams.addParams("note",FindInvestFragment.other);
                     }
                 }else if(nameVal.getId().equals("5")){
-                    baseParams.addParams("ip_coop_cat",getStringFromList(FindIPFragment.ipcoottype_sel));
+                    baseParams.addParams("ip_coop_type",getStringFromList(FindIPFragment.ipcoottype_sel));
                     baseParams.addParams("ip_cat",getStringFromList(FindIPFragment.ipcat_sel));
                     baseParams.addParams("ip_style",getStringFromList(FindIPFragment.ipstyle_sel));
                     if (!TextUtils.isEmpty(FindIPFragment.other)){
@@ -303,8 +352,10 @@ public class CustomizedActivity extends AppCompatActivity {
                     boolean su=jsonObject.getBoolean("success");
                     int code=jsonObject.getInt("code");
                     if (su&&code==200){
+                        Intent intent=new Intent(CustomizedActivity.this,CustomizedListActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                         finish();
-                        overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
                         ToastEvent toastEvent=new ToastEvent();
                         toastEvent.setId("0");
                         toastEvent.setMessage("需求定制提交成功");
@@ -348,7 +399,6 @@ public class CustomizedActivity extends AppCompatActivity {
                 // "4": "找投资","5": "找IP","6": "找发行"
                 if (nameVal.getId().equals("4")){
                     if (TextUtils.isEmpty(FindInvestFragment.stageStr)
-                            ||TextUtils.isEmpty(FindInvestFragment.fileUrl)
                             ||TextUtils.isEmpty(FindInvestFragment.maxshare)
                             ||TextUtils.isEmpty(FindInvestFragment.minshare)
                             ||TextUtils.isEmpty(FindInvestFragment.neednum)){
@@ -368,7 +418,7 @@ public class CustomizedActivity extends AppCompatActivity {
                     if (FindIssuesFragment.issuegames_sel.size()==0
                             ||FindIssuesFragment.issueregions_sel.size()==0
                             ||FindIssuesFragment.inssuecats_sel.size()==0
-                            ||TextUtils.isEmpty(FindIssuesFragment.fileUrl)){
+                            ){
                         return false;
                     }
                 }
@@ -434,7 +484,6 @@ public class CustomizedActivity extends AppCompatActivity {
                 }else if(nameVal.getId().equals("4")){
 //                    fm.beginTransaction().replace(R.id.contianer_coustomized,new FindInvestFragment()).commit();
                     if (TextUtils.isEmpty(FindInvestFragment.stageStr)
-                            ||TextUtils.isEmpty(FindInvestFragment.fileUrl)
                             ||TextUtils.isEmpty(FindInvestFragment.maxshare)
                             ||TextUtils.isEmpty(FindInvestFragment.minshare)
                             ||TextUtils.isEmpty(FindInvestFragment.neednum)){
@@ -450,6 +499,12 @@ public class CustomizedActivity extends AppCompatActivity {
                 }
                 break;
 
+        }
+        String phone_new=phoneEdit.getText().toString();
+        if (!phone_new.equals(requirementInfo.getCompany_phone())){
+            if (TextUtils.isEmpty(pa)||TextUtils.isEmpty(codeEdit.getText().toString())){
+                return false;
+            }
         }
 
 
@@ -481,7 +536,43 @@ public class CustomizedActivity extends AppCompatActivity {
 
             @Override
             public void onFinished() {
-               initFancyCoverFlow();
+                if (map.size()==0){
+                    setContentView(R.layout.layout_noident);
+                    findViewById(R.id.go_ident).setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent=new Intent(CustomizedActivity.this,IdentificationActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                        }
+                    });
+
+                    back= (ImageView) findViewById(R.id.back_savebar);
+                    title= (TextView) findViewById(R.id.textView_titlebar_save);
+                    save= (ImageView) findViewById(R.id.help_savebar);
+
+                    title.setText("需求定制");
+
+                    back.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            finish();
+                            overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
+                        }
+                    });
+                    save.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent=new Intent(CustomizedActivity.this,ServiceMoneyInfoActivity.class);
+                            startActivity(intent);
+                            overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                        }
+                    });
+                }else {
+                    initPopList();
+
+                    initView();
+                }
 
             }
         });
@@ -628,10 +719,15 @@ public class CustomizedActivity extends AppCompatActivity {
 
     private void initFancyCoverFlow() {
         if (map==null){
+            MyLog.i("map null");
             return;
         }
         if (cusmap==null){
+            MyLog.i("cusmap null");
             return;
+        }
+        if (map.size()==0){
+            showDialog("请先认证身份");
         }
         fancyCoverFlow.setAdapter(new FancyCoverFlowSampleAdapter(this,map.size()));
         fancyCoverFlow.setUnselectedAlpha(1.0f);
@@ -877,4 +973,32 @@ public class CustomizedActivity extends AppCompatActivity {
             }
         }
     };
+
+    public void showDialog(String message){
+        dialog=new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        View view= LayoutInflater.from(this).inflate(R.layout.dialog_setting,null);
+        LinearLayout.LayoutParams params= new LinearLayout.LayoutParams((int) (windowWidth*0.8), LinearLayout.LayoutParams.MATCH_PARENT);
+        params.leftMargin= (int) (14*density);
+        params.rightMargin= (int) (14*density);
+        MyLog.i("params width=="+params.width);
+        dialog.setContentView(view,params);
+        TextView mes= (TextView) view.findViewById(R.id.message_dialog_setting);
+        TextView channel= (TextView) view.findViewById(R.id.channel_dialog_setting);
+        TextView clear= (TextView) view.findViewById(R.id.positive_dialog_setting);
+        mes.setText(message);
+        clear.setText("我知道了");
+
+//        clear.setTextColor(Color.rgb(255,157,0));
+        dialog.show();
+        channel.setVisibility(View.GONE);
+        clear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+                CustomizedActivity.this.finish();
+                overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
+            }
+        });
+    }
 }

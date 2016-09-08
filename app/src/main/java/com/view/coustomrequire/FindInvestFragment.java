@@ -9,6 +9,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +86,14 @@ public class FindInvestFragment extends CoustomBaseFragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         financingstage=customizedData.getMap().get("stage");
+
+        neednum="";
+        minshare="";
+        maxshare="";
+        other="";
+        stageStr="";
+        fileUrl="";
+
         if (info!=null){
             findInvestInfo= (FindInvestInfo) info;
             neednum=findInvestInfo.getMoney();
@@ -92,6 +104,9 @@ public class FindInvestFragment extends CoustomBaseFragment {
             other=itemInfo.getNote();
 
         }
+
+
+
     }
 
     @Nullable
@@ -176,11 +191,15 @@ public class FindInvestFragment extends CoustomBaseFragment {
             needNumEdit.setText(neednum);
             minshareEdit.setText(minshare);
             maxshareEdit.setText(maxshare);
-            if (fileUrl.contains(".jpg")){
-                ImageLoader.getInstance().displayImage(Url.prePic+fileUrl,upfile, MyDisplayImageOptions.getdefaultBannerOptions());
-                clicktoup.setVisibility(View.GONE);
+           if (TextUtils.isEmpty(fileUrl)){
+                clicktoup.setText("点击上传");
             }else {
-                clicktoup.setText("上传完成");
+                if (fileUrl.contains(".jpg")){
+                    ImageLoader.getInstance().displayImage(Url.prePic+fileUrl,upfile, MyDisplayImageOptions.getdefaultBannerOptions());
+                    clicktoup.setVisibility(View.GONE);
+                }else {
+                    clicktoup.setText("上传成功");
+                }
             }
             otherEdit.setText(other);
             for (NameVal nameVal:financingstage){
@@ -206,6 +225,9 @@ public class FindInvestFragment extends CoustomBaseFragment {
                             String path = FileUtils.getPath(getActivity(), uri);
 //                            Toast.makeText(FileChooserExampleActivity.this,
 //                                    "File Selected: " + path, Toast.LENGTH_LONG).show();
+
+                            //上传文件路径置为空
+                            fileUrl="";
                             updataFile(path);
                             MyLog.i("file path=="+path);
                         } catch (Exception e) {
@@ -259,6 +281,9 @@ public class FindInvestFragment extends CoustomBaseFragment {
                             ImageLoader.getInstance().displayImage(Url.prePic+fileUrl,upfile, MyDisplayImageOptions.getdefaultBannerOptions());
                             clicktoup.setVisibility(View.GONE);
                         }else {
+//                            ImageLoader.getInstance().displayImage("",upfile, MyDisplayImageOptions.getdefaultBannerOptions());
+                            upfile.setVisibility(View.INVISIBLE);
+                            clicktoup.setVisibility(View.VISIBLE);
                             clicktoup.setText("上传完成");
                         }
                     }else {

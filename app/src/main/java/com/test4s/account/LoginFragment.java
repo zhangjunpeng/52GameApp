@@ -25,14 +25,19 @@ import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.view.Evaluation.EvaluationActivity;
 import com.test4s.myapp.BaseFragment;
+import com.view.coustomrequire.CustomizedActivity;
 import com.view.messagecenter.MessageList;
 import com.view.myattention.AttentionActivity;
 import com.view.myreport.ReprotListActivity;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.x;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Administrator on 2016/1/27.
@@ -261,6 +266,18 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
                         myAccount.setToken(jsonObject1.getString("token"));
                         myAccount.setAvatar(jsonObject1.getString("avatar"));
 
+                        List<String> identList=new ArrayList<String>();
+                        if (jsonObject1.has("user_identity")){
+                            JSONArray identArray=jsonObject1.getJSONArray("user_identity");
+                            for (int i=0;i<identArray.length();i++){
+                                identList.add(identArray.getString(i));
+                            }
+                        }else {
+
+                        }
+
+                        myAccount.setUserident(identList);
+
                         CusToast.showToast(getActivity(),"登录成功",Toast.LENGTH_SHORT);
 
                         myAccount.saveUserInfo();
@@ -325,6 +342,14 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
                 intent= new Intent(getActivity(), ReprotListActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                break;
+            case "custom":
+                intent=new Intent(getActivity(), CustomizedActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                break;
+            default:
+                getActivity().overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
                 break;
         }
 

@@ -67,13 +67,15 @@ public class GameListActivity extends BaseActivity implements View.OnClickListen
 
     private Button refreash;
 
+    private String order="time";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game_list);
 
 
-
+        order=getIntent().getStringExtra("order");
 
 
         setImmerseLayout(findViewById(R.id.title_gamelist));
@@ -118,6 +120,9 @@ public class GameListActivity extends BaseActivity implements View.OnClickListen
 
 
         GameListFragment fragment=new GameListFragment();
+        Bundle bundle=new Bundle();
+        bundle.putString("order",order);
+        fragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.contianer_gamelist,fragment).commit();
 
 

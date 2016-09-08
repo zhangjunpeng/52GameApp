@@ -41,6 +41,8 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.SimpleView
     private List<Integer> mItems;
     private int mCurrentItemId = 0;
     private List<IndexAdvert> indexadverts;
+    ImageLoader imageloder=ImageLoader.getInstance();
+
 
     public static class SimpleViewHolder extends RecyclerView.ViewHolder {
 //        public final TextView title;
@@ -87,9 +89,8 @@ public class LayoutAdapter extends RecyclerView.Adapter<LayoutAdapter.SimpleView
     @Override
     public void onBindViewHolder(SimpleViewHolder holder, int position) {
 //        holder.title.setText(mItems.get(position).toString());
-        ImageLoader imageloder=ImageLoader.getInstance();
         IndexAdvert indexadvert=indexadverts.get(position);
-        imageloder.displayImage(Url.prePic+indexadvert.getAdvert_pic(),holder.imageView, MyDisplayImageOptions.getdefaultImageOptions());
+        imageloder.displayImage(Url.prePic+indexadvert.getAdvert_pic(),holder.imageView, MyDisplayImageOptions.getdefaultBannerOptions());
     }
 
     @Override

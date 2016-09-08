@@ -15,12 +15,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.app.tools.MyDisplayImageOptions;
+import com.app.tools.MyLog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.test4s.account.AccountActivity;
 import com.test4s.account.MyAccount;
 import com.test4s.gdb.GameInfo;
 import com.test4s.myapp.R;
 import com.test4s.net.Url;
+import com.view.game.GameDetailActivity;
+import com.view.game.GameListActivity;
 import com.view.myattention.AttentionChange;
 
 import java.util.List;
@@ -33,15 +36,20 @@ public class RecyclerGameFragment extends Fragment {
 
     private List<GameInfo> gameInfoList;
     private String type;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         type=getArguments().getString("type","new");
+        MyLog.i("type === "+type);
         if (type.equals("new")){
             gameInfoList=GameFragment.newGames;
-        }else {
+        }
+        if (type.equals("grade")){
             gameInfoList=GameFragment.gradeGames;
         }
+        MyLog.i("first name="+gameInfoList.get(0).getGame_name());
+
     }
 
     @Nullable
@@ -68,22 +76,56 @@ public class RecyclerGameFragment extends Fragment {
         private List<GameInfo> datalist;
 
         ImageLoader imageLoader=ImageLoader.getInstance();
+        View footview;
 
+        final int NORMAL_TYPE=0;
+        final int FOOT_TYPE=1;
 
         @Override
         public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
-                    getActivity()).inflate(R.layout.item_gamelist_fragment, parent, false));
-            return holder;
+            if (viewType==NORMAL_TYPE){
+                MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
+                        getActivity()).inflate(R.layout.item_gamelist_fragment, parent, false));
+                return holder;
+            }else {
+                footview=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_foot_recycler,parent,false);
+                return new MyViewHolder(footview);
+            }
+
         }
 
         public HomeAdapter(List<GameInfo> datalist) {
             this.datalist=datalist;
         }
 
+        @Override
+        public int getItemViewType(int position) {
+            if (position==datalist.size()){
+                return FOOT_TYPE;
+            }else {
+                return NORMAL_TYPE;
+            }
+        }
 
         @Override
         public void onBindViewHolder(final MyViewHolder holder, int position) {
+            if (position==datalist.size()){
+                footview.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent=new Intent(getActivity(), GameListActivity.class);
+                        MyLog.i("type =="+type);
+                        if (type.equals("new")){
+                            intent.putExtra("order","time");
+                        }else {
+                            intent.putExtra("order","grade");
+                        }
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    }
+                });
+                return;
+            }
             final GameInfo gameInfo=datalist.get(position);
 
             holder.name.setText(gameInfo.getGame_name());
@@ -124,8 +166,6 @@ public class RecyclerGameFragment extends Fragment {
                             holder.care.setText("关注");
                             holder.care.setSelected(false);
                         }
-
-
                     }
                 });
             }else {
@@ -144,16 +184,51 @@ public class RecyclerGameFragment extends Fragment {
             String mess=gameInfo.getGame_type()+"/"+gameInfo.getGame_stage()+"\n"+gameInfo.getRequire();
             holder.info.setText(mess);
 
-            holder.care.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    if (MyAccount.isLogin){
+            if (MyAccount.isLogin){
+                if (gameInfo.iscare()){
+                    holder.care.setText("已关注");
+                    holder.care.setSelected(true);
+                }else {
+                    holder.care.setText("关注");
+                    holder.care.setSelected(false);
+                }
+                holder.care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (gameInfo.iscare()){
+                            gameInfo.setIscare(false);
+                            AttentionChange.removeAttention("1",gameInfo.getGame_id(), getActivity());
+                        }else {
+                            gameInfo.setIscare(true);
+                            AttentionChange.addAttention("1",gameInfo.getGame_id(), getActivity());
+                        } if (gameInfo.iscare()){
+                            holder.care.setText("已关注");
+                            holder.care.setSelected(true);
+                        }else {
+                            holder.care.setText("关注");
+                            holder.care.setSelected(false);
+                        }
+                    }
+                });
 
-                    }else {
+            }else {
+                holder.care.setOnClickListener(new View.OnClickListener() {
+
+                    @Override
+                    public void onClick(View v) {
                         Intent intent=new Intent(getActivity(), AccountActivity.class);
                         startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                     }
+                });
+
+            }
+
+
+            holder.item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    goDetail(gameInfo.getGame_id(),gameInfo.getGame_dev());
                 }
             });
 
@@ -161,7 +236,7 @@ public class RecyclerGameFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return datalist.size();
+            return datalist.size()+1;
         }
 
         class MyViewHolder extends RecyclerView.ViewHolder {
@@ -175,6 +250,9 @@ public class RecyclerGameFragment extends Fragment {
 
             public MyViewHolder(View view) {
                 super(view);
+                if (view==footview){
+                    return;
+                }
                 icon = (ImageView) view.findViewById(R.id.icon);
                 name = (TextView) view.findViewById(R.id.name);
                 info = (TextView) view.findViewById(R.id.info);
@@ -184,5 +262,14 @@ public class RecyclerGameFragment extends Fragment {
                 item = view;
             }
         }
+    }
+
+    private void goDetail(String gameid,String ident_cat){
+        Intent intent= new Intent(getActivity(),GameDetailActivity.class);
+        intent.putExtra("game_id",gameid);
+        intent.putExtra("ident_cat",ident_cat);
+        startActivity(intent);
+        getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+
     }
 }

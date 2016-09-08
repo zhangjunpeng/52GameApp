@@ -89,7 +89,7 @@ public class GameLayoutAdapter extends RecyclerView.Adapter<GameLayoutAdapter.Si
 //        holder.title.setText(mItems.get(position).toString());
         ImageLoader imageloder=ImageLoader.getInstance();
         Adverts indexadvert=indexadverts.get(position);
-        imageloder.displayImage(Url.prePic+indexadvert.getAdvert_pic(),holder.imageView, MyDisplayImageOptions.getdefaultImageOptions());
+        imageloder.displayImage(Url.prePic+indexadvert.getAdvert_pic(),holder.imageView, MyDisplayImageOptions.getdefaultBannerOptions());
     }
 
     @Override

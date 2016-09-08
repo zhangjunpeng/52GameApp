@@ -8,6 +8,8 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ import com.app.tools.MyLog;
 import com.ipaulpro.afilechooser.utils.FileUtils;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.test4s.account.MyAccount;
+import com.test4s.myapp.MainActivity;
 import com.test4s.myapp.MyApplication;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
@@ -64,8 +67,9 @@ public class FindIssuesFragment extends CoustomBaseFragment {
 
 
     private LinearLayout linear_issueregion;
-    private LinearLayout linear_inssuegames;
     private LinearLayout linear_inssuecats;
+
+    private LinearLayout linear_game;
 
     private ImageView upfile;
     private TextView clicktoup;
@@ -76,6 +80,7 @@ public class FindIssuesFragment extends CoustomBaseFragment {
     // code
 
     private FindIssueInfo findIssueInfo;
+    private float density;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +97,10 @@ public class FindIssuesFragment extends CoustomBaseFragment {
         issueregions_sel=new ArrayList<>();
         inssuecats_sel=new ArrayList<>();
         issuegames_sel=new ArrayList<>();
+        fileUrl="";
+        otherStr="";
+
+        getDensity();
 
         if (info!=null){
             findIssueInfo= (FindIssueInfo) info;
@@ -116,8 +125,9 @@ public class FindIssuesFragment extends CoustomBaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         linear_inssuecats= (LinearLayout) view.findViewById(R.id.linear_inssuecat);
-        linear_inssuegames= (LinearLayout) view.findViewById(R.id.linear_inssuegames);
         linear_issueregion= (LinearLayout) view.findViewById(R.id.linear_issueregion);
+
+        linear_game= (LinearLayout) view.findViewById(R.id.linear_games);
 
         otherEdit= (EditText) view.findViewById(R.id.edit_other);
 
@@ -131,10 +141,6 @@ public class FindIssuesFragment extends CoustomBaseFragment {
         for (int i=0;i<linear_inssuecats.getChildCount();i++){
             TextView textView= (TextView) linear_inssuecats.getChildAt(i);
             inssuecatTexts.add(textView);
-        }
-        for (int i=0;i<linear_inssuegames.getChildCount();i++){
-            TextView textView= (TextView) linear_inssuegames.getChildAt(i);
-            issuegameTexts.add(textView);
         }
         for (int i=0;i<linear_issueregion.getChildCount();i++){
             TextView textView= (TextView) linear_issueregion.getChildAt(i);
@@ -191,30 +197,32 @@ public class FindIssuesFragment extends CoustomBaseFragment {
             }
         });
 
-        initTextViewSelect(issuegameTexts, issuegames, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TextView textView= (TextView) v;
-                textView.setSelected(!textView.isSelected());
 
-                NameVal nameVal= (NameVal) textView.getTag();
-
-                if (textView.isSelected()){
-                    textView.setTextColor(Color.WHITE);
-                    issuegames_sel.add(nameVal);
-                }else {
-                    textView.setTextColor(Color.rgb(124, 124, 124));
-                    Iterator it = issuegames_sel.iterator();
-                    while (it.hasNext()) {
-                        NameVal nameVal1 = (NameVal) it.next();
-                        if (nameVal1.getId().equals(nameVal.getId())) {
-                            //移除当前的对象
-                            it.remove();
-                        }
-                    }
-                }
-            }
-        });
+        addGamesText(issuegames);
+//        initTextViewSelect(issuegameTexts, issuegames, new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                TextView textView= (TextView) v;
+//                textView.setSelected(!textView.isSelected());
+//
+//                NameVal nameVal= (NameVal) textView.getTag();
+//
+//                if (textView.isSelected()){
+//                    textView.setTextColor(Color.WHITE);
+//                    issuegames_sel.add(nameVal);
+//                }else {
+//                    textView.setTextColor(Color.rgb(124, 124, 124));
+//                    Iterator it = issuegames_sel.iterator();
+//                    while (it.hasNext()) {
+//                        NameVal nameVal1 = (NameVal) it.next();
+//                        if (nameVal1.getId().equals(nameVal.getId())) {
+//                            //移除当前的对象
+//                            it.remove();
+//                        }
+//                    }
+//                }
+//            }
+//        });
 
         otherEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
@@ -236,14 +244,99 @@ public class FindIssuesFragment extends CoustomBaseFragment {
             initSelectedText(issueregionTexts,issueregions_sel);
             initSelectedText(inssuecatTexts,inssuecats_sel);
             initSelectedText(issuegameTexts,issuegames_sel);
-            if (fileUrl.contains(".jpg")){
-                ImageLoader.getInstance().displayImage(Url.prePic+fileUrl,upfile, MyDisplayImageOptions.getdefaultBannerOptions());
-                clicktoup.setVisibility(View.GONE);
+            if (TextUtils.isEmpty(fileUrl)){
+                clicktoup.setText("点击上传");
             }else {
-                clicktoup.setText("上传完成");
+                if (fileUrl.contains(".jpg")){
+                    ImageLoader.getInstance().displayImage(Url.prePic+fileUrl,upfile, MyDisplayImageOptions.getdefaultBannerOptions());
+                    clicktoup.setVisibility(View.GONE);
+                }else {
+                    clicktoup.setText("上传成功");
+                }
             }
             otherEdit.setText(otherStr);
         }
+    }
+
+    public void getDensity(){
+        DisplayMetrics metric = new DisplayMetrics();
+        getActivity().getWindowManager().getDefaultDisplay().getMetrics(metric);
+        density = metric.density;  // 屏幕密度（0.75 / 1.0 / 1.5）
+    }
+    private void addGamesText(List<NameVal> issuegames) {
+
+        if(issuegames.size()==0){
+            TextView noip=new TextView(getActivity());
+            noip.setText("没有待发行的游戏");
+            LinearLayout.LayoutParams layoutParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            layoutParams.leftMargin= (int) (17*density);
+            layoutParams.topMargin= (int) (15*density);
+            layoutParams.bottomMargin= (int) (15*density);
+            noip.setTextColor(Color.RED);
+            linear_game.addView(noip,layoutParams);
+            MyLog.i("没有待发行的游戏");
+            return;
+        }
+
+        int lines=issuegames.size()/4;
+        int yip=issuegames.size()%4;
+
+        for (int i=0;i<lines;i++){
+            LinearLayout view= (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.item_linear_ipcoop,linear_game,false);
+            for (int j=0;j<4;j++){
+                int position=i*4+j;
+                TextView textView= (TextView) view.getChildAt(j);
+                NameVal nameVal=issuegames.get(position);
+                textView.setTag(nameVal);
+                textView.setText(nameVal.getVal());
+                issuegameTexts.add(textView);
+            }
+            linear_game.addView(view);
+        }
+        LinearLayout view1= (LinearLayout) LayoutInflater.from(getActivity()).inflate(R.layout.item_linear_ipcoop,linear_game,false);
+        for (int i=0;i<4;i++){
+            TextView textView= (TextView) view1.getChildAt(i);
+            int position=lines*4+i;
+            if (i>=yip){
+                textView.setVisibility(View.INVISIBLE);
+            }else {
+                NameVal nameVal=issuegames.get(position);
+                textView.setTag(nameVal);
+                textView.setText(nameVal.getVal());
+                issuegameTexts.add(textView);
+            }
+        }
+        linear_game.addView(view1);
+
+
+        for (TextView textView:issuegameTexts){
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    TextView _textView= (TextView) v;
+                    _textView.setSelected(!_textView.isSelected());
+
+                    NameVal nameVal= (NameVal) _textView.getTag();
+
+                    if (_textView.isSelected()){
+                        _textView.setTextColor(Color.WHITE);
+                        issuegames_sel.add(nameVal);
+                    }else {
+                        _textView.setTextColor(Color.rgb(124, 124, 124));
+                        Iterator it = issuegames_sel.iterator();
+                        while (it.hasNext()) {
+                            NameVal nameVal1 = (NameVal) it.next();
+                            if (nameVal1.getId().equals(nameVal.getId())) {
+                                //移除当前的对象
+                                it.remove();
+                            }
+                        }
+                    }
+                }
+            });
+
+        }
+
     }
 
     @Override
@@ -261,6 +354,8 @@ public class FindIssuesFragment extends CoustomBaseFragment {
                             String path = FileUtils.getPath(getActivity(), uri);
 //                            Toast.makeText(FileChooserExampleActivity.this,
 //                                    "File Selected: " + path, Toast.LENGTH_LONG).show();
+                            //上传文件路径置为空
+                            fileUrl="";
                             updataFile(path);
                             MyLog.i("file path=="+path);
                         } catch (Exception e) {
@@ -314,6 +409,9 @@ public class FindIssuesFragment extends CoustomBaseFragment {
                             ImageLoader.getInstance().displayImage(Url.prePic+fileUrl,upfile, MyDisplayImageOptions.getdefaultBannerOptions());
                             clicktoup.setVisibility(View.GONE);
                         }else {
+//                            ImageLoader.getInstance().displayImage("",upfile, MyDisplayImageOptions.getdefaultBannerOptions());
+                            upfile.setVisibility(View.INVISIBLE);
+                            clicktoup.setVisibility(View.VISIBLE);
                             clicktoup.setText("上传完成");
                         }
                     }else {

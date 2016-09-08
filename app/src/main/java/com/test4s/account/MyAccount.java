@@ -22,6 +22,7 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.Executors;
 
 /**
@@ -34,9 +35,19 @@ public class MyAccount {
     private String token;
     private String avatar;
 
+    private List<String> userident;
+
+
+
     private UserInfo userInfo;
 
+    public List<String> getUserident() {
+        return userident;
+    }
 
+    public void setUserident(List<String> userident) {
+        this.userident = userident;
+    }
 
     public UserInfo getUserInfo() {
         return userInfo;

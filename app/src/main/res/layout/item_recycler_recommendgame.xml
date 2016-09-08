@@ -30,19 +30,16 @@
             android:textColor="#838483"
             />
     </RelativeLayout>
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/contianer_recommendgame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginRight="14dp"
         android:layout_marginLeft="14dp"
         android:background="@drawable/border_edit_comment"
+        android:orientation="vertical"
         >
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_index_item"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-        </android.support.v7.widget.RecyclerView>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </LinearLayout>

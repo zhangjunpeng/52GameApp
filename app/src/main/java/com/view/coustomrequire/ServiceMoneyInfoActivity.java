@@ -24,7 +24,7 @@ public class ServiceMoneyInfoActivity extends AppCompatActivity {
         save= (TextView) findViewById(R.id.save_savebar);
 
         save.setVisibility(View.INVISIBLE);
-        title.setText("服务流程及收费标准");
+        title.setText("服务流程");
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
