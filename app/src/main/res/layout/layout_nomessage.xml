@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    >
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+        <ImageView
+            android:layout_width="157dp"
+            android:layout_height="157dp"
+            android:src="@drawable/nomessage"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您还没有消息哦！"
+            android:textSize="14dp"
+            android:textColor="@color/line"
+            android:layout_marginTop="10dp"
+            />
+        <TextView
+            android:id="@+id/go_coutomized"
+            android:layout_width="140dp"
+            android:layout_height="37dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/border_radius_orange"
+            android:text="立即定制"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:textColor="@color/orange"
+            android:textSize="15dp"
+            android:visibility="gone"
+            />
+    </LinearLayout>
+</RelativeLayout>

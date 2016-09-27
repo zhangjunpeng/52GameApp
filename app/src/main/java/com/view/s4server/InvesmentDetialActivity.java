@@ -17,11 +17,9 @@ import android.widget.TextView;
 
 import com.app.tools.MyDisplayImageOptions;
 import com.app.tools.MyLog;
-import com.app.view.RoundImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.test4s.account.MyAccount;
-import com.test4s.myapp.MyApplication;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
@@ -147,7 +145,7 @@ public class InvesmentDetialActivity extends BaseActivity implements View.OnClic
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                setContentView(R.layout.neterror);
+                setContentView(R.layout.layout_neterror);
 
             }
 
@@ -330,7 +328,16 @@ public class InvesmentDetialActivity extends BaseActivity implements View.OnClic
 //                    .into(viewHolder.icon);
             viewHolder.time.setText("上线时间 ："+caseInfo.getOnline_time());
             viewHolder.name.setText(caseInfo.getName());
-            viewHolder.money.setText("投资金额 ："+caseInfo.getInvest_money());
+            String invest_money=caseInfo.getInvest_money();
+//            float money=0;
+//            try {
+//                money=Float.parseFloat(invest_money);
+//            }catch (Exception e){
+//                MyLog.i(e.toString());
+//            }
+//            MyLog.i("money=="+money);
+
+            viewHolder.money.setText("投资金额 ："+invest_money);
             viewHolder.stage.setText("投资阶段 ："+caseInfo.getInvest_stage());
 
             if (i==0){

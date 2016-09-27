@@ -51,6 +51,8 @@ import org.xutils.x;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
 import de.greenrobot.event.EventBus;
 import de.greenrobot.event.Subscribe;
@@ -137,6 +139,29 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
         }
     }
 
+    @Subscribe(threadMode = ThreadMode.MainThread)
+    public void changeRequir(Set<String> datalist){
+        if (datalist==null){
+            require.setVisibility(View.GONE);
+        }else {
+            if (datalist.size()==0){
+                require.setVisibility(View.GONE);
+            }else {
+                require.setVisibility(View.VISIBLE);
+                Object[] useridents=  datalist.toArray();
+                for (int i=0;i<5;i++){
+                    TextView textView= (TextView) require.getChildAt(i);
+                    MyLog.i("require list size=="+datalist.size());
+
+                    if (i>=datalist.size()){
+                        textView.setVisibility(View.GONE);
+                    }else {
+                        textView.setText(useridents[i].toString());
+                    }
+                }
+            }
+        }
+    }
 
 
 
@@ -258,7 +283,7 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
                     getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 }else {
                     //未登录
-                    gologin("report");
+                    gologin("ident");
                 }
                 break;
 
@@ -319,27 +344,23 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
             }else {
                 textView.setText(myAccount.getNickname());
             }
-            if (myAccount.getUserident()!=null){
-
-                    List<String> stringList=myAccount.getUserident();
-                    if (stringList.size()!=0){
-                        require.setVisibility(View.VISIBLE);
-                        for (int i=0;i<require.getChildCount();i++){
-                            TextView textView= (TextView) require.getChildAt(i);
-                            if (i>=stringList.size()){
-                                textView.setVisibility(View.GONE);
-                            }else {
-                                textView.setText(stringList.get(i));
-                            }
-                        }
-                    }else {
-                        require.setVisibility(View.GONE);
-                    }
-            }else {
+//
+            Set<String> requireList=MyAccount.getInstance().getUserident();
+            if (requireList.size()==0){
                 require.setVisibility(View.GONE);
-
+            }else {
+                require.setVisibility(View.VISIBLE);
+                Object[] useridents=  requireList.toArray();
+                for (int i=0;i<5;i++){
+                    TextView textView= (TextView) require.getChildAt(i);
+                    MyLog.i("require list size=="+requireList.size());
+                    if (i>=requireList.size()){
+                        textView.setVisibility(View.GONE);
+                    }else {
+                        textView.setText(useridents[i].toString());
+                    }
+                }
             }
-
 
         }else {
             roundedIcon.setImageResource(R.drawable.default_icon);
@@ -407,12 +428,13 @@ public class MySettingFragment extends Fragment implements View.OnClickListener{
                         String ident=jsonObject3.getString("user_identity");
                         if (!TextUtils.isEmpty(ident)){
                             JSONArray identArray=jsonObject3.getJSONArray("user_identity");
-                            List<String> identList=new ArrayList<String>();
+                            Set<String> identList=new TreeSet<String>();
                             for (int i=0;i<identArray.length();i++){
                                 identList.add(identArray.getString(i));
                             }
-                            userInfo.setUserIdent(identList);
+//                            userInfo.setUserIdent(identList);
                             MyAccount.getInstance().setUserident(identList);
+                            MyAccount.getInstance().saveUserInfo();
                         }
 
 

@@ -142,48 +142,71 @@ public class RecyclerGameFragment extends Fragment {
             }else if("0".equals(gameInfo.getNorms())){
                 holder.norms.setVisibility(View.INVISIBLE);
             }
-            if (MyAccount.isLogin){
-                if (gameInfo.iscare()){
-                    holder.care.setText("已关注");
-                    holder.care.setSelected(true);
-                }else {
-                    holder.care.setText("关注");
-                    holder.care.setSelected(false);
-                }
-                holder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (gameInfo.iscare()){
+            holder.care.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (MyAccount.isLogin) {
+                        if (gameInfo.iscare()) {
                             gameInfo.setIscare(false);
-                            AttentionChange.removeAttention("1",gameInfo.getGame_id(), getActivity());
-                        }else {
+                            AttentionChange.removeAttention("1", gameInfo.getGame_id(), getActivity());
+                        } else {
                             gameInfo.setIscare(true);
-                            AttentionChange.addAttention("1",gameInfo.getGame_id(), getActivity());
-                        } if (gameInfo.iscare()){
+                            AttentionChange.addAttention("1", gameInfo.getGame_id(), getActivity());
+                        }
+                        if (gameInfo.iscare()) {
                             holder.care.setText("已关注");
                             holder.care.setSelected(true);
-                        }else {
+                        } else {
                             holder.care.setText("关注");
                             holder.care.setSelected(false);
                         }
-                    }
-                });
-            }else {
-                holder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                    }else {
                         Intent intent=new Intent(getActivity(), AccountActivity.class);
                         startActivity(intent);
                         getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-
                     }
-                });
+                }
+            });
+            if (MyAccount.isLogin) {
+                if (gameInfo.iscare()) {
+                    holder.care.setText("已关注");
+                    holder.care.setSelected(true);
+                } else {
+                    holder.care.setText("关注");
+                    holder.care.setSelected(false);
+                }
 
             }
+
 
             String mess=gameInfo.getGame_type()+"/"+gameInfo.getGame_stage()+"\n"+gameInfo.getRequire();
             holder.info.setText(mess);
 
+            holder.care.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (MyAccount.isLogin) {
+                        if (gameInfo.iscare()) {
+                            gameInfo.setIscare(false);
+                            AttentionChange.removeAttention("1", gameInfo.getGame_id(), getActivity());
+                        } else {
+                            gameInfo.setIscare(true);
+                            AttentionChange.addAttention("1", gameInfo.getGame_id(), getActivity());
+                        }
+                        if (gameInfo.iscare()) {
+                            holder.care.setText("已关注");
+                            holder.care.setSelected(true);
+                        } else {
+                            holder.care.setText("关注");
+                            holder.care.setSelected(false);
+                        }
+                    }else {
+                        Intent intent=new Intent(getActivity(), AccountActivity.class);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    }
+                }
+            });
             if (MyAccount.isLogin){
                 if (gameInfo.iscare()){
                     holder.care.setText("已关注");
@@ -192,38 +215,9 @@ public class RecyclerGameFragment extends Fragment {
                     holder.care.setText("关注");
                     holder.care.setSelected(false);
                 }
-                holder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (gameInfo.iscare()){
-                            gameInfo.setIscare(false);
-                            AttentionChange.removeAttention("1",gameInfo.getGame_id(), getActivity());
-                        }else {
-                            gameInfo.setIscare(true);
-                            AttentionChange.addAttention("1",gameInfo.getGame_id(), getActivity());
-                        } if (gameInfo.iscare()){
-                            holder.care.setText("已关注");
-                            holder.care.setSelected(true);
-                        }else {
-                            holder.care.setText("关注");
-                            holder.care.setSelected(false);
-                        }
-                    }
-                });
 
-            }else {
-                holder.care.setOnClickListener(new View.OnClickListener() {
-
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(getActivity(), AccountActivity.class);
-                        startActivity(intent);
-                        getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-                    }
-                });
 
             }
-
 
             holder.item.setOnClickListener(new View.OnClickListener() {
                 @Override

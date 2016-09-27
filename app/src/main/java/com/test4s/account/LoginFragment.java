@@ -25,6 +25,7 @@ import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.view.Evaluation.EvaluationActivity;
 import com.test4s.myapp.BaseFragment;
+import com.view.Identification.IdentificationActivity;
 import com.view.coustomrequire.CustomizedActivity;
 import com.view.messagecenter.MessageList;
 import com.view.myattention.AttentionActivity;
@@ -38,6 +39,10 @@ import org.xutils.x;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Administrator on 2016/1/27.
@@ -45,7 +50,7 @@ import java.util.List;
 public class LoginFragment extends BaseFragment implements View.OnClickListener{
 
 
-    private Button login;
+    private TextView login;
     private TextView reg;
     private EditText editText_name;
     private EditText editText_pwd;
@@ -72,7 +77,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         view=inflater.inflate(R.layout.fragment_login,null);
-        login= (Button) view.findViewById(R.id.loginButton_login);
+        login= (TextView) view.findViewById(R.id.loginButton_login);
         reg= (TextView) view.findViewById(R.id.reg_login);
         editText_name= (EditText)view.findViewById(R.id.name_login);
         editText_pwd= (EditText) view.findViewById(R.id.pwd_login);
@@ -264,9 +269,15 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
                         myAccount.setNickname(jsonObject1.getString("nickname"));
                         myAccount.setUsername(jsonObject1.getString("username"));
                         myAccount.setToken(jsonObject1.getString("token"));
-                        myAccount.setAvatar(jsonObject1.getString("avatar"));
+                        String avatar=jsonObject1.getString("avatar");
+                        if (avatar.contains("header-big")){
+                            myAccount.setAvatar("");
+                        }else {
+                            myAccount.setAvatar(avatar);
+                        }
 
-                        List<String> identList=new ArrayList<String>();
+
+                        Set<String> identList=new TreeSet<String>();
                         if (jsonObject1.has("user_identity")){
                             JSONArray identArray=jsonObject1.getJSONArray("user_identity");
                             for (int i=0;i<identArray.length();i++){
@@ -277,6 +288,7 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
                         }
 
                         myAccount.setUserident(identList);
+                        EventBus.getDefault().post(identList);
 
                         CusToast.showToast(getActivity(),"登录成功",Toast.LENGTH_SHORT);
 
@@ -347,6 +359,11 @@ public class LoginFragment extends BaseFragment implements View.OnClickListener{
                 intent=new Intent(getActivity(), CustomizedActivity.class);
                 startActivity(intent);
                 getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                break;
+            case "ident":
+                intent= new Intent(getActivity(), IdentificationActivity.class);
+                startActivity(intent);
+                getActivity().overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 break;
             default:
                 getActivity().overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);

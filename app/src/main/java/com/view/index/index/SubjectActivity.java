@@ -1,5 +1,6 @@
 package com.view.index.index;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +21,15 @@ import com.app.tools.MyLog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.test4s.account.AccountActivity;
 import com.test4s.account.MyAccount;
+import com.test4s.gdb.GameInfo;
 import com.test4s.gdb.IP;
 import com.test4s.gdb.IndexItemInfo;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
+import com.view.game.GameDetailActivity;
+import com.view.game.GameListActivity;
+import com.view.game.MyGameListAdapter;
 import com.view.myattention.AttentionChange;
 import com.view.s4server.CPDetailActivity;
 import com.view.s4server.IPDetailActivity;
@@ -50,6 +56,8 @@ public class SubjectActivity extends AppCompatActivity {
 
     List<IndexItemInfo> dataList;
     List<IP> ipList;
+
+    List<GameInfo> gameInfoList;
 
     private String headerUrl;
     private String name_s;
@@ -110,7 +118,7 @@ public class SubjectActivity extends AppCompatActivity {
                 if (id.equals("1")) {
                     jsonparser(result);
                 }else {
-                    
+                    gamepaerser(result);
                 }
             }
 
@@ -127,12 +135,250 @@ public class SubjectActivity extends AppCompatActivity {
             @Override
             public void onFinished() {
 
-                recyclerView.setAdapter(new HomeAdapter(SubjectActivity.this));
+
 
             }
         });
     }
 
+    private void gamepaerser(String result) {
+        try {
+            JSONObject jsonObject = new JSONObject(result);
+            boolean su = jsonObject.getBoolean("success");
+            int code = jsonObject.getInt("code");
+            if (su && code == 200) {
+                JSONObject data = jsonObject.getJSONObject("data");
+                JSONArray albumarray = data.getJSONArray("album");
+                JSONObject album = albumarray.getJSONObject(0);
+                headerUrl = album.getString("logo");
+                name_s = "精选专辑";
+                info_s = album.getString("intro");
+
+                gameInfoList=new ArrayList<>();
+                JSONArray gamearray=album.getJSONArray("content");
+                for (int i=0;i<gamearray.length();i++){
+                    JSONObject gameObj=gamearray.getJSONObject(i);
+                    GameInfo gameInfo=new GameInfo();
+                    gameInfo.setGame_name(gameObj.getString("game_name"));
+                    gameInfo.setGame_grade(gameObj.getString("game_grade_img"));
+                    gameInfo.setGame_type(gameObj.getString("game_type"));
+                    gameInfo.setGame_stage(gameObj.getString("game_stage"));
+                    gameInfo.setGame_platform(gameObj.getString("game_platform"));
+                    gameInfo.setGame_img(gameObj.getString("game_img"));
+
+                    JSONObject gamedata=gameObj.getJSONObject("s4_name");
+
+                    gameInfo.setGame_id(gamedata.getString("user_id"));
+
+                    gameInfo.setNorms(gameObj.getString("norms"));
+
+                    if (MyAccount.isLogin){
+                        gameInfo.setIscare(gamedata.getBoolean("iscare"));
+                    }
+
+                    gameInfoList.add(gameInfo);
+                }
+            }
+
+            recyclerView.setAdapter(new MygGameAdapter(SubjectActivity.this,gameInfoList));
+        }catch (Exception e){
+
+        }
+    }
+    class MygGameAdapter extends RecyclerView.Adapter<MygGameAdapter.MyViewHolder> {
+
+        private List<GameInfo> datalist;
+        Activity context;
+
+        ImageLoader imageLoader=ImageLoader.getInstance();
+        final int HEAD_TYPE=0;
+        final int NORMAL_TYPE=1;
+
+        private View header;
+        @Override
+        public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            if (viewType==NORMAL_TYPE){
+                MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
+                        context).inflate(R.layout.item_gamelist_fragment, parent, false));
+                return holder;
+            }else {
+                header=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_head_recycler_subject,parent,false);
+                return new MyViewHolder(header);
+            }
+
+        }
+
+        public MygGameAdapter(Activity context,List<GameInfo> datalist) {
+            this.context=context;
+            this.datalist=datalist;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (position==0){
+                return  HEAD_TYPE;
+            }
+            return NORMAL_TYPE;
+        }
+
+        @Override
+        public void onBindViewHolder(final MyViewHolder holder, int position) {
+            if (position==0){
+                ImageView imageView= (ImageView) header.findViewById(R.id.icon);
+                TextView name= (TextView) header.findViewById(R.id.name);
+                TextView info= (TextView) header.findViewById(R.id.info);
+                name.setText(name_s);
+                info.setText(info_s);
+
+                imageLoader.displayImage(Url.prePic+headerUrl,imageView, MyDisplayImageOptions.getdefaultBannerOptions());
+
+            }else {
+                final GameInfo gameInfo = datalist.get(position-1);
+
+                holder.name.setText(gameInfo.getGame_name());
+
+                imageLoader.displayImage(Url.prePic + gameInfo.getGame_img(), holder.icon, MyDisplayImageOptions.getroundImageOptions());
+                if (TextUtils.isEmpty(gameInfo.getGame_grade())) {
+                    holder.grade.setVisibility(View.INVISIBLE);
+                } else {
+                    imageLoader.displayImage(Url.prePic + gameInfo.getGame_grade(), holder.grade, MyDisplayImageOptions.getIconOptions());
+                }
+
+                if ("1".equals(gameInfo.getNorms())) {
+                    holder.norms.setVisibility(View.VISIBLE);
+                } else{
+                    holder.norms.setVisibility(View.INVISIBLE);
+                }
+
+                holder.care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (MyAccount.isLogin) {
+                            if (gameInfo.iscare()) {
+                                gameInfo.setIscare(false);
+                                AttentionChange.removeAttention("1", gameInfo.getGame_id(), context);
+                            } else {
+                                gameInfo.setIscare(true);
+                                AttentionChange.addAttention("1", gameInfo.getGame_id(), context);
+                            }
+                            if (gameInfo.iscare()) {
+                                holder.care.setText("已关注");
+                                holder.care.setSelected(true);
+                            } else {
+                                holder.care.setText("关注");
+                                holder.care.setSelected(false);
+                            }
+                        }else {
+                            Intent intent = new Intent(context, AccountActivity.class);
+                            startActivity(intent);
+                            context.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                        }
+                    }
+                });
+                if (MyAccount.isLogin) {
+                    if (gameInfo.iscare()) {
+                        holder.care.setText("已关注");
+                        holder.care.setSelected(true);
+                    } else {
+                        holder.care.setText("关注");
+                        holder.care.setSelected(false);
+                    }
+
+                }
+
+                String mess = gameInfo.getGame_type() + "/" + gameInfo.getGame_stage() + "\n" + gameInfo.getGame_platform();
+                holder.info.setText(mess);
+
+                if (MyAccount.isLogin) {
+                    if (gameInfo.iscare()) {
+                        holder.care.setText("已关注");
+                        holder.care.setSelected(true);
+                    } else {
+                        holder.care.setText("关注");
+                        holder.care.setSelected(false);
+                    }
+                    holder.care.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (gameInfo.iscare()) {
+                                gameInfo.setIscare(false);
+                                AttentionChange.removeAttention("1", gameInfo.getGame_id(), context);
+                            } else {
+                                gameInfo.setIscare(true);
+                                AttentionChange.addAttention("1", gameInfo.getGame_id(), context);
+                            }
+                            if (gameInfo.iscare()) {
+                                holder.care.setText("已关注");
+                                holder.care.setSelected(true);
+                            } else {
+                                holder.care.setText("关注");
+                                holder.care.setSelected(false);
+                            }
+                        }
+                    });
+
+                } else {
+                    holder.care.setOnClickListener(new View.OnClickListener() {
+
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(context, AccountActivity.class);
+                            startActivity(intent);
+                            context.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                        }
+                    });
+
+                }
+
+
+                holder.item.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        goDetail(gameInfo.getGame_id(), gameInfo.getGame_dev());
+                    }
+                });
+            }
+
+        }
+
+        @Override
+        public int getItemCount() {
+            return datalist.size()+1;
+        }
+
+        class MyViewHolder extends RecyclerView.ViewHolder {
+            ImageView icon;
+            TextView name;
+            TextView info;
+            TextView care;
+            View item;
+            TextView norms;
+            ImageView grade;
+
+            public MyViewHolder(View view) {
+                super(view);
+                if (view==header){
+                    return;
+                }
+                icon = (ImageView) view.findViewById(R.id.icon);
+                name = (TextView) view.findViewById(R.id.name);
+                info = (TextView) view.findViewById(R.id.info);
+                care = (TextView) view.findViewById(R.id.care);
+                norms= (TextView) view.findViewById(R.id.norms);
+                grade= (ImageView) view.findViewById(R.id.grade);
+                item = view;
+            }
+        }
+    }
+
+    private void goDetail(String gameid,String ident_cat){
+        Intent intent= new Intent(this,GameDetailActivity.class);
+        intent.putExtra("game_id",gameid);
+        intent.putExtra("ident_cat",ident_cat);
+        startActivity(intent);
+        overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+
+    }
     private void jsonparser(String result) {
         try {
             JSONObject jsonObject=new JSONObject(result);
@@ -228,6 +474,7 @@ public class SubjectActivity extends AppCompatActivity {
 
                 }
             }
+            recyclerView.setAdapter(new HomeAdapter(SubjectActivity.this));
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -251,9 +498,6 @@ public class SubjectActivity extends AppCompatActivity {
             switch (viewType){
                 case HEAD_TYPE:
                     header=LayoutInflater.from(parent.getContext()).inflate(R.layout.item_head_recycler_subject,parent,false);
-//                    RecyclerView.LayoutParams layoutParams= (RecyclerView.LayoutParams) header.getLayoutParams();
-//                    layoutParams.width= RecyclerView.LayoutParams.MATCH_PARENT;
-//                    header.setLayoutParams(layoutParams);
                     return new MyViewHolder(header);
                 case NORMAL_TYPE:
                     return new MyViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_iplistfragment,parent,false));
@@ -286,6 +530,7 @@ public class SubjectActivity extends AppCompatActivity {
                     info=ip.getIntrouduction();
                     logo=ip.getIp_logo();
 
+
                     if (MyAccount.isLogin) {
                         if (ip.iscare()) {
                             holder.care.setText("已关注");
@@ -294,31 +539,34 @@ public class SubjectActivity extends AppCompatActivity {
                             holder.care.setText("关注");
                             holder.care.setSelected(false);
                         }
-                        holder.care.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                        if (ip.iscare()) {
-                                            ip.setIscare(false);
-                                            AttentionChange.removeAttention("5", ip.getId(), SubjectActivity.this);
-                                        } else {
-                                            ip.setIscare(true);
-                                            AttentionChange.addAttention("5", ip.getId(), SubjectActivity.this);
-                                        }
-                                        if (ip.iscare()) {
-                                            holder.care.setText("已关注");
-                                            holder.care.setSelected(true);
-                                        } else {
-                                            holder.care.setText("关注");
-                                            holder.care.setSelected(false);
-                                        }
-                                }
-
-                            });
-                    }else {
-                        Intent intent=new Intent(SubjectActivity.this,AccountActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                     }
+
+                    holder.care.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (MyAccount.isLogin) {
+                                if (ip.iscare()) {
+                                    ip.setIscare(false);
+                                    AttentionChange.removeAttention("5", ip.getId(), SubjectActivity.this);
+                                } else {
+                                    ip.setIscare(true);
+                                    AttentionChange.addAttention("5", ip.getId(), SubjectActivity.this);
+                                }
+                                if (ip.iscare()) {
+                                    holder.care.setText("已关注");
+                                    holder.care.setSelected(true);
+                                } else {
+                                    holder.care.setText("关注");
+                                    holder.care.setSelected(false);
+                                }
+                            }else {
+                                Intent intent=new Intent(SubjectActivity.this,AccountActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                            }
+                        }
+                    });
+
                     holder.view.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -344,9 +592,18 @@ public class SubjectActivity extends AppCompatActivity {
                             holder.care.setText("关注");
                             holder.care.setSelected(false);
                         }
-                        holder.care.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
+
+                    }else {
+                        Intent intent=new Intent(SubjectActivity.this,AccountActivity.class);
+                        startActivity(intent);
+                        overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    }
+
+
+                    holder.care.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (MyAccount.isLogin) {
                                 if (indexItemInfo.iscare()) {
                                     indexItemInfo.setIscare(false);
                                     AttentionChange.removeAttention(ident_cat, indexItemInfo.getUser_id(), SubjectActivity.this);
@@ -361,14 +618,15 @@ public class SubjectActivity extends AppCompatActivity {
                                     holder.care.setText("关注");
                                     holder.care.setSelected(false);
                                 }
+                            }else {
+                                Intent intent=new Intent(SubjectActivity.this,AccountActivity.class);
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
                             }
+                        }
 
-                        });
-                    }else {
-                        Intent intent=new Intent(SubjectActivity.this,AccountActivity.class);
-                        startActivity(intent);
-                        overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-                    }
+                    });
+
 
                     holder.view.setOnClickListener(new View.OnClickListener() {
                         @Override

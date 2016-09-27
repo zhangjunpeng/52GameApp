@@ -132,6 +132,8 @@ public class IssueListFragment extends BaseFragment{
 
         initPtrLayout();
         initLisener();
+
+
         return view;
     }
     private int[] linearId={R.id.linear1,R.id.linear2,R.id.linear3};
@@ -253,6 +255,11 @@ public class IssueListFragment extends BaseFragment{
                 MyLog.i("~~~~下拉刷新");
                 p=1;
                 issueSimpleInfos.clear();
+                if (recommend){
+                    listView.removeFooterView(showall);
+                }else {
+                    listView.removeFooterView(nomore);
+                }
                 listView.setOnScrollListener(listener);
                 initData(p+"");
             }
@@ -368,14 +375,23 @@ public class IssueListFragment extends BaseFragment{
                 if (listView.getFooterViewsCount()==0){
 //                    listView.addFooterView(footview);
                 }
-                if (Foot_flag!=1){
-                    listView.removeFooterView(showall);
-                    listView.removeFooterView(nomore);
-//                    listView.addFooterView(footview);
-                    Foot_flag=1;
-                }
+//                if (Foot_flag!=1){
+//                    listView.removeFooterView(showall);
+//                    listView.removeFooterView(nomore);
+////                    listView.addFooterView(footview);
+//                    Foot_flag=1;
+//                }
                 jsonParser(res);
                 myAdapter.notifyDataSetChanged();
+                if (listView.getFooterViewsCount()==0) {
+                    if (recommend) {
+//                        listView.removeFooterView(footview);
+                        listView.addFooterView(showall);
+                        Foot_flag = 2;
+                    } else {
+//                        listView.removeFooterView(footview);
+                    }
+                }
                if (prt_cp.isRefreshing()){
                    prt_cp.refreshComplete();
                }
@@ -399,15 +415,9 @@ public class IssueListFragment extends BaseFragment{
 
                 if (issues.length()==0){
                     listView.setOnScrollListener(null);
-                    if (recommend){
-//                        listView.removeFooterView(footview);
-                        listView.addFooterView(showall);
-                        Foot_flag=2;
-                    }else {
-//                        listView.removeFooterView(footview);
+                    if (!recommend){
                         listView.addFooterView(nomore);
-                        Foot_flag=3;
-//                        CusToast.showToast(getActivity(), "没有更多开发者信息", Toast.LENGTH_SHORT);
+                        Foot_flag = 3;
                     }
                 }
                 for (int i=0;i<issues.length();i++){
@@ -489,6 +499,34 @@ public class IssueListFragment extends BaseFragment{
 //            }
             String mess="所在区域: "+issueSimpleInfo.getArea_name()+"\n业务类型: "+issueSimpleInfo.getBusine_cat_name()+"\n发行方式： "+issueSimpleInfo.getCoop_cat_name();
             viewHolder.intro.setText(mess);
+
+            viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (MyAccount.isLogin) {
+                        if (issueSimpleInfo.iscare()) {
+                            issueSimpleInfo.setIscare(false);
+                            AttentionChange.removeAttention("6", issueSimpleInfo.getUser_id(), context);
+                        } else {
+                            issueSimpleInfo.setIscare(true);
+                            AttentionChange.addAttention("6", issueSimpleInfo.getUser_id(), context);
+                        }
+                        if (issueSimpleInfo.iscare()) {
+                            viewHolder.care.setText("已关注");
+                            viewHolder.care.setSelected(true);
+                        } else {
+                            viewHolder.care.setText("关注");
+                            viewHolder.care.setSelected(false);
+
+                        }
+                    }else {
+                        Intent intent=new Intent(context, AccountActivity.class);
+                        context.startActivity(intent);
+                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    }
+
+                }
+            });
             if (MyAccount.isLogin){
                 if (issueSimpleInfo.iscare()){
                     viewHolder.care.setText("已关注");
@@ -498,37 +536,6 @@ public class IssueListFragment extends BaseFragment{
                     viewHolder.care.setSelected(false);
 
                 }
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (issueSimpleInfo.iscare()){
-                            issueSimpleInfo.setIscare(false);
-                            AttentionChange.removeAttention("6",issueSimpleInfo.getUser_id(), context);
-                        }else {
-                            issueSimpleInfo.setIscare(true);
-                            AttentionChange.addAttention("6",issueSimpleInfo.getUser_id(), context);
-                        } if (issueSimpleInfo.iscare()){
-                            viewHolder.care.setText("已关注");
-                            viewHolder.care.setSelected(true);
-                        }else {
-                            viewHolder.care.setText("关注");
-                            viewHolder.care.setSelected(false);
-
-                        }
-
-
-                    }
-                });
-            }else {
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(context, AccountActivity.class);
-                        context.startActivity(intent);
-                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-
-                    }
-                });
 
             }
             return convertView;

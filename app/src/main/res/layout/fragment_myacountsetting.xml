@@ -6,6 +6,10 @@
     android:orientation="vertical"
     android:background="#f1f5f7"
     >
+    <include
+        android:id="@+id/titlebar"
+        layout="@layout/titlebar_orange"
+        />
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -14,31 +18,28 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             >
-            <FrameLayout
-                android:id="@+id/namebg_myacc"
-                android:layout_width="match_parent"
-                android:layout_height="320dp"
-                android:background="@drawable/namebg_myaccountsetting"
-                >
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="320dp"
+                android:layout_height="272dp"
+                android:background="@drawable/radius_orange"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
 
                 >
                 <ImageView
-                    android:id="@+id/back_myacountsetting"
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/back"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginLeft="17.33dp"
+                    android:id="@+id/bg_accountsetting"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/radius_orange"
+                    android:scaleType="fitXY"
                     />
+
                 <de.hdodenhof.circleimageview.CircleImageView
                     android:id="@+id/roundImage_myaccountsetting"
-                    android:layout_width="110dp"
-                    android:layout_height="110dp"
+                    android:layout_width="87dp"
+                    android:layout_height="87dp"
                     android:src="@drawable/default_icon"
-                    android:layout_below="@+id/back_myacountsetting"
                     android:layout_marginTop="31dp"
                     android:layout_centerHorizontal="true"
                     />
@@ -128,18 +129,15 @@
 
                 </LinearLayout>
             </RelativeLayout>
-            </FrameLayout>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#B8B8B8"
-                android:layout_marginTop="20dp"
 
-                />
+
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="#fff"
+                android:background="@drawable/border_edit_comment"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
 
                 android:id="@+id/setnick_myacset_fg">
 
@@ -173,21 +171,19 @@
                     android:layout_marginRight="11dp"
                     />
             </RelativeLayout>
-            <ImageView
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#B8B8B8"
-                />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#B8B8B8"
-                android:layout_marginTop="20dp"
-                />
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/border_edit_comment"
+                android:layout_marginTop="7dp"
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+                >
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="#fff"
                 android:id="@+id/setad_myacset_fg">
 
                 <TextView
@@ -224,13 +220,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="#B8B8B8"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
+
                 />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="#fff"
                 android:id="@+id/setedu_myacset_fg">
 
                 <TextView
@@ -267,13 +261,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="#B8B8B8"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
+
                 />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="#fff"
                 android:id="@+id/setjob_myacset_fg">
 
                 <TextView
@@ -310,13 +302,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="#B8B8B8"
-                android:layout_marginRight="15dp"
-                android:layout_marginLeft="15dp"
+
                 />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="#fff"
                 android:id="@+id/setgamelove_myacset_fg">
 
                 <TextView
@@ -349,23 +339,23 @@
                     android:layout_marginRight="11dp"
                     />
             </RelativeLayout>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#B8B8B8"
+            </LinearLayout>
 
-                />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#B8B8B8"
-                android:layout_marginTop="20dp"
-                />
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border_edit_comment"
+                android:orientation="vertical"
+                android:layout_marginTop="7dp"
+
+                android:layout_marginLeft="14dp"
+                android:layout_marginRight="14dp"
+
+                >
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="#fff"
                 android:id="@+id/bindphone_myset_fg">
 
                 <TextView
@@ -402,13 +392,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="#B8B8B8"
-                android:layout_marginLeft="15dp"
-                android:layout_marginRight="15dp"
                 />
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="#fff"
                 android:id="@+id/bindemail_myset_fg">
 
                 <TextView
@@ -441,21 +428,23 @@
                     android:layout_marginRight="11dp"
                     />
             </RelativeLayout>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#B8B8B8"
-                />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#B8B8B8"
-                android:layout_marginTop="20dp"
-                />
+            </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_edit_comment"
+            android:orientation="vertical"
+            android:layout_marginTop="7dp"
+
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+
+            >
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="#fff"
                 android:id="@+id/bindother_myset_fg">
 
                 <TextView
@@ -488,22 +477,21 @@
                     />
 
             </RelativeLayout>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#B8B8B8"
+            </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/border_edit_comment"
+            android:orientation="vertical"
+            android:layout_marginTop="7dp"
 
-                />
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#B8B8B8"
-                android:layout_marginTop="20dp"
-                />
+            android:layout_marginLeft="14dp"
+            android:layout_marginRight="14dp"
+
+            >
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
-                android:background="#fff"
                 android:id="@+id/changepwd_myset_fg">
 
                 <TextView
@@ -525,11 +513,8 @@
                     />
 
             </RelativeLayout>
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="1px"
-                android:background="#B8B8B8"
-                />
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="10dp"

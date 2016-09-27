@@ -1,14 +1,9 @@
 package com.view.s4server;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -25,8 +20,6 @@ import android.widget.TextView;
 
 import com.app.tools.MyDisplayImageOptions;
 import com.app.tools.MyLog;
-import com.app.view.MyScrollView;
-import com.app.view.RoundImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.squareup.picasso.Picasso;
@@ -231,7 +224,7 @@ public class OutSourceActivity extends BaseActivity {
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 MyLog.i("error==="+ex.toString());
-                setContentView(R.layout.neterror);
+                setContentView(R.layout.layout_neterror);
 
             }
 

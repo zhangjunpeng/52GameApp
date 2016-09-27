@@ -69,6 +69,8 @@ public class ReprotListActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
+                overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
+
             }
         });
         title.setText("我的游戏");
@@ -315,7 +317,22 @@ public class ReprotListActivity extends BaseActivity {
 
     private void initListView() {
         if (gameReportInfos.size()==0){
-            listview.setVisibility(View.GONE);
+            setContentView(R.layout.layout_noreport);
+            back= (ImageView) findViewById(R.id.back_savebar);
+            title= (TextView) findViewById(R.id.textView_titlebar_save);
+            save= (TextView) findViewById(R.id.save_savebar);
+
+            back.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    finish();
+                    overridePendingTransition(R.anim.in_form_left,R.anim.out_to_right);
+                }
+            });
+            title.setText("我的游戏");
+            save.setVisibility(View.INVISIBLE);
+
+
         }else {
             myadapter.notifyDataSetChanged();
         }

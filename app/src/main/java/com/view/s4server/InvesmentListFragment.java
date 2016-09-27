@@ -137,6 +137,8 @@ public class InvesmentListFragment extends BaseFragment implements AdapterView.O
         });
 
 
+
+
         return view;
     }
     private String[] filttitles={"area","investcat","stage"};
@@ -263,6 +265,11 @@ public class InvesmentListFragment extends BaseFragment implements AdapterView.O
                 MyLog.i("~~~~下拉刷新");
                 p=1;
                 invesmentSimpleInfos.clear();
+                if (recommend){
+                    listView.removeFooterView(showall);
+                }else {
+                    listView.removeFooterView(nomore);
+                }
                 listView.setOnScrollListener(listener);
 
                 initData(p+"");
@@ -377,17 +384,23 @@ public class InvesmentListFragment extends BaseFragment implements AdapterView.O
 
             @Override
             public void onFinished() {
-                if (listView.getFooterViewsCount()==0){
-//                    listView.addFooterView(footview);
-                }
-                if (Foot_flag!=1){
-                    listView.removeFooterView(showall);
-                    listView.removeFooterView(nomore);
-//                    listView.addFooterView(footview);
-                    Foot_flag=1;
-                }
+
+//                if (Foot_flag!=1){
+//                    listView.removeFooterView(showall);
+//                    listView.removeFooterView(nomore);
+////                    listView.addFooterView(footview);
+//                    Foot_flag=1;
+//                }
                 jsonParser(res);
                 myAdapter.notifyDataSetChanged();
+                if (listView.getFooterViewsCount()==0) {
+                    if (recommend) {
+                        MyLog.i("添加查看全部");
+//                        listView.removeFooterView(footview);
+                        listView.addFooterView(showall);
+                        Foot_flag = 2;
+                    }
+                }
                 if (prt_cp.isRefreshing()) {
                     prt_cp.refreshComplete();
                 }
@@ -407,16 +420,9 @@ public class InvesmentListFragment extends BaseFragment implements AdapterView.O
                 JSONArray issues=jsonObject1.getJSONArray("investorList");
                 if (issues.length()==0){
                     listView.setOnScrollListener(null);
-                    if (recommend){
-                        MyLog.i("添加查看全部");
-//                        listView.removeFooterView(footview);
-                        listView.addFooterView(showall);
-                        Foot_flag=2;
-                    }else {
-//                        listView.removeFooterView(footview);
+                    if (!recommend){
                         listView.addFooterView(nomore);
-                        Foot_flag=3;
-//                        CusToast.showToast(getActivity(), "没有更多开发者信息", Toast.LENGTH_SHORT);
+                        Foot_flag = 3;
                     }
                 }
                 for (int i=0;i<issues.length();i++){
@@ -491,17 +497,11 @@ public class InvesmentListFragment extends BaseFragment implements AdapterView.O
             String mess="所在区域: "+invesmentSimpleInfo.getArea_name()+"\n机构类型: "+invesmentSimpleInfo.getInvest_cat_name()+"\n投资阶段： "+invesmentSimpleInfo.getInvest_stage_name();
             viewHolder.intro.setText(mess);
 
-            if (MyAccount.isLogin){
-                if (invesmentSimpleInfo.iscare()){
-                    viewHolder.care.setText("已关注");
-                    viewHolder.care.setSelected(true);
-                }else {
-                    viewHolder.care.setText("关注");
-                    viewHolder.care.setSelected(false);
-                }
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+            viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (MyAccount.isLogin) {
+
                         if (invesmentSimpleInfo.iscare()){
                             invesmentSimpleInfo.setIscare(false);
                             AttentionChange.removeAttention("4",invesmentSimpleInfo.getUser_id(), context);
@@ -515,20 +515,22 @@ public class InvesmentListFragment extends BaseFragment implements AdapterView.O
                             viewHolder.care.setText("关注");
                             viewHolder.care.setSelected(false);
                         }
-
-
-                    }
-                });
-            }else {
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
+                    }else {
                         Intent intent=new Intent(context, AccountActivity.class);
                         context.startActivity(intent);
                         context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-
                     }
-                });
+                }
+            });
+
+            if (MyAccount.isLogin){
+                if (invesmentSimpleInfo.iscare()){
+                    viewHolder.care.setText("已关注");
+                    viewHolder.care.setSelected(true);
+                }else {
+                    viewHolder.care.setText("关注");
+                    viewHolder.care.setSelected(false);
+                }
 
             }
 

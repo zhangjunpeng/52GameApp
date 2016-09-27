@@ -58,15 +58,16 @@
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:layout_width="62dp"
-                    android:layout_height="62dp"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:src="@drawable/tz_select"
 
                     android:id="@+id/tz_fg_index" />
                 <TextView
-                    android:layout_width="62dp"
+                    android:layout_width="42dp"
                     android:layout_height="wrap_content"
                     android:textSize="12dp"
+                    android:layout_marginTop="5dp"
                     android:gravity="center"
 
                     android:textColor="#212121"
@@ -82,8 +83,8 @@
                 android:gravity="center_horizontal"
                 >
                 <ImageView
-                    android:layout_width="62dp"
-                    android:layout_height="62dp"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:src="@drawable/ip_select"
                     android:id="@+id/ip_fg_index" />
                 <TextView
@@ -92,6 +93,7 @@
                 android:textSize="12dp"
                 android:gravity="center"
                 android:textColor="#212121"
+                    android:layout_marginTop="5dp"
                 android:text="找IP"
                 />
 
@@ -103,8 +105,8 @@
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:layout_width="62dp"
-                    android:layout_height="62dp"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:src="@drawable/fx_select"
 
                     android:id="@+id/fx_fg_index" />
@@ -113,7 +115,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="12dp"
                     android:gravity="center"
-
+                    android:layout_marginTop="5dp"
                     android:textColor="#212121"
                     android:text="找发行"
                     />
@@ -125,8 +127,8 @@
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content">
                 <ImageView
-                    android:layout_width="62dp"
-                    android:layout_height="62dp"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
                     android:src="@drawable/wb_select"
 
                     android:id="@+id/wb_fg_index" />
@@ -135,6 +137,7 @@
                     android:layout_height="wrap_content"
                     android:textSize="12dp"
                     android:gravity="center"
+                    android:layout_marginTop="5dp"
                     android:textColor="#212121"
                     android:text="找外包"
                     />
@@ -175,6 +178,7 @@
                 vswitch:idleDuaration = "1500"
                 vswitch:switchOrientation="up"
                 android:visibility="invisible"
+                android:textColor="#838483"
                 />
 
         </RelativeLayout>

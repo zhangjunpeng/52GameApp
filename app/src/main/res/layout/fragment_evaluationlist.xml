@@ -11,9 +11,9 @@
         android:divider="@null"
         ></ListView>
     <ImageView
-        android:layout_width="70dp"
-        android:layout_height="65dp"
-        android:src="@drawable/addgameicon"
+        android:layout_width="157dp"
+        android:layout_height="157dp"
+        android:src="@drawable/nopc"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="159dp"
         />

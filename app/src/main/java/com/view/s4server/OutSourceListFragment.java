@@ -139,6 +139,8 @@ public class OutSourceListFragment extends BaseFragment{
         initPtrLayout();
 
         initListView();
+
+
         return view;
     }
     private int[] linearId={R.id.linear1,R.id.linear2,R.id.linear3};
@@ -258,6 +260,11 @@ public class OutSourceListFragment extends BaseFragment{
                 MyLog.i("~~~~下拉刷新");
                 p=1;
                 osSimpleInfos.clear();
+                if (recommend){
+                    listView.removeFooterView(showall);
+                }else {
+                    listView.removeFooterView(nomore);
+                }
                 listView.setOnScrollListener(listener);
                 initData(p+"");
             }
@@ -300,15 +307,7 @@ public class OutSourceListFragment extends BaseFragment{
             @Override
             public void onSuccess(String result) {
                 MyLog.i("outsourcelist==="+result);
-                if (listView.getFooterViewsCount()==0){
-//                    listView.addFooterView(footview);
-                }
-                if (Foot_flag!=1){
-                    listView.removeFooterView(showall);
-                    listView.removeFooterView(nomore);
-//                    listView.addFooterView(footview);
-                    Foot_flag=1;
-                }
+
                 jsonParser(result);
             }
 
@@ -330,6 +329,13 @@ public class OutSourceListFragment extends BaseFragment{
             @Override
             public void onFinished() {
                 myAdapter.notifyDataSetChanged();
+                if (listView.getFooterViewsCount()==0) {
+                    if (recommend) {
+//                        listView.removeFooterView(footview);
+                        listView.addFooterView(showall);
+                        Foot_flag = 2;
+                    }
+                }
                 if (prt_cp.isRefreshing()){
                     prt_cp.refreshComplete();
                 }
@@ -350,15 +356,9 @@ public class OutSourceListFragment extends BaseFragment{
                 JSONArray jsonArray=jsonObject1.getJSONArray("outsourceList");
                 if (jsonArray.length()==0){
                     listView.setOnScrollListener(null);
-                    if (recommend){
-//                        listView.removeFooterView(footview);
-                        listView.addFooterView(showall);
-                        Foot_flag=2;
-                    }else {
-//                        listView.removeFooterView(footview);
-//                        CusToast.showToast(getActivity(), "没有更多开发者信息", Toast.LENGTH_SHORT);
+                    if (!recommend){
                         listView.addFooterView(nomore);
-                        Foot_flag=3;
+                        Foot_flag = 3;
                     }
 
                 }
@@ -490,6 +490,34 @@ public class OutSourceListFragment extends BaseFragment{
 
             viewHolder.name.setText(osSimpleInfo.getCompany_name());
             viewHolder.intro.setText("所在区域 ："+osSimpleInfo.getArea_name()+"\n公司规模 ："+osSimpleInfo.getCompany_scale()+"\n类    型 ："+osSimpleInfo.getOutsource_name());
+            viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    if (MyAccount.isLogin) {
+                        if (osSimpleInfo.iscare()) {
+                            osSimpleInfo.setIscare(false);
+                            AttentionChange.removeAttention("3", osSimpleInfo.getUser_id(), context);
+                        } else {
+                            osSimpleInfo.setIscare(true);
+                            AttentionChange.addAttention("3", osSimpleInfo.getUser_id(), context);
+                        }
+                        if (osSimpleInfo.iscare()) {
+                            viewHolder.care.setText("已关注");
+                            viewHolder.care.setSelected(true);
+                        } else {
+                            viewHolder.care.setText("关注");
+                            viewHolder.care.setSelected(false);
+
+                        }
+                    }else {
+                        Intent intent=new Intent(context, AccountActivity.class);
+                        context.startActivity(intent);
+                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    }
+
+                }
+            });
             if (MyAccount.isLogin){
                 if (osSimpleInfo.iscare()){
                     viewHolder.care.setText("已关注");
@@ -499,37 +527,6 @@ public class OutSourceListFragment extends BaseFragment{
                     viewHolder.care.setSelected(false);
 
                 }
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (osSimpleInfo.iscare()){
-                            osSimpleInfo.setIscare(false);
-                            AttentionChange.removeAttention("3",osSimpleInfo.getUser_id(), context);
-                        }else {
-                            osSimpleInfo.setIscare(true);
-                            AttentionChange.addAttention("3",osSimpleInfo.getUser_id(), context);
-                        } if (osSimpleInfo.iscare()){
-                            viewHolder.care.setText("已关注");
-                            viewHolder.care.setSelected(true);
-                        }else {
-                            viewHolder.care.setText("关注");
-                            viewHolder.care.setSelected(false);
-
-                        }
-
-
-                    }
-                });
-            }else {
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(context, AccountActivity.class);
-                        context.startActivity(intent);
-                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-
-                    }
-                });
 
             }
             return convertView;

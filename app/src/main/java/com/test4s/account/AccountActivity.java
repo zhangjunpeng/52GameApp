@@ -22,6 +22,7 @@ import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.test4s.net.LoginParams;
 import com.view.Evaluation.EvaluationActivity;
+import com.view.Identification.IdentificationActivity;
 import com.view.activity.BaseActivity;
 import com.view.coustomrequire.CustomizedListActivity;
 import com.view.messagecenter.MessageList;
@@ -157,6 +158,11 @@ public class AccountActivity extends BaseActivity {
                 break;
             case "customized":
                 intent= new Intent(this, CustomizedListActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+                break;
+            case "ident":
+                intent= new Intent(this, IdentificationActivity.class);
                 startActivity(intent);
                 overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
                 break;

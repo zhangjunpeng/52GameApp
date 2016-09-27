@@ -98,7 +98,7 @@
 
         </LinearLayout>
 
-    <Button
+    <TextView
         android:id="@+id/loginButton_login"
         android:layout_width="match_parent"
         android:layout_height="51dp"
@@ -106,6 +106,7 @@
         android:layout_marginLeft="14dp"
         android:layout_marginRight="14dp"
         android:textColor="#fff"
+        android:gravity="center"
         android:text="登 录"
         android:textSize="17dp"
         />

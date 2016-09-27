@@ -22,10 +22,8 @@ import android.widget.TextView;
 import com.app.tools.MyDisplayImageOptions;
 import com.app.tools.MyLog;
 import com.app.view.HorizontalListView;
-import com.app.view.MyDialog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
-import com.squareup.picasso.Picasso;
 import com.test4s.account.MyAccount;
 import com.test4s.adapter.Game_HL_Adapter;
 import com.test4s.gdb.GameInfo;
@@ -310,7 +308,7 @@ public class GameDetailActivity extends BaseActivity implements View.OnClickList
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
                 MyLog.i(ex.toString());
-                setContentView(R.layout.neterror);
+                setContentView(R.layout.layout_neterror);
             }
 
             @Override

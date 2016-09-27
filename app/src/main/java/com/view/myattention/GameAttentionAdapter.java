@@ -86,7 +86,7 @@ public class GameAttentionAdapter extends BaseAdapter {
         Picasso.with(mcontext)
                 .load(Url.prePic+gameInfo.getGame_grade())
                 .into(viewHolder.gamerating);
-        viewHolder.info.setText("游戏类型"+gameInfo.getGame_type()+"\n游戏阶段"+gameInfo.getGame_stage());
+        viewHolder.info.setText("游戏类型："+gameInfo.getGame_type()+"\n游戏阶段："+gameInfo.getGame_stage());
         viewHolder.uncare.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

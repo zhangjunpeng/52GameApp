@@ -10,9 +10,48 @@
         android:id="@+id/title_customized"
         layout="@layout/titlebar_save"
         />
-    <android.support.v7.widget.RecyclerView
+    <ListView
         android:id="@+id/recyleview_custom"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+    </ListView>
+
+    <RelativeLayout
+        android:orientation="vertical" android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        >
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            >
+            <ImageView
+                android:layout_width="157dp"
+                android:layout_height="157dp"
+                android:src="@drawable/nocustomized"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暂时还没有需求定制哦！"
+                android:textSize="14dp"
+                android:textColor="@color/line"
+                android:layout_marginTop="10dp"
+                />
+            <TextView
+                android:id="@+id/go_coutomized"
+                android:layout_width="140dp"
+                android:layout_height="37dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/border_radius_orange"
+                android:text="立即定制"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:textColor="@color/orange"
+                android:textSize="15dp"
+                />
+        </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>

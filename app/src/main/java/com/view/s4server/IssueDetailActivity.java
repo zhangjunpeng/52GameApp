@@ -4,16 +4,13 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
@@ -22,7 +19,6 @@ import android.widget.TextView;
 
 import com.app.tools.MyDisplayImageOptions;
 import com.app.tools.MyLog;
-import com.app.view.RoundImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.test4s.account.MyAccount;
@@ -146,7 +142,7 @@ public class IssueDetailActivity extends BaseActivity {
             public void onError(Throwable ex, boolean isOnCallback) {
                 MyLog.i("error==="+ex.toString());
 
-                setContentView(R.layout.neterror);
+                setContentView(R.layout.layout_neterror);
 
             }
 

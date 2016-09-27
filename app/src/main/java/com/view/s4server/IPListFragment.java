@@ -130,6 +130,9 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
         initPtrLayout();
         initListView();
 //        initData(1+"");
+
+
+
         return view;
     }
     private String[] filttitles={"ipcat","ipstyle","uthority"};
@@ -255,6 +258,11 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
                 MyLog.i("~~~~下拉刷新");
                 p=1;
                 ipSimpleInfos.clear();
+                if (recommend){
+                    listView.removeFooterView(showall);
+                }else {
+                    listView.removeFooterView(nomore);
+                }
                 listView.setOnScrollListener(listener);
                 initData(p+"");
             }
@@ -341,17 +349,21 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
 
             @Override
             public void onFinished() {
-                if (listView.getFooterViewsCount()==0){
-//                    listView.addFooterView(footview);
-                }
-                if (Foot_flag!=1){
-                    listView.removeFooterView(showall);
-                    listView.removeFooterView(nomore);
-//                    listView.addFooterView(footview);
-                    Foot_flag=1;
-                }
+//                if (Foot_flag!=1){
+//                    listView.removeFooterView(showall);
+//                    listView.removeFooterView(nomore);
+////                    listView.addFooterView(footview);
+//                    Foot_flag=1;
+//                }
                 parser(res);
                 myAdapter.notifyDataSetChanged();
+                if (listView.getFooterViewsCount()==0) {
+                    if (recommend) {
+//                        listView.removeFooterView(footview);
+                        listView.addFooterView(showall);
+                        Foot_flag = 2;
+                    }
+                }
                 if (prt_cp.isRefreshing()) {
                     prt_cp.refreshComplete();
                 }
@@ -373,15 +385,9 @@ public class IPListFragment extends BaseFragment implements AdapterView.OnItemCl
                 JSONArray jsonArray=jsonObject1.getJSONArray("ipList");
                 if (jsonArray.length()==0){
                     listView.setOnScrollListener(null);
-                    if (recommend){
-//                        listView.removeFooterView(footview);
-                        listView.addFooterView(showall);
-                        Foot_flag=2;
-                    }else {
-//                        listView.removeFooterView(footview);
+                    if (!recommend){
                         listView.addFooterView(nomore);
-                        Foot_flag=3;
-//                        CusToast.showToast(getActivity(), "没有更多开发者信息", Toast.LENGTH_SHORT);
+                        Foot_flag = 3;
                     }
                 }
                 for (int i=0;i<jsonArray.length();i++){

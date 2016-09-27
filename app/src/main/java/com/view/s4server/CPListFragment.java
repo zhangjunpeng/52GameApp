@@ -135,12 +135,13 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
                 if (listView.getFooterViewsCount()==0){
 //                    listView.addFooterView(footview);
                 }
-                if (Foot_flag!=1){
-                    listView.removeFooterView(showall);
-                    listView.removeFooterView(nomore);
-//                    listView.addFooterView(footview);
-                    Foot_flag=1;
-                }
+//                if (Foot_flag!=1){
+//                    listView.removeFooterView(showall);
+//                    listView.removeFooterView(nomore);
+//
+////                    listView.addFooterView(footview);
+//                    Foot_flag=1;
+//                }
                 getcplistparser(result);
 
             }
@@ -172,6 +173,15 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
                     prt_cp.refreshComplete();
                 }
                 adapter.notifyDataSetChanged();
+
+                if (listView.getFooterViewsCount()==0){
+                    if (recommend){
+
+                        listView.addFooterView(showall);
+                        Foot_flag=2;
+                    }
+                }
+
 
             }
         });
@@ -238,7 +248,8 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
             view.findViewById(R.id.filttitle_list).setVisibility(View.GONE);
         }else {
             view.findViewById(R.id.filttitle_list).setVisibility(View.VISIBLE);
-        }        listView= (ListView) view.findViewById(R.id.pullToRefresh_fglist);
+        }
+        listView= (ListView) view.findViewById(R.id.pullToRefresh_fglist);
         title= (TextView) view.findViewById(R.id.title_titlebar);
         back= (ImageView) view.findViewById(R.id.back_titlebar);
         search= (ImageView) view.findViewById(R.id.search_titlebar);
@@ -286,6 +297,7 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
                 getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
             }
         });
+
 
 
         return view;
@@ -358,6 +370,11 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
                 MyLog.i("~~~~下拉刷新");
                 p=1;
                 cpSimpleInfos.clear();
+                if (recommend){
+                    listView.removeFooterView(showall);
+                }else {
+                    listView.removeFooterView(nomore);
+                }
                 listView.setOnScrollListener(listener);
 
                 initData(p+"");
@@ -422,6 +439,34 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
             ImageLoader.getInstance().displayImage(Url.prePic+cpinfo.getLogo(),viewHolder.icon, MyDisplayImageOptions.getroundImageOptions());
             viewHolder.name.setText(cpinfo.getCompany_name());
             viewHolder.intro.setText("所在区域："+cpinfo.getArea()+"\n公司规模："+cpinfo.getScale());
+
+            viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (MyAccount.isLogin) {
+                        if (cpinfo.iscare()) {
+                            cpinfo.setIscare(false);
+                            AttentionChange.removeAttention("2", cpinfo.getUser_id(), context);
+                        } else {
+                            cpinfo.setIscare(true);
+                            AttentionChange.addAttention("2", cpinfo.getUser_id(), context);
+                        }
+                        if (cpinfo.iscare()) {
+                            viewHolder.care.setText("已关注");
+                            viewHolder.care.setSelected(true);
+                        } else {
+                            viewHolder.care.setText("关注");
+                            viewHolder.care.setSelected(false);
+
+                        }
+                    }else {
+                        Intent intent=new Intent(context, AccountActivity.class);
+                        context.startActivity(intent);
+                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    }
+
+                }
+            });
             if (MyAccount.isLogin){
                 if (cpinfo.iscare()){
                     viewHolder.care.setText("已关注");
@@ -431,37 +476,8 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
                     viewHolder.care.setSelected(false);
 
                 }
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (cpinfo.iscare()){
-                            cpinfo.setIscare(false);
-                            AttentionChange.removeAttention("2",cpinfo.getUser_id(), context);
-                        }else {
-                            cpinfo.setIscare(true);
-                            AttentionChange.addAttention("2",cpinfo.getUser_id(), context);
-                        } if (cpinfo.iscare()){
-                            viewHolder.care.setText("已关注");
-                            viewHolder.care.setSelected(true);
-                        }else {
-                            viewHolder.care.setText("关注");
-                            viewHolder.care.setSelected(false);
 
-                        }
-
-
-                    }
-                });
             }else {
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(context, AccountActivity.class);
-                        context.startActivity(intent);
-                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-
-                    }
-                });
 
             }
 
@@ -489,15 +505,9 @@ public class CPListFragment extends BaseFragment implements AdapterView.OnItemCl
                 MyLog.i("cplist size=="+ja.length());
                 if (ja.length()==0){
                     listView.setOnScrollListener(null);
-                    if (recommend){
-//                        listView.removeFooterView(footview);
-                        listView.addFooterView(showall);
-                        Foot_flag=2;
-                    }else {
-//                        listView.removeFooterView(footview);
+                    if (!recommend){
                         listView.addFooterView(nomore);
-                        Foot_flag=3;
-//                        CusToast.showToast(getActivity(), "没有更多开发者信息", Toast.LENGTH_SHORT);
+                        Foot_flag = 3;
                     }
                 }
                 for (int i=0;i<ja.length();i++){

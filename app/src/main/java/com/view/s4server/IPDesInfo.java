@@ -10,6 +10,15 @@ public class IPDesInfo {
     private String month;
     private String logo;
     private String ip_info;
+    private int focus;
+
+    public int getFocus() {
+        return focus;
+    }
+
+    public void setFocus(int focus) {
+        this.focus = focus;
+    }
 
     public String getName() {
         return name;

@@ -15,8 +15,8 @@
         ></ListView>
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
     <ImageView
-        android:layout_width="72dp"
-        android:layout_height="67dp"
+        android:layout_width="157dp"
+        android:layout_height="157dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="100dp"
         android:src="@drawable/nocared"

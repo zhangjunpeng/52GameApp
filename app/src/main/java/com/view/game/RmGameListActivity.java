@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import com.app.tools.CusToast;
 import com.app.tools.MyLog;
+import com.test4s.account.MyAccount;
 import com.test4s.gdb.GameInfo;
 import com.test4s.gdb.GameType;
 import com.test4s.gdb.GameTypeDao;
@@ -162,6 +163,7 @@ public class RmGameListActivity extends BaseActivity {
                 }
                 GameInfo gameInfo=gameInfos.get((int) id);
                 Intent intent= new Intent(RmGameListActivity.this,GameDetailActivity.class);
+                intent.putExtra("ident_cat",gameInfo.getGame_dev());
                 intent.putExtra("game_id",gameInfo.getGame_id());
                 startActivity(intent);
                 overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
@@ -231,6 +233,10 @@ public class RmGameListActivity extends BaseActivity {
         BaseParams gameParams=new BaseParams(tj_url);
         GameType type=titles.get(position);
         gameParams.addParams("catId",type.getAdvert_cat_id());
+        if (MyAccount.isLogin){
+            gameParams.addParams("token",MyAccount.getInstance().getToken());
+
+        }
         gameParams.addParams("p","1");
         gameParams.addSign();
         x.http().post(gameParams.getRequestParams(),new Callback.CommonCallback<String>() {
@@ -302,6 +308,10 @@ public class RmGameListActivity extends BaseActivity {
                     gameInfo.setChecked(game.getString("checked"));
                     gameInfo.setGame_type(game.getString("game_type"));
                     gameInfo.setGame_stage(game.getString("game_stage"));
+                    gameInfo.setGame_dev(game.getString("identity_cat"));
+                    if (game.has("iscare")){
+                        gameInfo.setIscare(game.getBoolean("iscare"));
+                    }
                     gameInfos.add(gameInfo);
                 }
             }

@@ -70,6 +70,33 @@ public class MyIpListAdapter extends BaseAdapter {
 
             viewHolder.name.setText(ipSimpleInfo.getIp_name());
             viewHolder.intro.setText("类        型 ："+ipSimpleInfo.getIp_cat()+"\n风        格 ："+ipSimpleInfo.getIp_style()+"\n授权范围 ："+ipSimpleInfo.getUthority());
+
+            viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (MyAccount.isLogin) {
+                        if (ipSimpleInfo.iscare()) {
+                            ipSimpleInfo.setIscare(false);
+                            AttentionChange.removeAttention("5", ipSimpleInfo.getId(), context);
+                        } else {
+                            ipSimpleInfo.setIscare(true);
+                            AttentionChange.addAttention("5", ipSimpleInfo.getId(), context);
+                        }
+                        if (ipSimpleInfo.iscare()) {
+                            viewHolder.care.setText("已关注");
+                            viewHolder.care.setSelected(true);
+                        } else {
+                            viewHolder.care.setText("关注");
+                            viewHolder.care.setSelected(false);
+                        }
+                    }else {
+                        Intent intent=new Intent(context, AccountActivity.class);
+                        context.startActivity(intent);
+                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    }
+
+                }
+            });
             if (MyAccount.isLogin){
                 if (ipSimpleInfo.iscare()){
                     viewHolder.care.setText("已关注");
@@ -78,36 +105,6 @@ public class MyIpListAdapter extends BaseAdapter {
                     viewHolder.care.setText("关注");
                     viewHolder.care.setSelected(false);
                 }
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (ipSimpleInfo.iscare()){
-                            ipSimpleInfo.setIscare(false);
-                            AttentionChange.removeAttention("5",ipSimpleInfo.getId(), context);
-                        }else {
-                            ipSimpleInfo.setIscare(true);
-                            AttentionChange.addAttention("5",ipSimpleInfo.getId(), context);
-                        } if (ipSimpleInfo.iscare()){
-                            viewHolder.care.setText("已关注");
-                            viewHolder.care.setSelected(true);
-                        }else {
-                            viewHolder.care.setText("关注");
-                            viewHolder.care.setSelected(false);
-                        }
-
-
-                    }
-                });
-            }else {
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(context, AccountActivity.class);
-                        context.startActivity(intent);
-                        context.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-
-                    }
-                });
 
             }
             return convertView;

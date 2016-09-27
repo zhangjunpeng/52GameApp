@@ -1,16 +1,12 @@
 package com.view.coustomrequire;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -18,12 +14,11 @@ import android.widget.Toast;
 
 import com.app.tools.CusToast;
 import com.app.tools.MyLog;
+import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.test4s.account.MyAccount;
+import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.view.Identification.NameVal;
-import  com.view.coustomrequire.SwipeLayout;
-
-import com.test4s.myapp.R;
 import com.view.coustomrequire.info.FindGameInfo;
 import com.view.coustomrequire.info.FindIPInfo;
 import com.view.coustomrequire.info.FindInvestInfo;
@@ -43,41 +38,48 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callback{
+/**
+ * Created by Administrator on 2016/9/23.
+ */
+public class MySipeAdapter extends BaseSwipeAdapter {
+
     private Activity context;
     private LayoutInflater mInflater;
-    private RecyclerView mRecycler;
     private List<ItemInfoCustomList> datalist;
 
-    public MyAdapter(Activity context, List<ItemInfoCustomList> datalist) {
+    public MySipeAdapter(Activity context, List<ItemInfoCustomList> datalist){
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.datalist=datalist;
     }
 
     @Override
-    public SwipeLayout getSwipLayout(float x, float y) {
-        return (SwipeLayout) mRecycler.findChildViewUnder(x,y);
+    public int getSwipeLayoutResourceId(int position) {
+        return R.id.swipe_coustomized_item;
     }
 
     @Override
-    public void onAttachedToRecyclerView(RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        mRecycler = recyclerView;
-//        recyclerView.addOnItemTouchListener(new ItemHelpter(context,this));
-        recyclerView.addOnItemTouchListener(new ItemHelpter(context,this));
+    public View generateView(int position, ViewGroup parent) {
+        View view=LayoutInflater.from(
+                context).inflate(R.layout.item_customized_list,parent,false);
+        ViewHolder viewHolder=new ViewHolder();
+        viewHolder.circleImageView = (CircleImageView) view.findViewById(R.id.icon);
+        viewHolder.name = (TextView) view.findViewById(R.id.name);
+        viewHolder.info = (TextView) view.findViewById(R.id.info);
+        viewHolder.stage = (TextView) view.findViewById(R.id.stage);
+        viewHolder.line= (ImageView) view.findViewById(R.id.line);
+        viewHolder.relative= (RelativeLayout) view.findViewById(R.id.relative);
+        viewHolder.delete= (ImageView) view.findViewById(R.id.delete);
+        view.setTag(viewHolder);
+        MyLog.i("generateView");
+        return view;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
-                context).inflate(R.layout.item_customized_list,parent,false));
-        return holder;
-    }
+    public void fillValues(final int position, View convertView) {
 
-    @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder viewholder, final int position) {
-        final MyViewHolder holder= (MyViewHolder) viewholder;
+        MyLog.i("fillValues");
+        ViewHolder holder= (ViewHolder) convertView.getTag();
         final ItemInfoCustomList itemInfoCustomList= datalist.get(position);
         NameVal nameVal=itemInfoCustomList.getServive_cat();
         String namestr="需求：";
@@ -171,8 +173,8 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
                     namestr=namestr+"找投资";
                     FindInvestInfo findInvestInfo= (FindInvestInfo) itemInfoCustomList.getInfo();
                     infoStr.append("融资阶段："+findInvestInfo.getStarge_name()
-                            +"\n融资金额："+findInvestInfo.getMoney()
-                            +"\n出让股份："+findInvestInfo.getMinstock()+"-"+findInvestInfo.getMaxstock());
+                            +"\n融资金额："+findInvestInfo.getMoney()+"万元"
+                            +"\n出让股份："+findInvestInfo.getMinstock()+"%-"+findInvestInfo.getMaxstock()+"%");
 
                 }else if(nameVal.getId().equals("5")){
                     namestr=namestr+"找IP";
@@ -199,47 +201,6 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
         holder.stage.setText(itemInfoCustomList.getChecked_name());
 
 
-//            final int[] height = {0};
-
-
-//            ViewTreeObserver vto2 = holder.relative.getViewTreeObserver();
-//            final View view=holder.relative;
-//            vto2.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//                @Override
-//                public void onGlobalLayout() {
-//                    view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//                    height[0] =view.getHeight();
-//                }
-//            });
-//
-//            RelativeLayout.LayoutParams layoutParams= (RelativeLayout.LayoutParams) holder.line.getLayoutParams();
-//            layoutParams.height=height[0];
-
-//            layoutParams.height
-//            holder.line.setLayoutParams(layoutParams);
-
-//        ViewTreeObserver vto = holder.relative.getViewTreeObserver();
-//        final RelativeLayout relativeLayout=holder.relative;
-//        vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-//            @Override
-//            public void onGlobalLayout() {
-//                relativeLayout.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-//                int height= relativeLayout.getHeight();
-//                MyLog.i("relative height=="+height);
-//                RelativeLayout.LayoutParams layoutParams1= (RelativeLayout.LayoutParams) holder.delete.getLayoutParams();
-//                layoutParams1.topMargin=height/2;
-//                holder.delete.setLayoutParams(layoutParams1);
-//
-//                RelativeLayout.LayoutParams layoutParams2= (RelativeLayout.LayoutParams) holder.line.getLayoutParams();
-//                layoutParams2.height=height;
-//                layoutParams2.topMargin=45;
-//                layoutParams2.bottomMargin=45;
-//                holder.line.setLayoutParams(layoutParams2);
-//
-//            }
-//        });
-
-
         holder.relative.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -261,6 +222,43 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
         });
     }
 
+    @Override
+    public int getCount() {
+        return datalist.size();
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return datalist.get(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    class ViewHolder{
+
+        CircleImageView circleImageView;
+        TextView name;
+        TextView info;
+        TextView stage;
+        ImageView line;
+        RelativeLayout relative;
+        ImageView delete;
+    }
+
+    public String getStringFormList(List<NameVal> nameValList){
+        StringBuffer stringBuffer=new StringBuffer();
+        for (int i=0;i<nameValList.size();i++){
+            if (i!=0){
+                stringBuffer.append("、");
+            }
+            stringBuffer.append(nameValList.get(i).getVal());
+        }
+        return stringBuffer.toString();
+    }
+
     private void deleteCustomize(final ItemInfoCustomList itemInfoCustomList) {
         BaseParams baseParams=new BaseParams("customize/delcustomize");
         baseParams.addParams("id",itemInfoCustomList.getId());
@@ -277,7 +275,7 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
                     boolean success=jsonObject.getBoolean("success");
                     int code=jsonObject.getInt("code");
                     if (success&&code==200){
-                        CusToast.showToast(context,"删除成功",Toast.LENGTH_SHORT);
+                        CusToast.showToast(context,"删除成功", Toast.LENGTH_SHORT);
                         datalist.remove(itemInfoCustomList);
                         notifyDataSetChanged();
                     }
@@ -293,7 +291,7 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
             }
 
             @Override
-            public void onCancelled(CancelledException cex) {
+            public void onCancelled(Callback.CancelledException cex) {
 
             }
 
@@ -303,44 +301,4 @@ public class MyAdapter extends RecyclerView.Adapter implements ItemHelpter.Callb
             }
         });
     }
-
-    @Override
-    public int getItemCount() {
-        return datalist.size();
-    }
-
-    class MyViewHolder extends RecyclerView.ViewHolder{
-
-        CircleImageView circleImageView;
-        TextView name;
-        TextView info;
-        TextView stage;
-        ImageView line;
-        RelativeLayout relative;
-        ImageView delete;
-
-
-        public MyViewHolder(View view) {
-            super(view);
-            circleImageView = (CircleImageView) view.findViewById(R.id.icon);
-            name = (TextView) view.findViewById(R.id.name);
-            info = (TextView) view.findViewById(R.id.info);
-            stage = (TextView) view.findViewById(R.id.stage);
-            line= (ImageView) view.findViewById(R.id.line);
-            relative= (RelativeLayout) view.findViewById(R.id.relative);
-            delete= (ImageView) view.findViewById(R.id.delete);
-        }
-    }
-
-    public String getStringFormList(List<NameVal> nameValList){
-        StringBuffer stringBuffer=new StringBuffer();
-        for (int i=0;i<nameValList.size();i++){
-            if (i!=0){
-                stringBuffer.append("、");
-            }
-            stringBuffer.append(nameValList.get(i).getVal());
-        }
-        return stringBuffer.toString();
-    }
-
 }

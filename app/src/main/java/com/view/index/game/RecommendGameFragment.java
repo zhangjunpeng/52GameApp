@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.app.tools.MyDisplayImageOptions;
+import com.app.tools.MyLog;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.test4s.account.AccountActivity;
 import com.test4s.account.MyAccount;
@@ -132,6 +133,31 @@ public class RecommendGameFragment extends Fragment {
 
                 String mess=gameInfo.getGame_type()+"/"+gameInfo.getGame_stage()+"\n"+gameInfo.getRequire();
                 info.setText(mess);
+                care.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (MyAccount.isLogin) {
+                            if (gameInfo.iscare()) {
+                                gameInfo.setIscare(false);
+                                AttentionChange.removeAttention("1", gameInfo.getGame_id(), getActivity());
+                            } else {
+                                gameInfo.setIscare(true);
+                                AttentionChange.addAttention("1", gameInfo.getGame_id(), getActivity());
+                            }
+                            if (gameInfo.iscare()) {
+                                care.setText("已关注");
+                                care.setSelected(true);
+                            } else {
+                                care.setText("关注");
+                                care.setSelected(false);
+                            }
+                        }else {
+                            Intent intent=new Intent(getActivity(), AccountActivity.class);
+                            startActivity(intent);
+                            getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                        }
+                    }
+                });
 
                 if (MyAccount.isLogin){
                     if (gameInfo.iscare()){
@@ -141,35 +167,8 @@ public class RecommendGameFragment extends Fragment {
                         care.setText("关注");
                         care.setSelected(false);
                     }
-                    care.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (gameInfo.iscare()){
-                                gameInfo.setIscare(false);
-                                AttentionChange.removeAttention("1",gameInfo.getGame_id(), getActivity());
-                            }else {
-                                gameInfo.setIscare(true);
-                                AttentionChange.addAttention("1",gameInfo.getGame_id(), getActivity());
-                            } if (gameInfo.iscare()){
-                                care.setText("已关注");
-                                care.setSelected(true);
-                            }else {
-                                care.setText("关注");
-                                care.setSelected(false);
-                            }
-                        }
-                    });
 
-                }else {
-                    care.setOnClickListener(new View.OnClickListener() {
 
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent=new Intent(getActivity(), AccountActivity.class);
-                            startActivity(intent);
-                            getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-                        }
-                    });
                 }
 
                 view.setOnClickListener(new View.OnClickListener() {
@@ -220,6 +219,7 @@ public class RecommendGameFragment extends Fragment {
     }
 
     private void goDetail(String gameid,String ident_cat){
+        MyLog.i("ident_cat=="+ident_cat);
         Intent intent= new Intent(getActivity(),GameDetailActivity.class);
         intent.putExtra("game_id",gameid);
         intent.putExtra("ident_cat",ident_cat);

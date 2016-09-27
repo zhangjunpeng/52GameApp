@@ -92,6 +92,9 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
     private TextView bind_other;
     private ImageView back;
 
+    private TextView title;
+    private TextView save;
+
     /**
      * 去上传文件
      */
@@ -126,6 +129,8 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
 
     private String tag;
 
+    private ImageView bg;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         EventBus.getDefault().register(this);
@@ -138,7 +143,7 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view=inflater.inflate(R.layout.fragment_myacountsetting,null);
 
-        setImmerseLayout(view.findViewById(R.id.namebg_myacc));
+        setImmerseLayout(view.findViewById(R.id.titlebar));
 
         manager=getFragmentManager();
         transaction=manager.beginTransaction();
@@ -325,6 +330,10 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
         bindother= (RelativeLayout) view.findViewById(R.id.bindother_myset_fg);
         changepwd= (RelativeLayout) view.findViewById(R.id.changepwd_myset_fg);
 
+        bg= (ImageView) view.findViewById(R.id.bg_accountsetting);
+        ImageLoader.getInstance().displayImage("drawable://" + R.drawable.namebg_myaccountsetting,
+                bg,MyDisplayImageOptions.getroundImageOptions());
+
         nick_name= (TextView) view.findViewById(R.id.nickname_setting_myaccountsettting);
         adress= (TextView) view.findViewById(R.id.address_setting_myaccountsettting);
         edu= (TextView) view.findViewById(R.id.xl_setting_myaccountsettting);
@@ -333,7 +342,12 @@ public class MyAcountSettingFragment  extends BaseFragment implements View.OnCli
         phone= (TextView) view.findViewById(R.id.phone_setting_myaccountsettting);
         email= (TextView) view.findViewById(R.id.email_setting_myaccountsettting);
         bind_other= (TextView) view.findViewById(R.id.bindother_setting_myaccountsettting);
-        back= (ImageView) view.findViewById(R.id.back_myacountsetting);
+        back= (ImageView) view.findViewById(R.id.back_savebar);
+        title= (TextView) view.findViewById(R.id.textView_titlebar_save);
+        save= (TextView) view.findViewById(R.id.save_savebar);
+        title.setVisibility(View.INVISIBLE);
+        save.setVisibility(View.INVISIBLE);
+
 
     }
 

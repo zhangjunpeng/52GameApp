@@ -55,7 +55,13 @@ import org.json.JSONObject;
 import org.xutils.common.Callback;
 import org.xutils.x;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.Executors;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by Administrator on 2016/3/18.
@@ -373,6 +379,10 @@ public class Settingfragment extends Fragment implements View.OnClickListener {
 //                }
                 LoginQQActivity.loginOut();
                 LoginSINAActivity.WeiBologinout(getActivity());
+
+
+                Set<String> datalist=new TreeSet<String>();
+                EventBus.getDefault().post(datalist);
 
             }
         });

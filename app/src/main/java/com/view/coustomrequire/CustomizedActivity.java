@@ -28,6 +28,7 @@ import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.view.Identification.IdentificationActivity;
 import com.view.Identification.NameVal;
+import com.view.activity.BaseActivity;
 import com.view.game.FiltParamsData;
 
 import org.json.JSONArray;
@@ -47,7 +48,7 @@ import java.util.concurrent.Executors;
 import at.technikum.mti.fancycoverflow.FancyCoverFlow;
 import de.greenrobot.event.EventBus;
 
-public class CustomizedActivity extends AppCompatActivity {
+public class CustomizedActivity extends BaseActivity {
 
 
     private FancyCoverFlow fancyCoverFlow;
@@ -92,6 +93,7 @@ public class CustomizedActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
 
+
         initData();
 
         initView();
@@ -114,7 +116,7 @@ public class CustomizedActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_customized);
 
-
+        setImmerseLayout(findViewById(R.id.title_requirement));
         //获取屏幕密度
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);

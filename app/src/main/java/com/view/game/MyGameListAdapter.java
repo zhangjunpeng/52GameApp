@@ -124,6 +124,33 @@ public class MyGameListAdapter extends BaseAdapter {
             }
             String mess=gameInfo.getGame_type()+"/"+gameInfo.getGame_stage()+"\n"+requirse;
             viewHolder.info.setText(mess);
+
+            viewHolder.care.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (MyAccount.isLogin) {
+                        if (gameInfo.iscare()) {
+                            gameInfo.setIscare(false);
+                            AttentionChange.removeAttention("1", gameInfo.getGame_id(), mcontext);
+                        } else {
+                            gameInfo.setIscare(true);
+                            AttentionChange.addAttention("1", gameInfo.getGame_id(), mcontext);
+                        }
+                        if (gameInfo.iscare()) {
+                            viewHolder.care.setText("已关注");
+                            viewHolder.care.setSelected(true);
+                        } else {
+                            viewHolder.care.setText("关注");
+                            viewHolder.care.setSelected(false);
+                        }
+                    }else {
+                        Intent intent=new Intent(mcontext, AccountActivity.class);
+                        mcontext.startActivity(intent);
+                        mcontext.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    }
+
+                }
+            });
             if (MyAccount.isLogin){
                 if (gameInfo.iscare()){
                     viewHolder.care.setText("已关注");
@@ -132,36 +159,6 @@ public class MyGameListAdapter extends BaseAdapter {
                     viewHolder.care.setText("关注");
                     viewHolder.care.setSelected(false);
                 }
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (gameInfo.iscare()){
-                            gameInfo.setIscare(false);
-                            AttentionChange.removeAttention("1",gameInfo.getGame_id(), mcontext);
-                        }else {
-                            gameInfo.setIscare(true);
-                            AttentionChange.addAttention("1",gameInfo.getGame_id(), mcontext);
-                        } if (gameInfo.iscare()){
-                            viewHolder.care.setText("已关注");
-                            viewHolder.care.setSelected(true);
-                        }else {
-                            viewHolder.care.setText("关注");
-                            viewHolder.care.setSelected(false);
-                        }
-
-
-                    }
-                });
-            }else {
-                viewHolder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(mcontext, AccountActivity.class);
-                        mcontext.startActivity(intent);
-                        mcontext.overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-
-                    }
-                });
 
             }
             return convertView;

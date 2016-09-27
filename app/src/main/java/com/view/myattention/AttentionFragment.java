@@ -2,15 +2,18 @@ package com.view.myattention;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import com.app.tools.MyLog;
@@ -43,6 +46,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import in.srain.cube.views.ptr.PtrClassicFrameLayout;
+import in.srain.cube.views.ptr.PtrDefaultHandler;
+import in.srain.cube.views.ptr.PtrFrameLayout;
+import in.srain.cube.views.ptr.PtrHandler;
 
 /**
  * Created by Administrator on 2016/3/19.
@@ -59,6 +65,8 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
     Button wantcare;
     private final int ToDetail=301;
     int p=1;
+    private View headview;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         tag=getArguments().getString("tag","game");
@@ -73,6 +81,11 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
         wantcare= (Button) view.findViewById(R.id.want_care);
         datalist=new ArrayList<>();
 
+        headview=LayoutInflater.from(getActivity()).inflate(R.layout.handerloading,null);
+        ImageView imageView= (ImageView) headview.findViewById(R.id.image_handerloading);
+        AnimationDrawable drawable= (AnimationDrawable) imageView.getBackground();
+        drawable.start();
+
         ptr_atten= (PtrClassicFrameLayout) view.findViewById(R.id.ptrframe_attention);
         initAdapter();
 
@@ -85,6 +98,41 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
     }
 
     private void initListener() {
+        ptr_atten.setHeaderView(headview);
+
+        ptr_atten.setResistance(1.7f);
+        ptr_atten.setRatioOfHeaderHeightToRefresh(1.2f);
+        ptr_atten.setDurationToClose(200);
+        ptr_atten.setDurationToCloseHeader(1000);
+// default is false
+        ptr_atten.setPullToRefresh(false);
+// default is true
+        ptr_atten.setKeepHeaderWhenRefresh(true);
+
+//        prt_cp.setPinContent(true);
+
+        ptr_atten.setPtrHandler(new PtrHandler() {
+            @Override
+            public void onRefreshBegin(PtrFrameLayout frame) {
+                MyLog.i("~~~~下拉刷新");
+                p=1;
+                datalist.clear();
+                listView.setOnScrollListener(new MyScrollViewListener());
+                initData(p+"");
+            }
+
+            @Override
+            public boolean checkCanDoRefresh(PtrFrameLayout frame, View content, View header) {
+                return PtrDefaultHandler.checkContentCanBePulledDown(frame,content,header);
+            }
+        });
+        ptr_atten.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                ptr_atten.autoRefresh();
+            }
+        },100);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -237,6 +285,7 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
 
             @Override
             public void onFinished() {
+                ptr_atten.refreshComplete();
             }
         });
     }
@@ -274,6 +323,9 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
                 Url.prePic=jsonObject1.getString("prefixPic");
                 JSONObject careos=jsonObject1.getJSONObject("careOutsourceList");
                 JSONArray jsonArray=careos.getJSONArray("project_list");
+                if (jsonArray.length()==0){
+                    listView.setOnScrollListener(null);
+                }
                 for (int i=0;i<jsonArray.length();i++){
                     JSONObject jsonObject2=jsonArray.getJSONObject(i);
                     OutSourceSimpleInfo outsource=new OutSourceSimpleInfo();
@@ -308,6 +360,9 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
                 Url.prePic=jsonObject1.getString("prefixPic");
                 JSONObject careissue=jsonObject1.getJSONObject("careIssueList");
                 JSONArray issues=careissue.getJSONArray("project_list");
+                if (issues.length()==0){
+                    listView.setOnScrollListener(null);
+                }
                 for (int i=0;i<issues.length();i++){
                     JSONObject jsonObject2=issues.getJSONObject(i);
                     IssueSimpleInfo issueSimpleInfo=new IssueSimpleInfo();
@@ -339,6 +394,9 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
                 Url.prePic=jsonObject1.getString("prefixPic");
                 JSONObject careip=jsonObject1.getJSONObject("careIpList");
                 JSONArray jsonArray=careip.getJSONArray("project_list");
+                if (jsonArray.length()==0){
+                    listView.setOnScrollListener(null);
+                }
                 for (int i=0;i<jsonArray.length();i++){
                     JSONObject jsonObject2=jsonArray.getJSONObject(i);
                     IPSimpleInfo ipSimpleInfo=new IPSimpleInfo();
@@ -370,6 +428,9 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
                 Url.prePic=jsonObject1.getString("prefixPic");
                 JSONObject carein=jsonObject1.getJSONObject("careInvestList");
                 JSONArray issues=carein.getJSONArray("project_list");
+                if (issues.length()==0){
+                    listView.setOnScrollListener(null);
+                }
                 for (int i=0;i<issues.length();i++){
                     JSONObject jsonObject2=issues.getJSONObject(i);
                     InvesmentSimpleInfo invesmentSimpleInfo=new InvesmentSimpleInfo();
@@ -402,6 +463,9 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
                 Url.prePic=jsonObject1.getString("prefixPic");
                 JSONObject carCP=jsonObject1.getJSONObject("careCompanyList");
                 JSONArray ja=carCP.getJSONArray("project_list");
+                if (ja.length()==0){
+                    listView.setOnScrollListener(null);
+                }
                 for (int i=0;i<ja.length();i++){
                     JSONObject jsonObject2=ja.getJSONObject(i);
                     CPSimpleInfo cpSimpleInfo=new CPSimpleInfo();
@@ -433,6 +497,9 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
                     Url.prePic=jsonObject1.getString("prefixPic");
                     JSONObject careGame=jsonObject1.getJSONObject("careGameList");
                     JSONArray jsonArray=careGame.getJSONArray("project_list");
+                    if (jsonArray.length()==0){
+                        listView.setOnScrollListener(null);
+                    }
                     for (int i=0;i<jsonArray.length();i++){
                         JSONObject game=jsonArray.getJSONObject(i);
                         GameInfo gameInfo=new GameInfo();
@@ -472,5 +539,27 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
             initData("1");
         }
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    class MyScrollViewListener implements AbsListView.OnScrollListener{
+
+        @Override
+        public void onScrollStateChanged(AbsListView view, int scrollState) {
+            switch (scrollState) {
+                // 当不滚动时
+                case AbsListView.OnScrollListener.SCROLL_STATE_IDLE:
+                    // 判断滚动到底部
+                    if (view.getLastVisiblePosition() == (view.getCount() - 1)) {
+                        p++;
+                        initData(p+"");
+                    }
+                    break;
+            }
+        }
+
+        @Override
+        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+
+        }
     }
 }

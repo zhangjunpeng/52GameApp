@@ -22,7 +22,9 @@ import java.io.FileDescriptor;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Executors;
 
 /**
@@ -35,17 +37,17 @@ public class MyAccount {
     private String token;
     private String avatar;
 
-    private List<String> userident;
+    private Set<String> userident;
 
 
 
     private UserInfo userInfo;
 
-    public List<String> getUserident() {
+    public Set<String> getUserident() {
         return userident;
     }
 
-    public void setUserident(List<String> userident) {
+    public void setUserident(Set<String> userident) {
         this.userident = userident;
     }
 
@@ -102,7 +104,7 @@ public class MyAccount {
         nickname=sharedPreferences.getString("nickname","");
         token=sharedPreferences.getString("token","");
         avatar=sharedPreferences.getString("avatar","");
-
+        userident=sharedPreferences.getStringSet("userident",null);
 
     }
     public static MyAccount getInstance(){
@@ -119,7 +121,7 @@ public class MyAccount {
         editor.putString("nickname",nickname);
         editor.putString("token",token);
         editor.putString("avatar",avatar);
-
+        editor.putStringSet("userident",userident);
         editor.commit();
     }
 
@@ -139,6 +141,8 @@ public class MyAccount {
         editor.putString("nickname","");
         editor.putString("token","");
         editor.putString("avatar","");
+        userident.clear();
+        editor.putStringSet("userident",userident);
         editor.commit();
     }
 

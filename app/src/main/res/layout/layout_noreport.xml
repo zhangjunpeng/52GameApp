@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    >
+    <include
+        android:id="@+id/titlebar_reportlist"
+        layout="@layout/titlebar_save"/>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+        <ImageView
+            android:layout_width="157dp"
+            android:layout_height="157dp"
+            android:src="@drawable/noreport"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您还没有上传游戏哦！"
+            android:textSize="14dp"
+            android:textColor="@color/line"
+            android:layout_marginTop="10dp"
+            />
+        <TextView
+            android:id="@+id/go_coutomized"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="请前往52game平台上传游戏\nwww.52game.com"
+            android:gravity="center"
+            android:textColor="@color/orange"
+            android:textSize="15dp"
+            />
+    </LinearLayout>
+</RelativeLayout>

@@ -3,7 +3,6 @@ package com.view.s4server;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
@@ -17,17 +16,14 @@ import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.MediaController;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.app.tools.MyDisplayImageOptions;
 import com.app.tools.MyLog;
@@ -405,7 +401,7 @@ public class IPDetailActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                setContentView(R.layout.neterror);
+                setContentView(R.layout.layout_neterror);
 
             }
 
@@ -466,6 +462,7 @@ public class IPDetailActivity extends BaseActivity implements View.OnClickListen
                 ipDesInfo.setMonth(ip.getString("month"));
                 ipDesInfo.setLogo(ip.getString("logo"));
                 ipDesInfo.setInfo(ip.getString("info"));
+
                 ipderivatives.add(ipDesInfo);
             }
             } else {
@@ -483,6 +480,15 @@ public class IPDetailActivity extends BaseActivity implements View.OnClickListen
                     ipSimpleInfo.setIp_cat(ip.getString("ip_cat"));
                     ipSimpleInfo.setIp_style(ip.getString("ip_style"));
                     ipSimpleInfo.setUthority(ip.getString("uthority"));
+                    if (MyAccount.isLogin){
+                        int focus=ip.getInt("focus");
+                        if (focus==1) {
+                            ipSimpleInfo.setIscare(true);
+                        }else {
+                            ipSimpleInfo.setIscare(false);
+                        }
+
+                    }
                     otherIp.add(ipSimpleInfo);
                 }
             }else {

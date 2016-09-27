@@ -104,6 +104,8 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
 
 
     static String data="";
+//    static boolean changeLogin=false;
+
 
     private Handler mhandler=new Handler(){
         @Override
@@ -469,6 +471,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
         ImageView imageView= (ImageView) view.findViewById(R.id.image);
         TextView image_title= (TextView) view.findViewById(R.id.image_title);
 
+        if (albumadInfos==null){
+            return view;
+        }
         if (position>=albumadInfos.size()){
             view.findViewById(R.id.relative).setVisibility(View.GONE);
         }else {
@@ -662,7 +667,54 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
                     }
                 });
             }
+            holder.care.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (MyAccount.isLogin) {
+                        switch (cat) {
+                            case "ip":
+                                IP ipSimpleInfo = iplist.get(position);
+                                if (ipSimpleInfo.iscare()) {
+                                    ipSimpleInfo.setIscare(false);
+                                    AttentionChange.removeAttention("5", ipSimpleInfo.getId(), getActivity());
+                                } else {
+                                    ipSimpleInfo.setIscare(true);
+                                    AttentionChange.addAttention("5", ipSimpleInfo.getId(), getActivity());
+                                }
+                                if (ipSimpleInfo.iscare()) {
+                                    holder.care.setText("已关注");
+                                    holder.care.setSelected(true);
+                                } else {
+                                    holder.care.setText("关注");
+                                    holder.care.setSelected(false);
+                                }
+                                break;
+                            default:
+                                IndexItemInfo indexItemInfo = datalist.get(position);
+                                if (indexItemInfo.iscare()) {
+                                    indexItemInfo.setIscare(false);
+                                    AttentionChange.removeAttention(indexItemInfo.getIdentity_cat(), indexItemInfo.getUser_id(), getActivity());
+                                } else {
+                                    indexItemInfo.setIscare(true);
+                                    AttentionChange.addAttention(indexItemInfo.getIdentity_cat(), indexItemInfo.getUser_id(), getActivity());
+                                }
+                                if (indexItemInfo.iscare()) {
+                                    holder.care.setText("已关注");
+                                    holder.care.setSelected(true);
+                                } else {
+                                    holder.care.setText("关注");
+                                    holder.care.setSelected(false);
+                                }
+                                break;
+                        }
 
+                    }else {
+                        Intent intent=new Intent(getActivity(), AccountActivity.class);
+                        startActivity(intent);
+                        getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+                    }
+                }
+            });
             if (MyAccount.isLogin){
                 if (iscare){
                     holder.care.setText("已关注");
@@ -671,58 +723,9 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
                     holder.care.setText("关注");
                     holder.care.setSelected(false);
                 }
-                holder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        switch (cat){
-                            case "ip":
-                                IP ipSimpleInfo=iplist.get(position);
-                                if (ipSimpleInfo.iscare()){
-                                    ipSimpleInfo.setIscare(false);
-                                    AttentionChange.removeAttention("5",ipSimpleInfo.getId(), getActivity());
-                                }else {
-                                    ipSimpleInfo.setIscare(true);
-                                    AttentionChange.addAttention("5",ipSimpleInfo.getId(), getActivity());
-                                } if (ipSimpleInfo.iscare()){
-                                    holder.care.setText("已关注");
-                                    holder.care.setSelected(true);
-                                }else {
-                                    holder.care.setText("关注");
-                                    holder.care.setSelected(false);
-                                }
-                                break;
-                            default:
-                                IndexItemInfo indexItemInfo=datalist.get(position);
-                                if (indexItemInfo.iscare()){
-                                    indexItemInfo.setIscare(false);
-                                    AttentionChange.removeAttention(indexItemInfo.getIdentity_cat(),indexItemInfo.getUser_id(), getActivity());
-                                }else {
-                                    indexItemInfo.setIscare(true);
-                                    AttentionChange.addAttention(indexItemInfo.getIdentity_cat(),indexItemInfo.getUser_id(), getActivity());
-                                } if (indexItemInfo.iscare()){
-                                    holder.care.setText("已关注");
-                                    holder.care.setSelected(true);
-                                }else {
-                                    holder.care.setText("关注");
-                                    holder.care.setSelected(false);
-                                }
-                                break;
-                        }
-
-                    }
-                });
-            }else {
-                holder.care.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent=new Intent(getActivity(), AccountActivity.class);
-                        startActivity(intent);
-                        getActivity().overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
-
-                    }
-                });
 
             }
+
             if (position==2){
                 holder.line.setVisibility(View.INVISIBLE);
             }
@@ -1014,7 +1017,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
                             ipsimpleInfo.setIp_name(item.getString("ip_name"));
                             ipsimpleInfo.setIp_logo(item.getString("ip_logo"));
                             ipsimpleInfo.setId(item.getString("id"));
-                            if (MyAccount.isLogin) {
+                            if (item.has("iscare")) {
                                 ipsimpleInfo.setIscare(item.getBoolean("iscare"));
                             }
                             String info_s="类    型："+item.getString("ip_cat")
@@ -1034,7 +1037,7 @@ public class IndexFragment extends Fragment implements View.OnClickListener{
                             simpleInfo.setLogo(item.getString("logo"));
                             simpleInfo.setIdentity_cat(item.getString("identity_cat"));
                             simpleInfo.setCompany_name(item.getString("company_name"));
-                            if (MyAccount.isLogin){
+                            if (item.has("iscare")){
                                 simpleInfo.setIscare(item.getBoolean("iscare"));
                             }
                             String info_s="";

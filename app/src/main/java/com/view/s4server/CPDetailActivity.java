@@ -18,12 +18,10 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.app.tools.MyDisplayImageOptions;
 import com.app.tools.MyLog;
 import com.app.view.HorizontalListView;
-import com.app.view.RoundImageView;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.test4s.account.MyAccount;
@@ -262,7 +260,7 @@ public class CPDetailActivity extends BaseActivity {
 
             @Override
             public void onError(Throwable ex, boolean isOnCallback) {
-                setContentView(R.layout.neterror);
+                setContentView(R.layout.layout_neterror);
 
             }
 
