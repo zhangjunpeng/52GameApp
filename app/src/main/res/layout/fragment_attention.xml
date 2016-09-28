@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
+        android:background="#f1f5f8"
         ></ListView>
     </in.srain.cube.views.ptr.PtrClassicFrameLayout>
     <ImageView
@@ -30,12 +31,13 @@
         android:gravity="center"
         android:layout_marginTop="35dp"
         />
-    <Button
+    <TextView
         android:id="@+id/want_care"
         android:layout_width="140dp"
         android:layout_height="37dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="24dp"
+        android:gravity="center"
         android:background="@drawable/orangeborder_button"
         android:text="我要关注"
         android:textSize="15dp"

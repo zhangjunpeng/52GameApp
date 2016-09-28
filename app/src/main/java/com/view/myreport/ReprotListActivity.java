@@ -322,6 +322,8 @@ public class ReprotListActivity extends BaseActivity {
             title= (TextView) findViewById(R.id.textView_titlebar_save);
             save= (TextView) findViewById(R.id.save_savebar);
 
+            setImmerseLayout(findViewById(R.id.titlebar_reportlist));
+
             back.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

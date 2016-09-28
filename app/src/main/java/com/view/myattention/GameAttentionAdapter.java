@@ -61,7 +61,7 @@ public class GameAttentionAdapter extends BaseAdapter {
             convertView= LayoutInflater.from(mcontext).inflate(R.layout.item_game_attentionlist,null);
             viewHolder.icon= (ImageView) convertView.findViewById(R.id.imageView_gameattention);
             viewHolder.name= (TextView) convertView.findViewById(R.id.name_item_gameattention);
-            viewHolder.uncare= (Button) convertView.findViewById(R.id.cancel_care_game);
+            viewHolder.uncare= (TextView) convertView.findViewById(R.id.cancel_care_game);
             viewHolder.info= (TextView) convertView.findViewById(R.id.introuduction_item_gameattention);
             viewHolder.gamerating= (ImageView) convertView.findViewById(R.id.gamerating_gameattention);
             convertView.setTag(viewHolder);
@@ -133,7 +133,7 @@ public class GameAttentionAdapter extends BaseAdapter {
     class ViewHolder{
         ImageView icon;
         TextView name;
-        Button uncare;
+        TextView uncare;
         TextView info;
         ImageView gamerating;
     }

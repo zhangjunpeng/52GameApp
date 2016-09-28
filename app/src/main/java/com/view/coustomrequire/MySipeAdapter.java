@@ -8,12 +8,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.app.tools.CusToast;
 import com.app.tools.MyLog;
+import com.daimajia.swipe.*;
+import com.daimajia.swipe.SwipeLayout;
 import com.daimajia.swipe.adapters.BaseSwipeAdapter;
 import com.test4s.account.MyAccount;
 import com.test4s.myapp.R;
@@ -46,11 +49,14 @@ public class MySipeAdapter extends BaseSwipeAdapter {
     private Activity context;
     private LayoutInflater mInflater;
     private List<ItemInfoCustomList> datalist;
+    private ListView mlistView;
 
-    public MySipeAdapter(Activity context, List<ItemInfoCustomList> datalist){
+
+    public MySipeAdapter(Activity context, List<ItemInfoCustomList> datalist, ListView listView){
         this.context = context;
         mInflater = LayoutInflater.from(context);
         this.datalist=datalist;
+        mlistView=listView;
     }
 
     @Override
@@ -59,8 +65,8 @@ public class MySipeAdapter extends BaseSwipeAdapter {
     }
 
     @Override
-    public View generateView(int position, ViewGroup parent) {
-        View view=LayoutInflater.from(
+    public View generateView(final int position, ViewGroup parent) {
+        final SwipeLayout view= (SwipeLayout) LayoutInflater.from(
                 context).inflate(R.layout.item_customized_list,parent,false);
         ViewHolder viewHolder=new ViewHolder();
         viewHolder.circleImageView = (CircleImageView) view.findViewById(R.id.icon);
@@ -70,8 +76,24 @@ public class MySipeAdapter extends BaseSwipeAdapter {
         viewHolder.line= (ImageView) view.findViewById(R.id.line);
         viewHolder.relative= (RelativeLayout) view.findViewById(R.id.relative);
         viewHolder.delete= (ImageView) view.findViewById(R.id.delete);
+
+        view.addSwipeListener(new SimpleSwipeListener(){
+            @Override
+            public void onOpen(SwipeLayout layout) {
+                super.onOpen(layout);
+            }
+        });
+        viewHolder.delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                deleteCustomize(position);
+//                view.close();
+                view.toggle();
+            }
+        });
+
         view.setTag(viewHolder);
-        MyLog.i("generateView");
         return view;
     }
 
@@ -213,13 +235,7 @@ public class MySipeAdapter extends BaseSwipeAdapter {
                 context.finish();
             }
         });
-        holder.delete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MyLog.i("delete "+position);
-                deleteCustomize(itemInfoCustomList);
-            }
-        });
+
     }
 
     @Override
@@ -229,8 +245,9 @@ public class MySipeAdapter extends BaseSwipeAdapter {
 
     @Override
     public Object getItem(int position) {
-        return datalist.get(position);
+        return this.getView(position, null, mlistView);
     }
+
 
     @Override
     public long getItemId(int position) {
@@ -259,7 +276,9 @@ public class MySipeAdapter extends BaseSwipeAdapter {
         return stringBuffer.toString();
     }
 
-    private void deleteCustomize(final ItemInfoCustomList itemInfoCustomList) {
+    private void deleteCustomize(int position) {
+        final ItemInfoCustomList itemInfoCustomList= datalist.get(position);
+
         BaseParams baseParams=new BaseParams("customize/delcustomize");
         baseParams.addParams("id",itemInfoCustomList.getId());
         if (MyAccount.isLogin) {

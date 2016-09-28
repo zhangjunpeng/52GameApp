@@ -295,10 +295,13 @@ public class GameListFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onFinished() {
-                MyLog.i("GameList==="+result);
-                if (pullToRefreshListView.getFooterViewsCount()==0){
-                    pullToRefreshListView.addFooterView(footview);
+                if (ptrFrameLayout.getVisibility()==View.GONE){
+                    ptrFrameLayout.setVisibility(View.VISIBLE);
                 }
+                MyLog.i("GameList==="+result);
+//                if (pullToRefreshListView.getFooterViewsCount()==0){
+//                    pullToRefreshListView.addFooterView(footview);
+//                }
                 gameListParser(result);
 
                 if (ptrFrameLayout.isRefreshing()) {
@@ -383,15 +386,23 @@ public class GameListFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         NameVal nameVal = typelist.get(position);
+                        String type="";
                         if (position == 0) {
                             gametype.setText("游戏类型");
-                            type_sel="";
+                            type="";
                         } else{
                             gametype.setText(nameVal.getVal());
-                            type_sel=nameVal.getId();
+                            type=nameVal.getId();
                         }
                         filtPopWindow.dismiss();
-                        ptrFrameLayout.autoRefresh();
+
+                        if (!type.equals(type_sel)){
+                            type_sel=type;
+                            gameInfos.clear();
+                            p=0;
+                            initData(p+"");
+                        }
+
                     }
                 });
 
@@ -403,15 +414,22 @@ public class GameListFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         NameVal nameVal = stageList.get(position);
+                        String stage="";
                         if (position == 0) {
                             gamestage.setText("项目阶段");
-                            stage_sel="";
+                            stage="";
                         } else{
                             gamestage.setText(nameVal.getVal());
-                            stage_sel=nameVal.getId();
+                            stage=nameVal.getId();
                         }
                         filtPopWindow.dismiss();
-                        ptrFrameLayout.autoRefresh();
+
+                        if (!stage.equals(stage_sel)){
+                            stage_sel=stage;
+                            gameInfos.clear();
+                            p=0;
+                            initData(p+"");
+                        }
                     }
                 });
 
@@ -423,15 +441,22 @@ public class GameListFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         NameVal nameVal = requirList.get(position);
+                        String requir="";
                         if (position == 0) {
                             require.setText("项目需求");
-                            requir_sel="";
+                            requir="";
                         } else{
                             require.setText(nameVal.getVal());
-                            requir_sel=nameVal.getId();
+                            requir=nameVal.getId();
                         }
                         filtPopWindow.dismiss();
-                        ptrFrameLayout.autoRefresh();
+                        if (!requir.equals(requir_sel)){
+                            requir_sel=requir;
+                            gameInfos.clear();
+                            p=0;
+                            initData(p+"");
+                        }
+
                     }
                 });
                 break;
@@ -442,21 +467,29 @@ public class GameListFragment extends Fragment implements View.OnClickListener {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         NameVal nameVal = normsList.get(position);
+                        String norms_s="";
                         if (position == 0) {
                             norms.setText("正版IP");
-                            norms_sel="";
+                            norms_s="";
                         } else{
                             norms.setText(nameVal.getVal());
-                            norms_sel=nameVal.getId();
+                            norms_s=nameVal.getId();
                         }
                         filtPopWindow.dismiss();
-                        ptrFrameLayout.autoRefresh();
+
+                        if (!norms_s.equals(norms_sel)){
+                            norms_sel=norms_s;
+                            gameInfos.clear();
+                            p=0;
+                            initData(p+"");
+                        }
+
                     }
                 });
                 break;
         }
-        p=0;
-        initData(p+"");
+//        p=0;
+//        initData(p+"");
     }
 
 

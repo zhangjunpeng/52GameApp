@@ -38,7 +38,7 @@ public class TirdLoginBindPhone extends BaseFragment implements View.OnClickList
     private EditText code;
     private EditText pwd;
     private TextView getCode;
-    private Button reg;
+    private TextView reg;
 
     private ImageView back;
     private TextView title;
@@ -79,7 +79,7 @@ public class TirdLoginBindPhone extends BaseFragment implements View.OnClickList
         code= (EditText) view.findViewById(R.id.editText_code);
         pwd= (EditText) view.findViewById(R.id.editText_pwd);
         getCode= (TextView) view.findViewById(R.id.getcode_reg);
-        reg= (Button) view.findViewById(R.id.button_reg_reg);
+        reg= (TextView) view.findViewById(R.id.button_reg_reg);
         back= (ImageView) view.findViewById(R.id.back_savebar);
         title= (TextView) view.findViewById(R.id.textView_titlebar_save);
         save= (TextView) view.findViewById(R.id.save_savebar);

@@ -27,6 +27,7 @@ import com.test4s.gdb.IndexItemInfo;
 import com.test4s.myapp.R;
 import com.test4s.net.BaseParams;
 import com.test4s.net.Url;
+import com.view.activity.BaseActivity;
 import com.view.game.GameDetailActivity;
 import com.view.game.GameListActivity;
 import com.view.game.MyGameListAdapter;
@@ -49,7 +50,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-public class SubjectActivity extends AppCompatActivity {
+public class SubjectActivity extends BaseActivity {
 
     RecyclerView recyclerView;
     private String id;
@@ -74,7 +75,7 @@ public class SubjectActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject);
-
+        setImmerseLayout(findViewById(R.id.title_subject));
         id=getIntent().getStringExtra("id");
 
         recyclerView= (RecyclerView) findViewById(R.id.recyclerview);
@@ -165,6 +166,11 @@ public class SubjectActivity extends AppCompatActivity {
                     gameInfo.setGame_stage(gameObj.getString("game_stage"));
                     gameInfo.setGame_platform(gameObj.getString("game_platform"));
                     gameInfo.setGame_img(gameObj.getString("game_img"));
+                    if (gameObj.has("requirement")){
+                        gameInfo.setRequire(gameObj.getString("requirement"));
+                    }else {
+                        gameInfo.setRequire("");
+                    }
 
                     JSONObject gamedata=gameObj.getJSONObject("s4_name");
 
@@ -286,49 +292,9 @@ public class SubjectActivity extends AppCompatActivity {
 
                 }
 
-                String mess = gameInfo.getGame_type() + "/" + gameInfo.getGame_stage() + "\n" + gameInfo.getGame_platform();
+                String mess = gameInfo.getGame_type() + "/" + gameInfo.getGame_stage() + "\n" + gameInfo.getRequire();
                 holder.info.setText(mess);
 
-                if (MyAccount.isLogin) {
-                    if (gameInfo.iscare()) {
-                        holder.care.setText("已关注");
-                        holder.care.setSelected(true);
-                    } else {
-                        holder.care.setText("关注");
-                        holder.care.setSelected(false);
-                    }
-                    holder.care.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            if (gameInfo.iscare()) {
-                                gameInfo.setIscare(false);
-                                AttentionChange.removeAttention("1", gameInfo.getGame_id(), context);
-                            } else {
-                                gameInfo.setIscare(true);
-                                AttentionChange.addAttention("1", gameInfo.getGame_id(), context);
-                            }
-                            if (gameInfo.iscare()) {
-                                holder.care.setText("已关注");
-                                holder.care.setSelected(true);
-                            } else {
-                                holder.care.setText("关注");
-                                holder.care.setSelected(false);
-                            }
-                        }
-                    });
-
-                } else {
-                    holder.care.setOnClickListener(new View.OnClickListener() {
-
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent(context, AccountActivity.class);
-                            startActivity(intent);
-                            context.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
-                        }
-                    });
-
-                }
 
 
                 holder.item.setOnClickListener(new View.OnClickListener() {

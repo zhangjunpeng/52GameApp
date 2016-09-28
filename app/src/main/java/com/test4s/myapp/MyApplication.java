@@ -48,7 +48,7 @@ public class MyApplication extends Application {
     public static Context mcontext;
 
     //正式上线改为false
-    public static boolean DeBug=true;
+    public static boolean DeBug=false;
 
     //参数
     public static String imei;

@@ -15,6 +15,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.app.tools.MyLog;
 import com.test4s.account.MyAccount;
@@ -62,7 +63,7 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
     private PtrClassicFrameLayout ptr_atten;
     List<Object> datalist;
     BaseAdapter adapter = new OutSourceAttentionAdapter(getActivity(),datalist,listView);
-    Button wantcare;
+    TextView wantcare;
     private final int ToDetail=301;
     int p=1;
     private View headview;
@@ -78,7 +79,7 @@ public class AttentionFragment extends Fragment implements View.OnClickListener 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_attention,container,false);
         listView= (ListView) view.findViewById(R.id.listview_attention_fragment);
-        wantcare= (Button) view.findViewById(R.id.want_care);
+        wantcare= (TextView) view.findViewById(R.id.want_care);
         datalist=new ArrayList<>();
 
         headview=LayoutInflater.from(getActivity()).inflate(R.layout.handerloading,null);

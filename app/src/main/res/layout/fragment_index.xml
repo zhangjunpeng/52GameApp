@@ -17,13 +17,13 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="167dp">
+            android:layout_height="wrap_content">
             <com.lsjwzh.widget.recyclerviewpager.RecyclerViewPager
                 android:id="@+id/viewpager"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingLeft="12dp"
-                android:paddingRight="12dp"
+                android:paddingLeft="7dp"
+                android:paddingRight="14dp"
                 app:rvp_triggerOffset="0.1"
                 app:rvp_singlePageFling="true"
                 android:clipToPadding="false"/>
@@ -45,7 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="90dp"
             android:orientation="horizontal"
-            android:layout_marginTop="18dp"
+            android:layout_marginTop="13dp"
             android:gravity="center_vertical"
             android:background="@drawable/border_edit_comment"
             android:layout_marginRight="14dp"

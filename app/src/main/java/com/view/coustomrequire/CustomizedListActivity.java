@@ -87,7 +87,7 @@ public class CustomizedListActivity extends BaseActivity {
         });
         initData(p+"");
 
-        adapter=new MySipeAdapter(this,dataList);
+        adapter=new MySipeAdapter(this,dataList,recyclerView);
 
 
 

@@ -63,7 +63,7 @@ public class CPAttentionAdapter extends BaseAdapter {
             viewHolder.icon= (ImageView) convertView.findViewById(R.id.imageView_item_cpattention);
             viewHolder.name= (TextView) convertView.findViewById(R.id.name_item_cpattention);
             viewHolder.intro= (TextView) convertView.findViewById(R.id.introuduction_item_cpattention);
-            viewHolder.uncare= (Button) convertView.findViewById(R.id.cancel_care_cp);
+            viewHolder.uncare= (TextView) convertView.findViewById(R.id.cancel_care_cp);
             convertView.setTag(viewHolder);
         }else {
             viewHolder= (ViewHolder) convertView.getTag();
@@ -133,6 +133,6 @@ public class CPAttentionAdapter extends BaseAdapter {
         ImageView icon;
         TextView name;
         TextView intro;
-        Button uncare;
+        TextView uncare;
     }
 }

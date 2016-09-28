@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.AppBarLayout;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
@@ -81,6 +82,8 @@ public class OutSourceActivity extends BaseActivity {
 
     private View view;
 
+    private NestedScrollView nestedScrollView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -121,6 +124,7 @@ public class OutSourceActivity extends BaseActivity {
         div_art= (LinearLayout) findViewById(R.id.div_artanli_osDetail);
         div_video= (LinearLayout) findViewById(R.id.div_video_osDetail);
 
+        nestedScrollView= (NestedScrollView) findViewById(R.id.recycler_view_os);
 
         //获取屏幕密度
         DisplayMetrics metric = new DisplayMetrics();
@@ -327,6 +331,8 @@ public class OutSourceActivity extends BaseActivity {
         }
         view.setVisibility(View.VISIBLE);
 
+
+        nestedScrollView.scrollTo(10,10);
     }
 
     private void addVideo(List<String> musiccases) {

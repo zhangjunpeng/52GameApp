@@ -14,13 +14,11 @@
             android:id="@+id/viewpager"
             android:layout_width="match_parent"
             android:layout_height="167dp"
-            android:paddingLeft="14dp"
+            android:paddingLeft="7dp"
             android:paddingRight="14dp"
-            android:layout_marginTop="8dp"
             app:layout_scrollFlags="scroll"
             app:rvp_triggerOffset="0.1"
             app:rvp_singlePageFling="true"
-            android:layout_marginBottom="10dp"
             android:clipToPadding="false"/>
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,6 +27,7 @@
             android:layout_marginLeft="14dp"
             android:layout_marginRight="14dp"
             android:background="@drawable/border_edit_comment"
+            android:layout_marginTop="8dp"
             >
             <RelativeLayout
                 android:id="@+id/rela1"
@@ -86,11 +85,6 @@
                     android:visibility="invisible"
                     />
             </RelativeLayout>
-            <ImageView
-                android:layout_width="1px"
-                android:layout_height="match_parent"
-                android:background="@color/line"
-                />
 
 
         </LinearLayout>

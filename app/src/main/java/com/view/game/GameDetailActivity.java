@@ -597,16 +597,16 @@ public class GameDetailActivity extends BaseActivity implements View.OnClickList
     }
 
     private void addshots(List<String> game_shots) {
-        LinearLayoutCompat.LayoutParams params;
+        LinearLayout.LayoutParams params;
         if (pic_dir.equals("hori")){
-            params=new LinearLayoutCompat.LayoutParams((int)(263*density),(int)(148*density));
+            params=new LinearLayout.LayoutParams((int)(263*density),(int)(148*density));
         }else {
-            params=new LinearLayoutCompat.LayoutParams((int)(160*density),(int)(238*density));
+            params=new LinearLayout.LayoutParams((int)(160*density),(int)(238*density));
         }
         for (int i=0;i<game_shots.size();i++) {
             ImageView imageView = new ImageView(this);
 
-            params.rightMargin = (int) (3 * density);
+            params.rightMargin = (int) (4 * density);
             params.bottomMargin = (int) (18 * density);
             params.leftMargin=(int) (3*density);
             imageView.setId(i);

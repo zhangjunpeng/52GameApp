@@ -126,6 +126,14 @@ public class MainActivity extends FragmentActivity  implements View.OnClickListe
                 overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
             }
         });
+        findViewById(R.id.search_titlebar).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.in_from_right,R.anim.out_to_left);
+            }
+        });
 
         mGestureDetector=new GestureDetector(this,this);
 
